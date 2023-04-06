@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Update Partner Limit API</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+            charset="utf-8"
+        />
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome/css/all.min.css" />
+        <script src="/assets/js/environment.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap/popper.min.js"></script>
+        <script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.validate.min.js"></script>
+        <script src="/assets/js/additional-methods.min.js"></script>
+        <script src="/assets/js/update-partner-limit.js"></script>
+    </head>
+    <body>
+        <!-- Main Header Start Here -->
+        <div class="container-fluid">
+            <div
+                class="row mt-4 d-flex justify-content-center align-items-center header-border-bottom pb-3"
+            >
+                <div
+                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        class="mastercard-logo"
+                        src="/assets/images/mc_symbol_opt_73_3x.png"
+                        alt="Mastercard Logo"
+                    />
+                    <label class="mastercard-label mb-0"> Mastercard® </label>
+                </div>
+            </div>
+            <!-- Main Header End Here -->
+            <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4 mb-5 api-form-box"
+            >
+                <!-- API Name Header Start Here -->
+                <div class="row mb-3 api-name-border pb-3">
+                    <div
+                        class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-3 d-flex align-items-center"
+                    >
+                        <a href="/views/CPM-overview.html" class="text-decoration-none">
+                            <img
+                                class="back-logo"
+                                src="/assets/images/back_icon@2x.png"
+                                alt="Back Logo"
+                            />
+                        </a>
+                    </div>
+                    <div
+                        class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-9 d-flex align-items-center"
+                    >
+                        <label class="api-name-label">
+                            CPM (Customer Parameter Management) APIs
+                        </label>
+                    </div>
+                </div>
+                <!-- API Name Header End Here -->
+
+                <!-- API Selection Box Start Here -->
+
+                <ul class="nav nav-tabs">
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label api-menu-main-label-active"
+                    >
+                        <a
+                            class="nav-link active text-center cursor-pointer"
+                            data-toggle="tab"
+                            href="#partnerLimit"
+                            >PARTNER LIMITS</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/add-daily-limit.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >TRANSFER ACCEPTOR LIMITS</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/add-account-limit.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >ACCOUNT LIMITS</a
+                        >
+                    </li>
+                </ul>
+
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div
+                            role="tabpanel"
+                            class="tab-pane active"
+                            id="partnerLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/retrieve-partner-limit.html';"
+                                        class=""
+                                    >
+                                        <label class="api-label">
+                                            RETRIEVE PARTNER LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label text-center padding-top-none"
+                                >
+                                    <a href="" class="api-names-box">
+                                        <label class="api-label">
+                                            UPDATE PARTNER LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            role="tabpanel"
+                            class="tab-pane fade"
+                            id="transferAcceptorLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/add-daily-limit.html';"
+                                    >
+                                        <label class="">
+                                            ADD DAILY LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/update-daily-limit.html';"
+                                    >
+                                        <label class="">
+                                            UPDATE DAILY LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            role="tabpanel"
+                            class="tab-pane fade"
+                            id="accountLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-8 offset-col-lg-8 offset-md-8 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/add-account-limit.html';"
+                                    >
+                                        <label class="">
+                                            ADD ACCOUNT LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-8 offset-col-lg-8 offset-md-8 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/update-account-limit.html';"
+                                    >
+                                        <label class="">
+                                            UPDATE ACCOUNT LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Selection Box End Here -->
+
+                <!-- Form Start here -->
+                <form
+                    name="update-partner-limit-form"
+                    id="update-partner-limit-form"
+                >
+                    <div class="row api-name-border pb-4 mb-5 mt-5">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                        >
+                            <h5>UPDATE PARTNER LIMIT</h5>
+                        </div>
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="partnerId"
+                                            >Partner Id
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Mastercard-assigned unique Partner Reference ID for the partner
+                                                    (Transaction Initiator) whose configuration you are viewing or setting.
+                                                    It is not your Partner Reference ID. String, maximum length 40. <br /> <br /> Type: String<br />(path)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="partnerId"
+                                            id="partnerId"
+                                            placeholder="Partner Id"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="partnerLimitReference"
+                                            >Partner Limit Reference
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The reference ID for the partner limit configuration, which is assigned during the onboarding process. <br /> <br /> Type: String<br />(path)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="partnerLimitReference"
+                                            id="partnerLimitReference"
+                                            placeholder="Partner Limit Reference"
+                                            value="8f51fe57668c44f195b062bbf034257dxxxxxxxx"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="accept"
+                                            >Accept
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This request header indicates the type of response payload expected by
+                                                    the client. API can accept only application/json as valid values. <br /> <br /> Type: String<br />(header)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="accept"
+                                            name="accept"
+                                        >
+                                            <option value="application/json">
+                                                application/json
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="contentType"
+                                            >Content-Type
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This request header indicates the payload format of the request. The API
+                                                    can accept only application/json as the valid value. The same header
+                                                    will be used in response to indicate the response payload format. API
+                                                    will only generate response payload in application/json. <br /> <br /> Type: String<br />(header)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="contentType"
+                                            name="contentType"
+                                        >
+                                            <option value="application/json">
+                                                application/json
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-label-box mb-4"
+                                >
+                                    <label>DAILY LIMIT</label>
+                                </div>
+
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-sub-label-box mb-4"
+                                >
+                                    <label>TRANSACTION AMOUNT LIMIT</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="dailyTransactionAmount"
+                                            >Amount
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Daily Transaction Amount. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="dailyTransactionAmount"
+                                            id="dailyTransactionAmount"
+                                            placeholder="Amount"
+                                            value="1000000"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="dailyTransactionCurrency"
+                                            >Currency
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Daily Transaction Amount Currency. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="dailyTransactionCurrency"
+                                            id="dailyTransactionCurrency"
+                                            placeholder="Currency"
+                                            value="INR"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-sub-label-box mb-4"
+                                >
+                                    <label>TRANSACTION VOLUME LIMIT</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="maxTransactionVolume"
+                                            >Max Transaction Volume
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Maximum Transaction Volume Limit. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="maxTransactionVolume"
+                                            id="maxTransactionVolume"
+                                            placeholder="Max Transaction Volume"
+                                            value="50000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-label-box mb-4"
+                                >
+                                    <label>ALERT SETTINGS</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="alertEmails"
+                                            >Alert Emails
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The email address(es) of the associated entities (business partners
+                                                or Sponsor Banks) who are entitled to receive alert notifications.
+                                                This is required if the business partner has opted for alert
+                                                notifications. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="alertEmails[]"
+                                            id="alertEmails"
+                                            placeholder="Alert Emails"
+                                            value="test123@abcmail.com"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="alertsEnabled"
+                                            >Alerts Enabled
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Boolean flag indicating whether alerts are enabled (true) or not
+                                                (false). This setting applies to both the partner alerts and the
+                                                Transfer Acceptor alerts. Alert notifications will not be sent if
+                                                alerts are disabled. If the value is not passed, it defaults to
+                                                false (disabled). <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="alertsEnabled"
+                                            name="alertsEnabled"
+                                        >
+                                            <option value="true">True</option>
+                                            <option value="false">False</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                >
+                                    <input
+                                        class="btn add-multiple-btn"
+                                        id="alertEmailsBtnAdd"
+                                        type="button"
+                                        value="ADD MULTIPLE ALERT EMAILS"
+                                    />
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                    id="alert-emails-div"
+                                >
+                                    <!--Textboxes will be added here -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="amountAlertThreshold"
+                                            >Amount Alert Threshold
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The amount alert threshold, which is a percentage (e.g. 95). When
+                                                    the partner exceeds this percentage of their daily amount limit
+                                                    (`transactionAmountLimit.amount`), alert notifications will be sent
+                                                    if alerts are enabled (`alertsEnabled` = true). Numeric integer, do
+                                                    not include the % symbol. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            name="amountAlertThreshold"
+                                            id="amountAlertThreshold"
+                                            placeholder="Amount Alert Threshold"
+                                            value="95"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="volumeAlertThreshold"
+                                            >Volume Alert Threshold
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The volume alert threshold, which is a percentage (e.g. 80). When
+                                                    the Transfer Acceptor exceeds this percentage of their daily volume
+                                                    limit (`maxTransactionVolume`), alert notifications will be sent if
+                                                    alerts are enabled (`alertsEnabled` = true, in the partner limit
+                                                    configuration). Numeric integer, do not include the % symbol. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            name="volumeAlertThreshold"
+                                            id="volumeAlertThreshold"
+                                            placeholder="Volume Alert Threshold"
+                                            value="80"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end mt-4 mb-4"
+                        >
+                            <button
+                                data-update-partner-limit-request=""
+                                data-update-partner-limit-response=""
+                                type="button"
+                                class="btn submit-btn"
+                                id="submitBtn"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+
+                <!-- Form End Here -->
+
+                <!-- Request / Response Object Div Start Here -->
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Update Partner Limit Request Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="request-object"></label><textarea id="request-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Update Partner Limit Response Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="response-object"></label><textarea id="response-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request / Response Object Div End Here -->
+
+                <!-- Spinner Box Start Here -->
+                <div id="spinner" class=""></div>
+                <!-- Spinner Box End Here -->
+            </div>
+        </div>
+    </body>
+</html>

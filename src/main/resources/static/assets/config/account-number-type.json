@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Other",
+        "value": "00"
+    },
+    {
+        "name": "RTN + Bank Account",
+        "value": "01"
+    },
+    {
+        "name": "IBAN",
+        "value": "02"
+    },
+    {
+        "name": "Card Account",
+        "value": "03"
+    },
+    {
+        "name": "Email",
+        "value": "04"
+    },
+    {
+        "name": "Phone Number",
+        "value": "05"
+    },
+    {
+        "name": "Bank account number (BAN) + Bank Identification Code (BIC)",
+        "value": "06"
+    },
+    {
+        "name": "Wallet ID",
+        "value": "07"
+    },
+    {
+        "name": "Social Network",
+        "value": "08"
+    }
+]

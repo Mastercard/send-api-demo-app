@@ -1,0 +1,18 @@
+[
+    {
+        "name": "WEB",
+        "value": "WEB"
+    },
+    {
+        "name": "MOBILE",
+        "value": "MOBILE"
+    },
+    {
+        "name": "BANK",
+        "value": "BANK"
+    },
+    {
+        "name": "KIOSK",
+        "value": "KIOSK"
+    }
+]

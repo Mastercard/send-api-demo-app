@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Payment",
+        "value": "PAY"
+    },
+    {
+        "name": "Purchase Return",
+        "value": "PUR"
+    },
+    {
+        "name": "Merchant Payment",
+        "value": "MER"
+    }
+]

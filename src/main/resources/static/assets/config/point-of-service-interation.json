@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Magstripe",
+        "value": "MAGSTRIPE"
+    },
+    {
+        "name": "Contact Chip",
+        "value": "CONTACT_CHIP"
+    },
+    {
+        "name": "Contactless Chip",
+        "value": "CONTACTLESS_CHIP"
+    },
+    {
+        "name": "Contactless Magstripe",
+        "value": "CONTACTLESS_MAGSTRIPE"
+    },
+    {
+        "name": "Manual Entry",
+        "value": "MANUAL_ENTRY"
+    },
+    {
+        "name": "Card on File",
+        "value": "CARD_ON_FILE"
+    }
+]

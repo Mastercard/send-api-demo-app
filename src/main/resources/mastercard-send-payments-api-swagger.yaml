@@ -1,0 +1,3063 @@
+openapi: 3.0.3
+info:
+  title: Mastercard Send Payments API
+  description: >-
+    You can use this API to create a payment transaction to transfer funds to a
+    Recipient (Payments POST) and search for details of a payment transaction
+    (Payments Searches POST). 
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: 'https://developer.mastercard.com/support'
+    email: apisupport@mastercard.com
+servers:
+  - url: 'https://sandbox.api.mastercard.com/send/partners'
+    description: Sandbox URL
+  - url: 'https://mtf.api.mastercard.com/send/partners'
+    description: MTF URL
+  - url: 'https://api.mastercard.com/send/partners'
+    description: Production URL
+tags:
+  - name: Payments
+    description: Create a payment transaction to transfer funds to a Recipient.
+  - name: Payments Searches
+    description: Retrieve details of a payment transaction.
+paths:
+  '/{partner_id}/payments':
+    post:
+      tags:
+        - Payments
+      summary: Create a payment transaction to transfer funds to a Recipient.
+      description: >-
+        You must provide a unique `paymentReference` value. The success (201)
+        response will contain a system-generated `paymentId` value and the
+        status (`transactionStatus`) will indicate whether the transaction was
+        approved. If the status is 'PENDING', see [Transaction Responses with a
+        'PENDING'
+        Status](https://developer.mastercard.com/mastercard-send-2-0/documentation/response-error-codes/pending-response/).
+      operationId: createPaymentUsingPOST
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/RepeatFlag'
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/Accept'
+      requestBody:
+        $ref: '#/components/requestBodies/PostRequestBodies'
+      responses:
+        '201':
+          $ref: '#/components/responses/PaymentCreateSuccessResponse'
+        '400':
+          $ref: '#/components/responses/PaymentCreateBadRequestResponse'
+        '409':
+          $ref: '#/components/responses/PaymentCreateErrorResponse'
+  '/{partner_id}/payments/searches':
+    post:
+      operationId: retrievePaymentInfoUsingPOST
+      tags:
+        - Payments Searches
+      summary: Retrieve details of a payment transaction.
+      description: >-
+        Provide the transaction's `paymentReference` value or `paymentId` value
+        (but not both), which were assigned to the transaction when created.
+        Example uses for this API call:
+
+        * Get the network decline code and description when a transaction is
+        declined
+
+        * Get the latest status when a Payments POST response was 'PENDING'
+
+        * Transaction history and research purposes
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/Accept'
+      requestBody:
+        $ref: '#/components/requestBodies/SearchRequestBodies'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentSearchSuccessResponse'
+        '400':
+          $ref: '#/components/responses/PaymentSearchBadRequestResponse'
+        '404':
+          $ref: '#/components/responses/PaymentSearchNotFoundResponse'
+components:
+  parameters:
+    partner_id:
+      in: path
+      name: partner_id
+      description: >-
+        The Mastercard-assigned unique ID for the partner registered to use
+        Mastercard Send. String, maximum length 40.
+      schema:
+        type: string
+        minLength: 32
+        maxLength: 40
+      example: 'ptnr_1lzs0zD6uWo7k-OdUXjLW_pFgX2'
+      required: true
+    RepeatFlag:
+      in: query
+      name: repeat_flag
+      schema:
+        type: boolean
+      description: >-
+        Set this to 'false' for each unique transaction request. Only set this
+        to 'true' if this request is a repeat of a previous request, such as
+        resending a request after encountering a system error.
+      example: false
+    Content-Type:
+      in: header
+      name: Content-Type
+      schema:
+        type: string
+      description: >-
+        The format of the request payload. This API supports JSON, so this value
+        must be 'application/json'.
+      example: application/json
+    Accept:
+      in: header
+      name: Accept
+      schema:
+        type: string
+      description: >-
+        The type of response payload expected by the client. This API generates
+        JSON responses, so this value must be 'application/json'.
+      example: application/json
+  headers:
+    Correlation-Id:
+      schema:
+        type: string
+      description: >-
+        ID for research purposes to uniquely identify the transaction within
+        Mastercard.
+      example: '00000175b8683686-3f8ec289'
+  responses:
+    PaymentCreateSuccessResponse:
+      description: CREATED. Returns details for the created payment transaction.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/paymentDetails'
+    PaymentCreateBadRequestResponse:
+      description: BAD REQUEST. Returns an array of errors when request fields are invalid.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/ErrorResponse400'
+    PaymentCreateErrorResponse:
+      description: >-
+        CONFLICT. Returns an array of errors when the `paymentReference` ID has
+        already been used for a previous payment transaction.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/ErrorResponse409'
+    PaymentSearchSuccessResponse:
+      description: >-
+        OK. Returns payment transaction details for the provided `paymentId` or
+        `paymentReference`.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/paymentSearchDetails'
+    PaymentSearchBadRequestResponse:
+      description: BAD REQUEST. Returns an array of errors when request fields are invalid.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/SearchesErrorResponse400'
+    PaymentSearchNotFoundResponse:
+      description: >-
+        NOT FOUND. Returns an array of errors when no payment transactions can
+        be found for the provided `paymentId` or `paymentReference`.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-Id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/SearchesErrorResponse404'
+  examples:
+    ErrorResponse400:
+      value:
+        Errors:
+          Error:
+            - Source: amount
+              ReasonCode: MISSING_REQUIRED_INPUT
+              Description: Value is required
+              Recoverable: false
+              ErrorDetailCode: '092000'
+              Details: null
+    ErrorResponse409:
+      value:
+        Errors:
+          Error:
+            - Source: paymentReference
+              ReasonCode: RESOURCE_ERROR
+              Description: Duplicate value
+              Recoverable: false
+              ErrorDetailCode: '110501'
+              Details: null
+    SearchesErrorResponse400:
+      value:
+        Errors:
+          Error:
+            - Source: paymentId
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    SearchesErrorResponse404:
+      value:
+        Errors:
+          Error:
+            - Source: RESOURCE_UNKNOWN
+              ReasonCode: RESOURCE_ERROR
+              Description: Record not found
+              Recoverable: false
+              ErrorDetailCode: '110507'
+              Details: null
+  requestBodies:
+    PostRequestBodies:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/paymentCreateData'
+          examples:
+            Request:
+              value:
+                paymentReference: 'pay_000001328'
+                amount: '6000'
+                interchangeRateDesignator: 'QR'
+                currency: 'USD'
+                acquiringCredentials:
+                  acquiringCountry: 'USA'
+                  acquiringIca: '123456'
+                  dualMessage:
+                    acquiringBin: '512340'
+                  singleMessage:
+                    acquiringIdentificationCode: '123456780'
+                    processorId: '9000001957'
+                additionalMessage: 'Adding additional message'
+                deviceType: 'WEB'
+                fundingSource: '05'
+                merchantCategoryCode: '6536'
+                participationId: '1234567890'
+                paymentType: 'P2P'
+                qrData: '12'
+                transferAcceptor:
+                  address:
+                    city: "O'Fallon"
+                    country: 'USA'
+                    postalCode: '23233'
+                    state: 'MO'
+                    street: '2200 Mastercard Blvd'
+                  convenienceAmount: '333'
+                  convenienceIndicator: '01'
+                  id: '456487898368'
+                  mastercardAssignedMerchantId: '12A346'
+                  name: 'transferacceptor'
+                  paymentFacilitatorId: '123'
+                  subMerchantId: '223'
+                  terminalId: '1367-hgf'
+                recipient:
+                  accountUri: 'pan:5117510000000007;exp=2050-02;cvc=123'
+                  address:
+                    city: "O'Fallon"
+                    country: 'USA'
+                    postalCode: '23233'
+                    state: 'MO'
+                    street: '2200 Mastercard Blvd'
+                  authentication:
+                    authenticationValue: 'kBAYYgZVLBwEl08klDyU79WE6XqM'
+                  countryOfBirth: 'USA'
+                  dateOfBirth: '1981-03-27'
+                  dsTransactionId: 'f38e6948-5388-41a6-bca4-b49723c19437'
+                  email: 'test123@abcmail.com'
+                  accountNumberType: '02'
+                  governmentIdUris:
+                    - 'dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New Hampshire'
+                  name: 'Smith  John  Michael  '
+                  nationality: 'USA'
+                  phone: '1234567890'
+                  tokenCryptogram:
+                    cryptoType: 'CONTACTLESS_CHIP'
+                    cryptoValue: 'jjoutwsdgfdou124354ljlsdhgout968957'
+                    panSequenceNumber: '002'
+                sender:
+                  accountUri: 'pan:5117510000000007;exp=2050-02;cvc=123'
+                  address:
+                    city: "O'Fallon"
+                    country: 'USA'
+                    postalCode: '23233'
+                    state: 'MO'
+                    street: '2200 Mastercard Blvd'
+                  countryOfBirth: 'USA'
+                  dateOfBirth: '1981-03-27'
+                  digitalAccountReferenceNumber: 'pan:5102589999999905;exp=2050-02;cvc=123'
+                  email: 'test123@abcmail.com'
+                  accountNumberType: '02'
+                  governmentIdUris:
+                    - 'dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New Hampshire'
+                  name: 'Smith  John  Michael  '
+                  nationality: 'USA'
+                  phone: '1234567890'
+                transactionLocalDateTime: '2021-06-17T18:05:02'
+                pointOfServiceInteraction: 'MAGSTRIPE'
+                transactionPurpose: '07'
+                uniqueTransactionReference: '0555555128315305401'
+      description: Data for creating the payment transaction.
+      required: true
+    SearchRequestBodies:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/paymentSearchData'
+      description: Data for retrieving the payment transaction.
+      required: true
+  schemas:
+    ErrorResponse:
+      type: object
+      description: >-
+        Response object returned in case of any errors that occurred during
+        processing.
+      required:
+        - Errors
+      properties:
+        Errors:
+          description: This object contains an array of errors.
+          type: object
+          required:
+            - Error
+          properties:
+            Error:
+              description: An array of errors.
+              type: array
+              items:
+                type: object
+                properties:
+                  Source:
+                    type: string
+                    description: >-
+                      Where possible, identifies the field that is causing the
+                      error, for example an incorrectly formatted field or a
+                      missing required field. If the error is not associated
+                      with a specific field, system error is returned.
+                    example: amount
+                  ReasonCode:
+                    type: string
+                    description: >-
+                      The general cause of the error, see [Error
+                      Codes](#error-codes).
+                    example: MISSING_REQUIRED_INPUT
+                  Description:
+                    type: string
+                    description: >-
+                      Describes the error. Present if more information is
+                      available than that provided by the `ReasonCode` field.
+                    example: Value is required
+                  Recoverable:
+                    type: boolean
+                    description: >-
+                      Indicates whether the transaction can be recovered (might
+                      be successful) if the failed request is resubmitted. Valid
+                      values: true, false.
+                    example: false
+                  ErrorDetailCode:
+                    type: string
+                    description: 'The error code, see [Error Codes](#error-codes).'
+                    example: '092000'
+                  Details:
+                    type: string
+                    description: 'Always null, present for backwards compatibility.'
+                    example: null
+    Payments:
+      type: object
+      properties:
+        itemCount:
+          description: The number of items in the list.
+          type: integer
+          format: int64
+          example: 1
+        resourceType:
+          description: 'The type of resource: list.'
+          type: string
+          minLength: 4
+          maxLength: 4
+          example: list
+        data:
+          $ref: '#/components/schemas/PaymentsData'
+      title: payments
+    PaymentsData:
+      description: >-
+        This object contains an array of payment transactions that match the
+        provided `paymentId` or `paymentReference`.
+      type: object
+      properties:
+        payments:
+          description: An array of payment transactions.
+          type: array
+          items:
+            $ref: '#/components/schemas/paymentSearchItem'
+      title: paymentsData
+    acquiringCredentials:
+      type: object
+      description: >-
+        This object contains the acquiring credentials. At least one of the
+        `dualMessage` or `singleMessage` objects is required.
+      required:
+        - acquiringIca
+      properties:
+        acquiringCountry:
+          type: string
+          description: >-
+            The 3-character ISO 3166-1 uppercase alpha-3 country code of the
+            Bank Identification Number (BIN) under which the acquiring member is
+            registered with Mastercard; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        acquiringIca:
+          type: string
+          description: >-
+            The Mastercard-assigned Interbank Card Association (ICA) ID for the
+            acquiring member registered with Mastercard.
+          minLength: 1
+          maxLength: 11
+          example: '123456'
+        dualMessage:
+          $ref: '#/components/schemas/dualMessage'
+        singleMessage:
+          $ref: '#/components/schemas/singleMessage'
+      title: acquiringCredentials
+    additionalProgramData:
+      type: object
+      description: >-
+        This object contains data required for cross-network programs. Contact
+        your Mastercard representative for assistance.
+      properties:
+        crossNetwork:
+          $ref: '#/components/schemas/crossNetwork'
+      title: additionalProgramData
+    senderAddress:
+      type: object
+      description: This object contains the address details.
+      required:
+        - street
+        - country
+      properties:
+        city:
+          type: string
+          description: >-
+            The Sender's city. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-25.
+          minLength: 1
+          maxLength: 25
+          example: O'Fallon
+        country:
+          type: string
+          description: >-
+            The Sender's country as a 3-character ISO 3166-1 uppercase alpha-3
+            country code; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        postalCode:
+          type: string
+          description: The Sender's ZIP Code or postal code.
+          minLength: 1
+          maxLength: 10
+          example: '23233'
+        state:
+          type: string
+          description: >-
+            The Sender's state or province, specified as an ISO 3166-2 uppercase
+            alpha 2 or 3 character country subdivision code; see [Country and
+            Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, Missouri is MO. Conditional, required if Sender's
+            `country` is USA or CAN.
+          minLength: 2
+          maxLength: 3
+          example: MO
+        street:
+          type: string
+          description: >-
+            The Sender's street address (first line of address). Alphanumeric
+            Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-50.
+          minLength: 1
+          maxLength: 50
+          example: 2200 Mastercard Blvd
+      title: senderAddress
+    recipientAddress:
+      type: object
+      description: This object contains the address details.
+      properties:
+        city:
+          type: string
+          description: >-
+            The Recipient's city. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-25.
+          minLength: 1
+          maxLength: 25
+          example: O'Fallon
+        country:
+          type: string
+          description: >-
+            The Recipient's country as a 3-character ISO 3166-1 uppercase
+            alpha-3 country code; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        postalCode:
+          type: string
+          description: The Recipient's ZIP Code or postal code.
+          minLength: 1
+          maxLength: 10
+          example: '23233'
+        state:
+          type: string
+          description: >-
+            The Recipient's state or province, specified as an ISO 3166-2
+            uppercase alpha 2 or 3 character country subdivision code; see
+            [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, Missouri is MO. Conditional, required if Recipient's
+            `country` is USA or CAN.
+          minLength: 2
+          maxLength: 3
+          example: MO
+        street:
+          type: string
+          description: >-
+            The Recipient's street address (first line of address). Alphanumeric
+            Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-50.
+          minLength: 1
+          maxLength: 50
+          example: 2200 Mastercard Blvd
+      title: recipientAddress
+    transferAcceptorAddress:
+      type: object
+      description: This object contains the address details.
+      required:
+        - street
+        - country
+        - city
+        - postalCode
+      properties:
+        city:
+          type: string
+          description: >-
+            The transfer acceptor's city. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-25.
+          minLength: 1
+          maxLength: 25
+          example: O'Fallon
+        country:
+          type: string
+          description: >-
+            The transfer acceptor's country as a 3-character ISO 3166-1
+            uppercase alpha-3 country code; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        postalCode:
+          type: string
+          description: The transfer acceptor's ZIP Code or postal code.
+          minLength: 1
+          maxLength: 10
+          example: '23233'
+        state:
+          type: string
+          description: >-
+            The transfer acceptor's state or province, specified as an ISO
+            3166-2 uppercase alpha 2 or 3 character country subdivision code;
+            see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, Missouri is MO. Conditional, required if transfer
+            acceptor's `country` is USA or CAN.
+          minLength: 2
+          maxLength: 3
+          example: MO
+        street:
+          type: string
+          description: >-
+            The transfer acceptor's street address (first line of address).
+            Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-50.
+          minLength: 1
+          maxLength: 50
+          example: 2200 Mastercard Blvd
+      title: transferAcceptorAddress
+    crossNetwork:
+      type: object
+      description: >-
+        This object contains data required for cross-network programs. Contact
+        your Mastercard representative for assistance.
+      properties:
+        walletProviderSignature:
+          type: string
+          description: >-
+            The partner's wallet provider signature if there is cross-network
+            activity.
+          minLength: 1
+          maxLength: 2058
+          example: >-
+            eyJraWQiOiIyM2JjYmU2NGM0YWZiZWIwNDc3MTg3YmQxNTA4MTcwODNlMjY4MGRiYzhiOTVlZmRkZTlhN2M1MTU0YjE3NjRmIiwiYWxnIjoiUlMyNTYifQ.eyJwYXJ0bmVySWQiOiJwdG5yXzFsenMwekQ2NXJvN2stT2RVWGpMV19wRmdYNCIsInBheW1lbnRSZWZlcmVuY2UiOiJyZWZfMTIzNDU2ZGQ3OTEwIiwiYW1vdW50IjoiMTAwMCIsInJlY2lwaWVudEFjY291bnRVcmkiOiJwYW46NTQzMjEyMzQ1Njc4OTAxMjtleHA9MjA5OS0xOSJ9.XO0WEr_Cwb4lYSWui6zYXms6djaQ5fSDMa1D92tHMpM5SytexZzCO9zNVxRYBKDrHsmZoMx9sAShucSaRupT4Ns7KxCykoH-bhwQW7HeoMQbF4kDbRbgAgrajYD3m7_uMWoI4EG51ugcq7UfhQCObig6GEiSGQ6eiavyzdzKQWN-gt4_iPWur9TITX2NJpDQwde2HOB3pgpuC55coWZnmQNePceLDVfj85_ukkrGA4pbXze0pnOgshshQS9Xe6_dk4BmTDH2MNcRf67odqXmnRGIplumA81oBiCWyaDIc6cqUlIOoMVZKWvZCvynTtAloNb18vV2OetBE2a5Mfhkbg
+        recipientPreferredLanguage:
+          type: string
+          description: >-
+            The language preferred by the Recipient. If no value is provided,
+            'en' will be used by default in processing. All values will be
+            accepted if two characters in length.
+          minLength: 2
+          maxLength: 2
+          example: en
+        securityQuestion:
+          type: string
+          description: >-
+            An optional question that can be used to ensure the identity of the
+            Recipient.
+          minLength: 1
+          maxLength: 40
+          example: 'Where was your first full time job?'
+        securityAnswer:
+          type: string
+          description: >-
+            The expected answer to the question provided in the
+            `securityQuestion` field. Provide the value in plain text; it will
+            be hashed before transmission to the network.
+          minLength: 1
+          maxLength: 64
+          example: O'Fallon
+      title: crossNetwork
+    dualMessage:
+      type: object
+      description: >-
+        This object contains details for Dual Message acquiring. At least one of
+        the `dualMessage` or `singleMessage` objects must be provided.
+      properties:
+        acquiringBin:
+          type: string
+          description: >-
+            The Bank Identification Number (BIN) under which the Acquiring
+            member is registered with Mastercard. This field is required if
+            `acquiringReferenceId` is not provided.
+          minLength: 6
+          maxLength: 6
+          example: '512340'
+        acquirerReferenceId:
+          type: string
+          description: >-
+            The Acquirer Reference ID under which the Acquiring member is
+            registered with Mastercard. This field is required if `acquiringBin`
+            is not provided.
+          minLength: 6
+          maxLength: 6
+          example: '512340'
+      title: dualMessage
+    recipientAuthentication:
+      type: object
+      description: >-
+        This object contains the authentication data relating to the Recipient's
+        account.
+      properties:
+        authenticationValue:
+          type: string
+          description: >-
+            Universal Cardholder Authentication Field (UCAF) is a cryptographic
+            value. Mastercard® SecureCode™ issuer or cardholder-generated
+            authentication data resulting from all SecureCode fully
+            authenticated or attempts transaction for Mastercard account. This
+            field is populated when a UCAF-enabled merchant has collected
+            authentication data and must pass it in the transaction to the
+            issuer.
+          minLength: 1
+          maxLength: 32
+          example: 'kBAYYgZVLBwEl08klDyU79WE6XqM'
+      title: recipientAuthentication
+    recipientTokenCryptogram:
+      type: object
+      description: >-
+        This object contains the Token Cryptogram fields that relate to a
+        Recipient token. If you provide a tokenized PAN (token) for the
+        Recipient Account URI, you may optionally provide the associated
+        cryptogram information using these fields. See [Token
+        Cryptogram](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/token-cryptogram/).
+      properties:
+        cryptoType:
+          type: string
+          description: |-
+            Identifies the type of cryptogram. This field is required if
+            `cryptoValue` is provided. Valid values:
+
+            * CONTACTLESS_CHIP = The cryptogram in `cryptoValue` is the result
+            of a contactless tap and chip information is read by the terminal.
+
+            * CONTACTLESS_MAGSTRIPE = The cryptogram in `cryptoValue` is the
+            result of a contactless tap and the magstripe information is read
+            by the terminal and the full track data is included without
+            alteration or truncation.
+
+            * DSRP_DPD = The cryptogram in `cryptoValue` is used to transport
+            the digital payment data for electronic commerce (ecommerce)
+            transactions.
+          example: CONTACTLESS_CHIP
+        cryptoValue:
+          type: string
+          description: >-
+            Contains formatted chip/cryptogram data relating to the token
+            cryptogram. Format and length depends on the `cryptoType`:
+
+            * CONTACTLESS_CHIP = Hexadecimal [A-F0-9], length 2-510 characters
+
+            * CONTACTLESS_MAGSTRIPE = Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            maximum length 37 characters
+
+            * DSRP_DPD = Base64 [A-Za-z0-9+/=?:], maximum length 28 characters
+          minLength: 1
+          maxLength: 510
+          example: 'jjoutwsdgfdou124354ljlsdhgout968957'
+        panSequenceNumber:
+          type: string
+          description: >-
+            The PAN Sequence Number identifies and differentiates cards with the
+            same PAN. Processors with chip-reading capability may pass this
+            information for Contactless Chip and Contactless Magstripe
+            transactions. This field may be present when `cryptoType` is
+            CONTACTLESS_CHIP, CONTACTLESS_MAGSTRIPE, or DSRP_DPD. Numeric [0-9],
+            length 3.
+          minLength: 3
+          maxLength: 3
+          example: '002'
+      title: recipientTokenCryptogram
+    paymentSearchItem:
+      type: object
+      description: Provides a response to the search query.
+      properties:
+        paymentReference:
+          type: string
+          description: >-
+            The partner-assigned unique reference ID for the transaction.
+            Alphanumeric and * , - . _ ~. Length 6-40.
+          minLength: 6
+          maxLength: 40
+          example: pay_000001328
+        paymentId:
+          type: string
+          description: >-
+            The system-generated unique ID assigned to the transaction by
+            Mastercard.
+          example: pid_1248596
+        merchantCategoryCode:
+          type: string
+          description: >-
+            The merchant category code (MCC) classification for the merchant's
+            type of business or service. The MCC used to process the
+            transaction.
+          minLength: 4
+          maxLength: 4
+          example: '6536'
+        transactionStatus:
+          type: string
+          description: >-
+            The status of the transaction, which can be one of the following:
+
+            * APPROVED = Transaction approved
+
+            * DECLINED = Transaction declined
+
+            * ERROR = There are validation errors on the API request
+
+            * PENDING = The transaction does not currently have a status due to
+            an issue processing the transaction, such as a network communication
+            issue; see [Transaction Responses with a 'PENDING'
+            Status](https://developer.mastercard.com/mastercard-send-2-0/documentation/response-error-codes/pending-response/)
+          example: APPROVED
+        transactionStatusReason:
+          type: string
+          description: Network status description for the transaction.
+          example: APPROVED
+        originalTransactionStatus:
+          type: string
+          description: >-
+            The previous status of the transaction, which can be one of the
+            following:
+
+            * APPROVED = Transaction approved
+
+            * DECLINED = Transaction declined
+
+            * ERROR = There are validation errors on the API request
+
+            * PENDING = The transaction does not currently have a status due to
+            an issue processing the transaction, such as a network communication
+            issue; see [Transaction Responses with a 'PENDING'
+            Status](https://developer.mastercard.com/mastercard-send-2-0/documentation/response-error-codes/pending-response/)
+          example: APPROVED
+        transmissionDateTime:
+          type: string
+          format: ISO 8601 DATE
+          description: >-
+            The date and time the transaction was processed, as an ISO 8601
+            timestamp (YYYY-MM-DDThh:mm:ssZ).
+          example: '2021-06-17T18:05:02Z'
+        networkResponseCode:
+          type: string
+          description: >-
+            The network status code, which relates to the `transactionStatus`
+            value, for example 00 (Approved or completed successfully), 54
+            (Expired card).
+          example: '00'
+        networkResponseDescription:
+          type: string
+          description: >-
+            The description of the network status code provided in the
+            `networkResponseCode` field.
+          example: Approved or completed successfully
+        switchSerialNumber:
+          type: string
+          description: >-
+            A unique transaction identification number (switch serial number)
+            generated or assigned by the Single Message System.
+          maxLength: 9
+          example: '157105207'
+        systemTraceAuditNumber:
+          type: string
+          description: >-
+            A unique 6-digit system trace audit number (STAN) for the
+            transaction.
+          minLength: 6
+          maxLength: 6
+          example: '123456'
+        retrievalRequestNumber:
+          type: string
+          description: >-
+            A unique reference number that identifies the transaction at the
+            network.
+          maxLength: 24
+          example: '123456'
+        authorizationCode:
+          type: string
+          description: >-
+            A transaction response ID code assigned by the authorizing
+            institution.
+          maxLength: 6
+          example: E75A5E
+        electronicCommerceIndicators:
+          type: string
+          description: >-
+            The electronic commerce indicator indicates the level of security
+            for all e-commerce transactions. This field will be present in the
+            response when `authenticationValue`, `dsTransactionId` or a token is
+            present in the request and the transaction is approved.
+          minLength: 3
+          maxLength: 3
+          example: '212'
+        messageTypeIndicator:
+          description: >-
+            The 4-digit numeric Message Type Indicator identifying the type of
+            ISO 8583 network message.
+          type: string
+          minLength: 4
+          maxLength: 4
+          example: '0100'
+        interchangeRateDesignator:
+          type: string
+          description: >-
+            The Interchange Rate Designator (IRD) used to process the
+            transaction. Present only when Dual Message processing was used.
+          minLength: 2
+          maxLength: 2
+          example: QR
+        processingCode:
+          description: |-
+            Describes the specific transaction being performed. Valid values:
+            * 00 = Funding
+            * 28 = Payment
+            * 20 = Refund Correction
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: '28'
+        fundsAvailability:
+          type: string
+          description: >-
+            An estimate of when the funds might be available. Actual Deposit
+            Availability is determined by the financial institution. Valid
+            values:
+
+            * IMMEDIATE
+
+            * SAME_DAY
+
+            * NEXT_CALENDAR_DAY
+
+            * NEXT_BUSINESS_DAY
+
+            * TWO_TO_FIVE_BUSINESS_DAYS
+
+            * UNKNOWN
+          minLength: 7
+          maxLength: 25
+          example: IMMEDIATE
+        tokenRequestorId:
+          type: string
+          description: >-
+            The ID assigned by the Token Service Provider to the Token
+            Requestor.
+          maxLength: 11
+          example: '98760123456'
+        uniqueTransactionReference:
+          type: string
+          description: >-
+            The 19-digit Unique Transaction Reference number that was provided
+            by the partner or generated by Mastercard Send when the transaction
+            was created. This reference number helps link the funding, payment
+            and refund transactions relating to a particular funds transfer
+            request.
+
+            ### Partner Provided
+
+            If the reference number was provided by the partner, it has the
+            following format:
+
+            * Leading zero (0), e.g. 0
+
+            * ICA (n-6), e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 2-digit Transaction Sequence Number (01-99) (n-2), e.g. 01
+
+            #### Example
+
+            0555555128315305401
+
+            ### Mastercard Send Generated
+
+            If the reference number was generated by Mastercard Send because it
+            was not provided by the partner, it has the following format:
+
+            * ICA (n-6), which is the Acquiring ICA from the API request or the
+            partner's onboarding configuration, e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 3-digit Transaction Sequence Number (001-999) (n-3), e.g. 001
+
+            #### Example
+
+            5555551283153054001
+          maxLength: 19
+          example: '0555555128315305401'
+        settlementAmount:
+          type: string
+          description: >-
+            The amount of funds, in the currency identified by the
+            `settlementCurrency` field, to be transferred between the acquirer
+            and the issuer. This should be equal to the transaction amount (in
+            the Payments API request) in the currency of settlement. Numeric
+            integer, 1-999999999999. The decimal point is implied based on the
+            relevant currency exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, a US Dollar $60 transaction will be a value of 6000.
+          minLength: 1
+          maxLength: 12
+          example: '6000'
+        settlementCurrency:
+          type: string
+          format: ISO Alpha CURRENCY
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the settlement amount in the `settlementAmount` field. See [Country
+            and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for U.S. Dollars, the value is USD.
+          minLength: 3
+          maxLength: 3
+          example: USD
+        paymentAccountReference:
+          type: string
+          description: >-
+            The Payment Account Reference (PAR) is a unique value associated
+            with a single PAN and attributed to all tokens associated with that
+            PAN. A PAR can be used to link transactions containing PANs or
+            tokens associated with the same underlying payment account.
+          minLength: 1
+          maxLength: 29
+          example: 1234BE0F9E2464BE28FADBE009AB4
+        transactionLocalDateTime:
+          type: string
+          format: ISO 8601 DATE
+          description: >-
+            The local date and time of the transaction, in ISO 8601 format
+            YYYY-MM-DDThh:mm:ss.
+          example: '2021-06-17T18:05:02'
+        pointOfServiceInteraction:
+          type: string
+          description: >-
+            The Point of Service interaction with the Sender's account when the
+            funds transfer was initiated. Valid values:
+
+            * MAGSTRIPE
+
+            * CONTACT_CHIP
+
+            * CONTACTLESS_CHIP
+
+            * CONTACTLESS_MAGSTRIPE
+
+            * MANUAL_ENTRY
+
+            * CARD_ON_FILE
+          minLength: 9
+          maxLength: 21
+          example: MAGSTRIPE
+        paymentType:
+          type: string
+          description: >-
+            The appropriate payment type for the funds transfer taking place.
+            Valid values:
+
+            * A2A = General Transfer to Own Account
+
+            * ACO = Agent Cash Out
+
+            * AMS = Rapid Merchant Settlement
+
+            * B2B = General Business-to-Business Transfer
+
+            * BDB = Business Disbursement
+
+            * C2C = Cash to Card
+
+            * CBP = Payment of Own Credit Card Bill
+
+            * GDB = Government/Non-Profit Disbursement
+
+            * GMR = Gaming Repay
+
+            * MRF = Merchant Refund
+
+            * P2M = Merchant Payment
+
+            * P2P = General Person-to-Person Transfer
+          minLength: 3
+          maxLength: 3
+          example: P2P
+        transferAcceptor:
+          $ref: '#/components/schemas/transferAcceptor'
+        acquiringCredentials:
+          $ref: '#/components/schemas/acquiringCredentials'
+        sender:
+          $ref: '#/components/schemas/searchItemSender'
+        recipient:
+          $ref: '#/components/schemas/searchItemRecipient'
+        fundingSource:
+          type: string
+          description: |-
+            The funding source for the transaction. Valid numeric values:
+            * 01 = CREDIT
+            * 02 = DEBIT
+            * 03 = PREPAID
+            * 04 = DEPOSIT_ACCOUNT
+            * 05 = MOBILE_MONEY_ACCOUNT
+            * 06 = CASH
+            * 07 = OTHER
+          minLength: 2
+          maxLength: 2
+          example: '05'
+        amount:
+          type: string
+          description: >-
+            The transaction amount, in the currency identified by the `currency`
+            field. Numeric integer, 1-999999999999. The decimal point is implied
+            based on the relevant currency exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, a US Dollar $60 transaction will be a value of 6000.
+          minLength: 1
+          maxLength: 12
+          example: '6000'
+        currency:
+          type: string
+          format: ISO Alpha CURRENCY
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the transaction amount in the `amount` field. See [Country and
+            Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for U.S. Dollars, the value is USD.
+          minLength: 3
+          maxLength: 3
+          example: USD
+        additionalMessage:
+          type: string
+          description: >-
+            Message a financial institution will associate to the transfer and
+            may display.
+          minLength: 0
+          maxLength: 65
+          example: Adding additional message
+        qrData:
+          type: string
+          description: The Mastercard QR data for P2M payments.
+          minLength: 0
+          maxLength: 237
+          example: '12'
+        participationId:
+          type: string
+          description: >-
+            The participation ID of the Sender. The Receiving Institution will
+            associate the value to the transfer.
+          minLength: 0
+          maxLength: 30
+          example: '1234567890'
+        transactionPurpose:
+          type: string
+          description: |-
+            The purpose of the transaction. Valid numeric values:
+            * 00 = Family Support
+            * 01 = Regular Labor Transfers (expatriates)
+            * 02 = Travel & Tourism
+            * 03 = Education
+            * 04 = Hospitalization and Medical Treatment
+            * 05 = Emergency Need
+            * 06 = Savings
+            * 07 = Gifts
+            * 08 = Other
+            * 09 = Salary
+            * 10 = Crowd lending
+            * 11 = Crypto currency
+            * 12 = Refund to original card
+            * 13 = Refund to new card
+            * 14 = Reserved (DO NOT USE)
+            * 15 = Reserved (DO NOT USE)
+          minLength: 2
+          maxLength: 2
+          example: '07'
+        deviceType:
+          type: string
+          description: |-
+            The initiation channel of the funds transfer request. Valid values:
+            * WEB
+            * MOBILE
+            * BANK
+            * KIOSK
+          example: WEB
+        additionalProgramData:
+          $ref: '#/components/schemas/additionalProgramData'
+      title: paymentSearchItem
+    paymentCreateData:
+      type: object
+      required:
+        - paymentReference
+        - transactionLocalDateTime
+        - paymentType
+        - currency
+        - acquiringCredentials
+        - amount
+        - sender
+        - recipient
+        - transferAcceptor
+        - fundingSource
+      properties:
+        paymentReference:
+          type: string
+          description: >-
+            The partner-assigned unique reference ID for the transaction. This
+            value must be unique for each API request to create a transaction.
+            This value is not passed to the Mastercard Core network.
+            Alphanumeric and * , - . _ ~. Length 6-40.
+          minLength: 6
+          maxLength: 40
+          example: pay_000001328
+        amount:
+          type: string
+          description: >-
+            The transaction amount, in the currency identified by the `currency`
+            field. Numeric integer, 1-999999999999. The decimal point is implied
+            based on the relevant currency exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, a US Dollar $60 transaction will be a value of 6000.
+          minLength: 1
+          maxLength: 12
+          example: '6000'
+        interchangeRateDesignator:
+          type: string
+          description: >-
+            The Interchange Rate Designator (IRD) indicating the interchange
+            rate and editing rules to apply to the transaction for Dual Message
+            processing. Optional, alphanumeric, 2 characters. If it is required
+            but not provided, the IRD will be determined. If it is provided, the
+            merchant category code (`merchantCategoryCode`) is also required.
+          minLength: 2
+          maxLength: 2
+          example: QR
+        currency:
+          type: string
+          format: ISO Alpha CURRENCY
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the transaction amount in the `amount` field. See [Country and
+            Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for U.S. Dollars, the value is USD.
+          minLength: 3
+          maxLength: 3
+          example: USD
+        acquiringCredentials:
+          $ref: '#/components/schemas/acquiringCredentials'
+        additionalMessage:
+          type: string
+          description: >-
+            Message a financial institution will associate to the transfer and
+            may display.
+          example: Adding additional message
+          minLength: 0
+          maxLength: 65
+        additionalProgramData:
+          $ref: '#/components/schemas/additionalProgramData'
+        deviceType:
+          type: string
+          description: >-
+            This field will be deprecated; use `pointOfServiceInteraction`
+            instead. The initiation channel of the funds transfer request. This
+            value can be defined in the onboarding process instead of passing it
+            in every Payments API request. Valid values:
+
+            * WEB
+
+            * MOBILE
+
+            * BANK
+
+            * KIOSK
+          example: WEB
+        fundingSource:
+          type: string
+          description: |-
+            The funding source for the transaction. Valid numeric values:
+            * 01 = CREDIT
+            * 02 = DEBIT
+            * 03 = PREPAID
+            * 04 = DEPOSIT_ACCOUNT
+            * 05 = MOBILE_MONEY_ACCOUNT
+            * 06 = CASH
+            * 07 = OTHER
+          minLength: 2
+          maxLength: 2
+          example: '05'
+        merchantCategoryCode:
+          type: string
+          description: >-
+            The merchant category code (MCC) classification for the merchant's
+            type of business or service. Numeric, 4 digits. If provided, this
+            MCC should match one of the valid codes set by the Mastercard or
+            Visa rules. Use 6536 for P2P transactions. An MCC value is required
+            when the payment type is P2M or MRF and/or when an Interchange Rate
+            Designator (`interchangeRateDesignator`) value is provided. The MCC
+            that is used to process the transaction depends on the MCC supported
+            by the receiving financial institution.
+          minLength: 4
+          maxLength: 4
+          example: '6536'
+        participationId:
+          type: string
+          description: >-
+            The participation ID of the Sender. The Receiving Institution will
+            associate the value to the transfer.
+          minLength: 0
+          maxLength: 30
+          example: '1234567890'
+        paymentType:
+          type: string
+          description: >-
+            The appropriate payment type for the funds transfer taking place.
+            Valid values:
+
+            * A2A = General Transfer to Own Account
+
+            * ACO = Agent Cash Out
+
+            * AMS = Rapid Merchant Settlement
+
+            * B2B = General Business-to-Business Transfer
+
+            * BDB = Business Disbursement
+
+            * C2C = Cash to Card
+
+            * CBP = Payment of Own Credit Card Bill
+
+            * GDB = Government/Non-Profit Disbursement
+
+            * GMR = Gaming Repay
+
+            * MRF = Merchant Refund
+
+            * P2M = Merchant Payment
+
+            * P2P = General Person-to-Person Transfer
+          minLength: 3
+          maxLength: 3
+          example: P2P
+        qrData:
+          type: string
+          description: The Mastercard QR data for P2M payments.
+          minLength: 0
+          maxLength: 237
+          example: '12'
+        transferAcceptor:
+          $ref: '#/components/schemas/transferAcceptor'
+        recipient:
+          $ref: '#/components/schemas/recipient'
+        sender:
+          $ref: '#/components/schemas/sender'
+        transactionLocalDateTime:
+          type: string
+          format: ISO 8601 DATE
+          description: >-
+            The local date and time of the transaction, in ISO 8601 format
+            YYYY-MM-DDThh:mm:ss.
+          example: '2021-06-17T18:05:02'
+        pointOfServiceInteraction:
+          type: string
+          description: >-
+            The Point of Service interaction with the Sender's account when the
+            funds transfer was initiated. Valid values:
+
+            * MAGSTRIPE
+
+            * CONTACT_CHIP
+
+            * CONTACTLESS_CHIP
+
+            * CONTACTLESS_MAGSTRIPE
+
+            * MANUAL_ENTRY
+
+            * CARD_ON_FILE
+          minLength: 9
+          maxLength: 21
+          example: MAGSTRIPE
+        transactionPurpose:
+          type: string
+          description: |-
+            The purpose of the transaction. Valid numeric values:
+            * 00 = Family Support
+            * 01 = Regular Labor Transfers (expatriates)
+            * 02 = Travel & Tourism
+            * 03 = Education
+            * 04 = Hospitalization and Medical Treatment
+            * 05 = Emergency Need
+            * 06 = Savings
+            * 07 = Gifts
+            * 08 = Other
+            * 09 = Salary
+            * 10 = Crowd lending
+            * 11 = Crypto currency
+            * 12 = Refund to original card
+            * 13 = Refund to new card
+            * 14 = Reserved (DO NOT USE)
+            * 15 = Reserved (DO NOT USE)
+          minLength: 2
+          maxLength: 2
+          example: '07'
+        uniqueTransactionReference:
+          type: string
+          description: >-
+            A 19-digit Unique Transaction Reference number that helps link the
+            funding, payment and refund transactions relating to a particular
+            funds transfer request. The reference number can be provided by the
+            partner or generated by Mastercard Send.
+
+            ### Partner Provided
+
+            Provide the Unique Reference Number that was used in the funding
+            transaction, or use the following format:
+
+            * Leading zero (0), e.g. 0
+
+            * ICA (n-6), e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 2-digit Transaction Sequence Number (01-99) (n-2), e.g. 01
+
+            #### Example
+
+            0555555128315305401
+
+            ### Mastercard Send Generated
+
+            If you do not pass a Unique Reference Number in the Payments API
+            request, Mastercard Send will generate one in the following format:
+
+            * ICA (n-6), which is the Acquiring ICA from the API request or the
+            partner's onboarding configuration, e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 3-digit Transaction Sequence Number (001-999) (n-3), e.g. 001
+
+            #### Example
+
+            5555551283153054001
+          maxLength: 19
+          example: '0555555128315305401'
+      title: paymentCreateData
+    paymentDetails:
+      type: object
+      properties:
+        authorizationCode:
+          type: string
+          description: >-
+            A transaction response ID code assigned by the authorizing
+            institution.
+          maxLength: 6
+          example: E75A5E
+        electronicCommerceIndicators:
+          type: string
+          description: >-
+            The electronic commerce indicator indicates the level of security
+            for all e-commerce transactions. This field will be present in the
+            response when `authenticationValue`, `dsTransactionId` or a token is
+            present in the request and the transaction is approved.
+          minLength: 3
+          maxLength: 3
+          example: '212'
+        fundsAvailability:
+          type: string
+          description: >-
+            An estimate of when the funds might be available. Actual Deposit
+            Availability is determined by the financial institution. Valid
+            values:
+
+            * IMMEDIATE
+
+            * SAME_DAY
+
+            * NEXT_CALENDAR_DAY
+
+            * NEXT_BUSINESS_DAY
+
+            * TWO_TO_FIVE_BUSINESS_DAYS
+
+            * UNKNOWN
+          minLength: 7
+          maxLength: 25
+          example: IMMEDIATE
+        messageTypeIndicator:
+          description: >-
+            The 4-digit numeric Message Type Indicator identifying the type of
+            ISO 8583 network message.
+          type: string
+          minLength: 4
+          maxLength: 4
+          example: '0100'
+        interchangeRateDesignator:
+          type: string
+          description: >-
+            The Interchange Rate Designator (IRD) used to process the
+            transaction. Present only when Dual Message processing was used and
+            the IRD used is different from the one received in the Payments API
+            request.
+          minLength: 2
+          maxLength: 2
+          example: QR
+        merchantCategoryCode:
+          type: string
+          description: >-
+            The merchant category code (MCC) classification for the merchant's
+            type of business or service. The MCC used to process the
+            transaction.
+          minLength: 4
+          maxLength: 4
+          example: '6536'
+        networkResponseCode:
+          type: string
+          description: >-
+            The network status code, which relates to the `transactionStatus`
+            value, for example 00 (Approved or completed successfully), 54
+            (Expired card).
+          example: '00'
+        networkResponseDescription:
+          type: string
+          description: >-
+            The description of the network status code provided in the
+            `networkResponseCode` field.
+          example: Approved or completed successfully
+        paymentAccountReference:
+          type: string
+          description: >-
+            The Payment Account Reference (PAR) is a unique value associated
+            with a single PAN and attributed to all tokens associated with that
+            PAN. A PAR can be used to link transactions containing PANs or
+            tokens associated with the same underlying payment account.
+          minLength: 1
+          maxLength: 29
+          example: 1234BE0F9E2464BE28FADBE009AB4
+        paymentReference:
+          type: string
+          description: >-
+            The partner-assigned unique reference ID for the transaction.
+            Alphanumeric and * , - . _ ~. Length 6-40.
+          minLength: 6
+          maxLength: 40
+          example: pay_000001328
+        processingCode:
+          description: |-
+            Describes the specific transaction being performed. Valid values:
+            * 00 = Funding
+            * 28 = Payment
+            * 20 = Refund Correction
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: '28'
+        retrievalRequestNumber:
+          type: string
+          description: >-
+            A unique reference number that identifies the transaction at the
+            network.
+          maxLength: 24
+          example: '123456'
+        paymentId:
+          type: string
+          description: >-
+            The system-generated unique ID assigned to the transaction by
+            Mastercard.
+          example: pid_1248596
+        settlementAmount:
+          type: string
+          description: >-
+            The amount of funds, in the currency identified by the
+            `settlementCurrency` field, to be transferred between the acquirer
+            and the issuer. This should be equal to the transaction amount (in
+            the Payments API request) in the currency of settlement. Numeric
+            integer, 1-999999999999. The decimal point is implied based on the
+            relevant currency exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, a US Dollar $60 transaction will be a value of 6000.
+          minLength: 1
+          maxLength: 12
+          example: '6000'
+        settlementCurrency:
+          type: string
+          format: ISO Alpha CURRENCY
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the settlement amount in the `settlementAmount` field. See [Country
+            and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for U.S. Dollars, the value is USD.
+          minLength: 3
+          maxLength: 3
+          example: USD
+        switchSerialNumber:
+          type: string
+          description: >-
+            A unique transaction identification number (switch serial number)
+            generated or assigned by the Single Message System.
+          maxLength: 9
+          example: '157105207'
+        systemTraceAuditNumber:
+          type: string
+          description: >-
+            A unique 6-digit system trace audit number (STAN) for the
+            transaction.
+          minLength: 6
+          maxLength: 6
+          example: '123456'
+        tokenRequestorId:
+          type: string
+          description: >-
+            The ID assigned by the Token Service Provider to the Token
+            Requestor.
+          maxLength: 11
+          example: '98765123456'
+        transactionStatus:
+          type: string
+          description: >-
+            The status of the transaction, which can be one of the following:
+
+            * APPROVED = Transaction approved
+
+            * DECLINED = Transaction declined
+
+            * ERROR = There are validation errors on the API request
+
+            * PENDING = The transaction does not currently have a status due to
+            an issue processing the transaction, such as a network communication
+            issue; see [Transaction Responses with a 'PENDING'
+            Status](https://developer.mastercard.com/mastercard-send-2-0/documentation/response-error-codes/pending-response/)
+          example: APPROVED
+        transactionStatusReason:
+          type: string
+          description: Network status description for the transaction.
+          example: APPROVED
+        transmissionDateTime:
+          type: string
+          format: ISO 8601 DATE
+          description: >-
+            The date and time the transaction was processed, as an ISO 8601
+            timestamp (YYYY-MM-DDThh:mm:ssZ).
+          example: '2021-06-17T18:05:02Z'
+        uniqueTransactionReference:
+          type: string
+          description: >-
+            The 19-digit Unique Transaction Reference number that was provided
+            by the partner or generated by Mastercard Send when the transaction
+            was created. This reference number helps link the funding, payment
+            and refund transactions relating to a particular funds transfer
+            request.
+
+            ### Partner Provided
+
+            If the reference number was provided by the partner, it has the
+            following format:
+
+            * Leading zero (0), e.g. 0
+
+            * ICA (n-6), e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 2-digit Transaction Sequence Number (01-99) (n-2), e.g. 01
+
+            #### Example
+
+            0555555128315305401
+
+            ### Mastercard Send Generated
+
+            If the reference number was generated by Mastercard Send because it
+            was not provided by the partner, it has the following format:
+
+            * ICA (n-6), which is the Acquiring ICA from the API request or the
+            partner's onboarding configuration, e.g. 555555
+
+            * Last digit of the year (n-1), e.g. 2021 = 1
+
+            * Julian day in the year (n-3), e.g. 10 October in non-leap year =
+            283rd day of the year = 283
+
+            * Time as hhmmss (n-6), e.g. 03:30:54 PM (15 hours, 30 minutes, 54
+            seconds) = 153054
+
+            * 3-digit Transaction Sequence Number (001-999) (n-3), e.g. 001
+
+            #### Example
+
+            5555551283153054001
+          maxLength: 19
+          example: '0555555128315305401'
+      title: paymentDetails
+    paymentSearchData:
+      type: object
+      description: >-
+        This object provides data for the search. Provide either `paymentId` or
+        `paymentReference`.
+      example:
+        paymentReference: 'pay_000001328'
+      properties:
+        paymentId:
+          type: string
+          description: >-
+            The system-generated unique ID assigned to the transaction by
+            Mastercard.
+          example: pid_1248596
+        paymentReference:
+          type: string
+          description: >-
+            The partner-assigned unique reference ID for the transaction.
+            Alphanumeric and * , - . _ ~. Length 6-40.
+          minLength: 6
+          maxLength: 40
+          example: pay_000001328
+      title: paymentSearchData
+    paymentSearchDetails:
+      type: object
+      properties:
+        payments:
+          $ref: '#/components/schemas/Payments'
+      title: paymentSearchDetails
+      description: Get payment by reference model
+    recipient:
+      type: object
+      description: This object provides the Recipient's details.
+      required:
+        - accountUri
+      properties:
+        accountUri:
+          type: string
+          required:
+            - schema
+            - account-number
+          description: >-
+            URI identifying the receiving account. URI scheme can be one of
+            these schemes (see also [Account
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/account-uris/)):
+
+            ### pan
+
+            A card PAN or token. The URI string starts with
+            `pan:{account-number};exp={expiry}`, where {account-number} is the
+            PAN or token (16-digits, e.g. 5117510000000007) and {expiry} is the
+            expiration date, in format YYYY-MM (e.g. 2050-10). The expiration
+            date is optional. The URI string can continue with any relevant
+            `{property}={value}` couplets, separated using a semi-colon (;).
+            Properties can include:
+
+            * cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+
+            #### Examples
+
+            * pan:5117510000000007;exp=2050-10;cvc=123
+
+            * pan:5117510000000007;cvc=123
+
+            
+
+            ### manual_entry_alias
+
+            A system-generated or user-specified alias identifying a merchant
+            account. The URI string format is
+            `manual_entry_alias:{account-number}`, where {account-number} is the
+            account alias (length 4-16 digits).
+
+            #### Example
+
+            manual_entry_alias:52998804
+
+            ### mappingId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `mappingId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            mappingId:mpng_5-lTK5Ge-gDli54oFgz-AN9SUwv
+
+            ### mappingReference
+
+            Unique reference provided by the partner when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `mappingReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            mappingReference:REF_20180115183830495
+
+            ### accountId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `accountId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            accountId:acct_45979cGe-gDli54oFgz-AN9SUwv
+
+            ### accountReference
+
+            Reference provided by the partner when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `accountReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            accountReference:AB123456
+
+            ### email
+
+            An email address provided by the partner when adding an account to
+            directory service. Provide this email to retrieve account details to
+            process payment transaction. The URI string format is
+            email:{email-address}, where {email-address} is the account alias
+            (maximum length 254).
+
+            #### Example
+
+            email:test123@abcmail.com
+
+            ### phone
+
+            A phone number provided by the partner when adding an account to
+            directory service. Provide this phone number to retrieve account
+            details to process payment transaction. The URI string format is
+            phone:{phone-number}, where {phone-number} is the account alias
+            (maximum length 15).
+
+            #### Example
+
+            phone:1234567890
+
+            ### Government ID
+
+            A data string that represents a supported Government ID number
+            provided when adding an account to directory service. Provide this
+            reference to retrieve account details to process payment
+            transaction. The Account URI field supports a single Government ID
+            string value formatted as defined for use in Government ID URI
+            field,
+            [here](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+
+            #### Example
+
+            dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+            Hampshire
+          example: 'pan:5117510000000007;exp=2050-02;cvc=123'
+        address:
+          $ref: '#/components/schemas/recipientAddress'
+        authentication:
+          $ref: '#/components/schemas/recipientAuthentication'
+        countryOfBirth:
+          type: string
+          description: >-
+            The 3-character ISO 3166-1 uppercase alpha-3 code for the country in
+            which the Recipient was born; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        dateOfBirth:
+          type: string
+          description: >-
+            The Recipient's date of birth in ISO 8601 full date format
+            (YYYY-MM-DD). For example, if the date is 27 March 1981, the value
+            is 1981-03-27.
+          minLength: 10
+          maxLength: 10
+          example: '1981-03-27'
+        dsTransactionId:
+          type: string
+          description: >-
+            The Directory Server Transaction ID is a Universally Unique
+            Transaction ID which can be provided as part of the authentication
+            transaction.
+          example: f38e6948-5388-41a6-bca4-b49723c19437
+        email:
+          type: string
+          description: >-
+            The Recipient's email address. Alphanumeric Special
+            [a-zA-Z0-9-@+.*$_], length 5-254.
+          minLength: 5
+          maxLength: 254
+          example: test123@abcmail.com
+        accountNumberType:
+          type: string
+          description: |-
+            The Recipient's account number type. Valid numeric values:
+            * 00 = Other
+            * 01 = RTN + Bank Account
+            * 02 = IBAN
+            * 03 = Card Account
+            * 04 = Email
+            * 05 = Phone Number
+            * 06 = Bank account number (BAN) + Bank Identification Сode (BIC)
+            * 07 = Wallet ID
+            * 08 = Social Network
+          minLength: 2
+          maxLength: 2
+          example: '02'
+        governmentIdUris:
+          type: array
+          description: >-
+            This array contains data strings that each identify a Government ID
+            number for the Recipient; see [Government ID
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+          required:
+            - schema
+            - id-number
+          items:
+            type: string
+            description: >-
+              The `governmentIdUris` field can contain an array of data strings,
+              which each identify a Government ID number for the Recipient.
+              Construct each data string using the following properties and
+              values. Start with `schema:id-number` and append subsequent
+              `property=value` couplets using a semi-colon (;) separator.
+
+              * schema = A 3-character alpha code identifying the type of
+              Government ID. Valid values:
+
+              <br>– ppn = Passport Number
+
+              <br>– ssn = Social Security Number
+
+              <br>– ein = Employer Identification Number
+
+              <br>– tin = Tax Identification Number
+
+              <br>– aln = Alien Registration Number
+
+              <br>– cus = Customer Number
+
+              <br>– idc = Identity Card Number
+
+              <br>– dln = Drivers License Number
+
+              <br>– nat = National ID
+
+              * id-number = The Government ID number/value. Can be 2–80
+              alpha-numeric characters, including special characters hyphen (-)
+              and forward slash (/), for example F/4611211-234.
+
+              <br>For a Social Security Number, the value should be 9 digits
+              only.
+
+              * expiration-date = The expiration date for the Government ID, in
+              ISO 8601 full date format (YYYY-MM-DD). For example, if the date
+              is 30 March 2050, the value is 2050-03-30.
+
+              <br>If the Government ID type expires in a particular month
+              (rather than on a specific day), populate the date as the first or
+              last day of that month (whichever is appropriate).
+
+              * issue-date = The issuing date for the Government ID, in ISO 8601
+              full date format (YYYY-MM-DD).For example, if the date is 31
+              January 2008, the value is 2008-01-31.
+
+              <br>The issuing date cannot be a future date. If the Government ID
+              type was issued in a particular month (rather than on a specific
+              day), populate the date as the first or last day of that month
+              (whichever is appropriate).
+
+              * issuing-country = The 3-character ISO 3166-1 alpha-3 country
+              code representing the country that issued the Government ID; see
+              [Country and Currency
+              Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+
+              * issuing-place = The name of the place (city, state or province)
+              that issued the Government ID, for example Montreal.
+            example: >-
+              dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+              Hampshire
+        name:
+          type: string
+          description: >-
+            The Recipient's full name, where the middle name is optional.
+            Recommended format: Last Name/Family Name + double space + First
+            Name + double space + Middle Name + double space. For example, for
+            John Michael Smith (where John is the first name, Michael is the
+            middle name, and Smith is the last name), the field value must be
+            represented as 'Smith  John  Michael  ' or 'Smith  John  '. When
+            sent to the Mastercard Network, the first name and last name will
+            each be trimmed to 35 characters and the middle name will be trimmed
+            to 1 character. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-120.
+          minLength: 1
+          maxLength: 120
+          example: 'Smith  John  Michael  '
+        nationality:
+          type: string
+          description: >-
+            The Recipient's nationality (the country in which they are a
+            citizen) as a 3-character ISO 3166-1 uppercase alpha-3 country code;
+            see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        phone:
+          type: string
+          description: >-
+            The Recipient's phone number including country code. Numeric, length
+            1-20.
+          minLength: 1
+          maxLength: 20
+          example: '1234567890'
+        tokenCryptogram:
+          $ref: '#/components/schemas/recipientTokenCryptogram'
+      title: recipient
+    searchItemRecipient:
+      type: object
+      description: This object provides the Recipient's details.
+      properties:
+        accountUri:
+          type: string
+          description: >-
+            URI identifying the receiving account. The value will be partially
+            masked in the Payments Searches POST response. URI scheme can be one
+            of these schemes (see also [Account
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/account-uris/)):
+
+            ### pan
+
+            A card PAN or token. The URI string starts with
+            `pan:{account-number};exp={expiry}`, where {account-number} is the
+            PAN or token (16-digits, e.g. 5117510000000007) and {expiry} is the
+            expiration date, in format YYYY-MM (e.g. 2050-10). The expiration
+            date is optional. The URI string can continue with any relevant
+            `{property}={value}` couplets, separated using a semi-colon (;).
+            Properties can include:
+
+            * cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+
+            #### Examples
+
+            * pan:5117510000000007;exp=2050-10;cvc=123
+
+            * pan:5117510000000007;cvc=123
+
+           
+            ### manual_entry_alias
+
+            A system-generated or user-specified alias identifying a merchant
+            account. The URI string format is
+            `manual_entry_alias:{account-number}`, where {account-number} is the
+            account alias (length 4-16 digits).
+
+            #### Example
+
+            manual_entry_alias:52998804
+
+            ### mappingId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `mappingId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            mappingId:mpng_5-lTK5Ge-gDli54oFgz-AN9SUwv
+
+            ### mappingReference
+
+            Unique reference provided by the partner when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `mappingReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            mappingReference:REF_20180115183830495
+
+            ### accountId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `accountId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            accountId:acct_45979cGe-gDli54oFgz-AN9SUwv
+
+            ### accountReference
+
+            Reference provided by the partner when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `accountReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            accountReference:AB123456
+
+            ### email
+
+            An email address provided by the partner when adding an account to
+            directory service. Provide this email to retrieve account details to
+            process payment transaction. The URI string format is
+            email:{email-address}, where {email-address} is the account alias
+            (maximum length 254).
+
+            #### Example
+
+            email:test123@abcmail.com
+
+            ### phone
+
+            A phone number provided by the partner when adding an account to
+            directory service. Provide this phone number to retrieve account
+            details to process payment transaction. The URI string format is
+            phone:{phone-number}, where {phone-number} is the account alias
+            (maximum length 15).
+
+            #### Example
+
+            phone:1234567890
+
+            ### Government ID
+
+            A data string that represents a supported Government ID number
+            provided when adding an account to directory service. Provide this
+            reference to retrieve account details to process payment
+            transaction. The Account URI field supports a single Government ID
+            string value formatted as defined for use in Government ID URI
+            field,
+            [here](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+
+            #### Example
+
+            dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+            Hampshire
+          example: 'pan:5117510000000007;exp=2050-02;cvc=123'
+        address:
+          $ref: '#/components/schemas/recipientAddress'
+        countryOfBirth:
+          type: string
+          description: >-
+            The 3-character ISO 3166-1 uppercase alpha-3 code for the country in
+            which the Recipient was born; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        dateOfBirth:
+          type: string
+          description: >-
+            The Recipient's date of birth in ISO 8601 full date format
+            (YYYY-MM-DD). For example, if the date is 27 March 1981, the value
+            is 1981-03-27.
+          minLength: 10
+          maxLength: 10
+          example: '1981-03-27'
+        email:
+          type: string
+          description: >-
+            The Recipient's email address. Alphanumeric Special
+            [a-zA-Z0-9-@+.*$_], length 5-254.
+          minLength: 5
+          maxLength: 254
+          example: test123@abcmail.com
+        accountNumberType:
+          type: string
+          description: |-
+            The Recipient's account number type. Valid numeric values:
+            * 00 = Other
+            * 01 = RTN + Bank Account
+            * 02 = IBAN
+            * 03 = Card Account
+            * 04 = Email
+            * 05 = Phone Number
+            * 06 = Bank account number (BAN) + Bank Identification Сode (BIC)
+            * 07 = Wallet ID
+            * 08 = Social Network
+          minLength: 2
+          maxLength: 2
+          example: '02'
+        governmentIdUris:
+          type: array
+          description: >-
+            This array contains data strings that each identify a Government ID
+            number for the Recipient; see [Government ID
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+            The values will be partially masked in the Payments Searches POST
+            response.
+          required:
+            - schema
+            - id-number
+          items:
+            type: string
+            description: >-
+              The `governmentIdUris` field can contain an array of data strings,
+              which each identify a Government ID number for the Recipient.
+              Construct each data string using the following properties and
+              values. Start with `schema:id-number` and append subsequent
+              `property=value` couplets using a semi-colon (;) separator.
+
+              * schema = A 3-character alpha code identifying the type of
+              Government ID. Valid values:
+
+              <br>– ppn = Passport Number
+
+              <br>– ssn = Social Security Number
+
+              <br>– ein = Employer Identification Number
+
+              <br>– tin = Tax Identification Number
+
+              <br>– aln = Alien Registration Number
+
+              <br>– cus = Customer Number
+
+              <br>– idc = Identity Card Number
+
+              <br>– dln = Drivers License Number
+
+              <br>– nat = National ID
+
+              * id-number = The Government ID number/value. Can be 2–80
+              alpha-numeric characters, including special characters hyphen (-)
+              and forward slash (/), for example F/4611211-234.
+
+              <br>For a Social Security Number, the value should be 9 digits
+              only.
+
+              * expiration-date = The expiration date for the Government ID, in
+              ISO 8601 full date format (YYYY-MM-DD). For example, if the date
+              is 30 March 2050, the value is 2050-03-30.
+
+              <br>If the Government ID type expires in a particular month
+              (rather than on a specific day), populate the date as the first or
+              last day of that month (whichever is appropriate).
+
+              * issue-date = The issuing date for the Government ID, in ISO 8601
+              full date format (YYYY-MM-DD).For example, if the date is 31
+              January 2008, the value is 2008-01-31.
+
+              <br>The issuing date cannot be a future date. If the Government ID
+              type was issued in a particular month (rather than on a specific
+              day), populate the date as the first or last day of that month
+              (whichever is appropriate).
+
+              * issuing-country = The 3-character ISO 3166-1 alpha-3 country
+              code representing the country that issued the Government ID; see
+              [Country and Currency
+              Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+
+              * issuing-place = The name of the place (city, state or province)
+              that issued the Government ID, for example Montreal.
+            example: >-
+              dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+              Hampshire
+        name:
+          type: string
+          description: >-
+            The Recipient's full name, where the middle name is optional.
+            Recommended format: Last Name/Family Name + double space + First
+            Name + double space + Middle Name + double space. For example, for
+            John Michael Smith (where John is the first name, Michael is the
+            middle name, and Smith is the last name), the field value must be
+            represented as 'Smith  John  Michael  ' or 'Smith  John  '. When
+            sent to the Mastercard Network, the first name and last name will
+            each be trimmed to 35 characters and the middle name will be trimmed
+            to 1 character. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-120.
+          minLength: 1
+          maxLength: 120
+          example: 'Smith  John  Michael  '
+        nationality:
+          type: string
+          description: >-
+            The Recipient's nationality (the country in which they are a
+            citizen) as a 3-character ISO 3166-1 uppercase alpha-3 country code;
+            see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        phone:
+          type: string
+          description: >-
+            The Recipient's phone number including country code. Numeric, length
+            1-20.
+          minLength: 1
+          maxLength: 20
+          example: '1234567890'
+      title: searchItemRecipient
+    sender:
+      type: object
+      description: This object provides the Sender's details.
+      required:
+        - name
+        - address
+        - accountUri
+      properties:
+        accountUri:
+          type: string
+          required:
+            - schema
+            - account-number
+          description: >-
+            URI identifying the sending account. URI scheme can be one of these
+            schemes (see also [Account
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/account-uris/)):
+
+            ### pan
+
+            A card PAN or token. The URI string starts with
+            `pan:{account-number};exp={expiry}`, where {account-number} is the
+            PAN or token (16-digits, e.g. 5117510000000007) and {expiry} is the
+            expiration date, in format YYYY-MM (e.g. 2050-10). The expiration
+            date is optional. The URI string can continue with any relevant
+            `{property}={value}` couplets, separated using a semi-colon (;).
+            Properties can include:
+
+            * cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+
+            #### Examples
+
+            * pan:5117510000000007;exp=2050-10;cvc=123
+
+            * pan:5117510000000007;cvc=123
+
+            ### raw
+
+            A deposit account or generic account number that is not a PAN. The
+            URI string format is `raw:{account-number}`, where {account-number}
+            is the alphanumeric account number (maximum length 50 characters).
+            When the payment type is P2M or MRF, the maximum length is 20
+            characters.
+
+            #### Example
+
+            raw:100029439012
+
+            ### mappingId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `mappingId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            mappingId:mpng_5-lTK5Ge-gDli54oFgz-AN9SUwv
+
+            ### mappingReference
+
+            Unique reference provided by the partner when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `mappingReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            mappingReference:REF_20180115183830495
+
+            ### accountId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `accountId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            accountId:acct_45979cGe-gDli54oFgz-AN9SUwv
+
+            ### accountReference
+
+            Reference provided by the partner when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `accountReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            accountReference:AB123456
+
+            ### email
+
+            An email address provided by the partner when adding an account to
+            directory service. Provide this email to retrieve account details to
+            process payment transaction. The URI string format is
+            email:{email-address}, where {email-address} is the account alias
+            (maximum length 254).
+
+            #### Example
+
+            email:test123@abcmail.com
+
+            ### phone
+
+            A phone number provided by the partner when adding an account to
+            directory service. Provide this phone number to retrieve account
+            details to process payment transaction. The URI string format is
+            phone:{phone-number}, where {phone-number} is the account alias
+            (maximum length 15).
+
+            #### Example
+
+            phone:1234567890
+
+            ### Government ID
+
+            A data string that represents a supported Government ID number
+            provided when adding an account to directory service. Provide this
+            reference to retrieve account details to process payment
+            transaction. The Account URI field supports a single Government ID
+            string value formatted as defined for use in Government ID URI
+            field,
+            [here](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+
+            #### Example
+
+            dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+            Hampshire
+          example: 'pan:5117510000000007;exp=2050-02;cvc=123'
+        address:
+          $ref: '#/components/schemas/senderAddress'
+        countryOfBirth:
+          type: string
+          description: >-
+            The 3-character ISO 3166-1 uppercase alpha-3 code for the country in
+            which the Sender was born; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        dateOfBirth:
+          type: string
+          description: >-
+            The Sender's date of birth in ISO 8601 full date format
+            (YYYY-MM-DD). For example, if the date is 27 March 1981, the value
+            is 1981-03-27.
+          minLength: 10
+          maxLength: 10
+          example: '1981-03-27'
+        digitalAccountReferenceNumber:
+          type: string
+          description: >-
+            URI to identify the digital account reference number. URI scheme
+            must be PAN. The expiration date is optional.
+
+            #### Examples
+
+            * pan:5102589999999905;exp=2050-02;cvc=123
+
+            * pan:5102589999999905
+          example: 'pan:5102589999999905;exp=2050-02;cvc=123'
+        email:
+          type: string
+          description: >-
+            The Sender's email address. Alphanumeric Special [a-zA-Z0-9-@+.*$_],
+            length 5-254.
+          minLength: 5
+          maxLength: 254
+          example: test123@abcmail.com
+        accountNumberType:
+          type: string
+          description: |-
+            The Sender's account number type. Valid numeric values:
+            * 00 = Other
+            * 01 = RTN + Bank Account
+            * 02 = IBAN
+            * 03 = Card Account
+            * 04 = Email
+            * 05 = Phone Number
+            * 06 = Bank account number (BAN) + Bank Identification Сode (BIC)
+            * 07 = Wallet ID
+            * 08 = Social Network
+          minLength: 2
+          maxLength: 2
+          example: '02'
+        governmentIdUris:
+          type: array
+          description: >-
+            This array contains data strings that each identify a Government ID
+            number for the Sender; see [Government ID
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+          required:
+            - schema
+            - id-number
+          items:
+            type: string
+            description: >-
+              The `governmentIdUris` field can contain an array of data strings,
+              which each identify a Government ID number for the Sender.
+              Construct each data string using the following properties and
+              values. Start with `schema:id-number` and append subsequent
+              `property=value` couplets using a semi-colon (;) separator.
+
+              * schema = A 3-character alpha code identifying the type of
+              Government ID. Valid values:
+
+              <br>– ppn = Passport Number
+
+              <br>– ssn = Social Security Number
+
+              <br>– ein = Employer Identification Number
+
+              <br>– tin = Tax Identification Number
+
+              <br>– aln = Alien Registration Number
+
+              <br>– cus = Customer Number
+
+              <br>– idc = Identity Card Number
+
+              <br>– dln = Drivers License Number
+
+              <br>– nat = National ID
+
+              * id-number = The Government ID number/value. Can be 2–80
+              alpha-numeric characters, including special characters hyphen (-)
+              and forward slash (/), for example F/4611211-234.
+
+              <br>For a Social Security Number, the value should be 9 digits
+              only.
+
+              * expiration-date = The expiration date for the Government ID, in
+              ISO 8601 full date format (YYYY-MM-DD). For example, if the date
+              is 30 March 2050, the value is 2050-03-30.
+
+              <br>If the Government ID type expires in a particular month
+              (rather than on a specific day), populate the date as the first or
+              last day of that month (whichever is appropriate).
+
+              * issue-date = The issuing date for the Government ID, in ISO 8601
+              full date format (YYYY-MM-DD).For example, if the date is 31
+              January 2008, the value is 2008-01-31.
+
+              <br>The issuing date cannot be a future date. If the Government ID
+              type was issued in a particular month (rather than on a specific
+              day), populate the date as the first or last day of that month
+              (whichever is appropriate).
+
+              * issuing-country = The 3-character ISO 3166-1 alpha-3 country
+              code representing the country that issued the Government ID; see
+              [Country and Currency
+              Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+
+              * issuing-place = The name of the place (city, state or province)
+              that issued the Government ID, for example Montreal.
+            example: >-
+              dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+              Hampshire
+        name:
+          type: string
+          description: >-
+            The Sender's full name, where the middle name is optional.
+            Recommended format: Last Name/Family Name + double space + First
+            Name + double space + Middle Name + double space. For example, for
+            John Michael Smith (where John is the first name, Michael is the
+            middle name, and Smith is the last name), the field value must be
+            represented as 'Smith  John  Michael  ' or 'Smith  John  '. When
+            sent to the Mastercard Network, the first name and last name will
+            each be trimmed to 35 characters and the middle name will be trimmed
+            to 1 character. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-120.
+          minLength: 1
+          maxLength: 120
+          example: 'Smith  John  Michael  '
+        nationality:
+          type: string
+          description: >-
+            The Sender's nationality (the country in which they are a citizen)
+            as a 3-character ISO 3166-1 uppercase alpha-3 country code; see
+            [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        phone:
+          type: string
+          description: >-
+            The Sender's phone number including country code. Numeric, length
+            1-20.
+          minLength: 1
+          maxLength: 20
+          example: '1234567890'
+      title: sender
+    searchItemSender:
+      type: object
+      description: This object provides the Sender's details.
+      properties:
+        accountUri:
+          type: string
+          description: >-
+            URI identifying the sending account. The value will be partially
+            masked in the Payments Searches POST response. URI scheme can be one
+            of these schemes (see also [Account
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/account-uris/)):
+            ### pan
+
+            A card PAN or token. The URI string starts with
+            `pan:{account-number};exp={expiry}`, where {account-number} is the
+            PAN or token (16-digits, e.g. 5117510000000007) and {expiry} is the
+            expiration date, in format YYYY-MM (e.g. 2050-10). The expiration
+            date is optional. The URI string can continue with any relevant
+            `{property}={value}` couplets, separated using a semi-colon (;).
+            Properties can include:
+
+            * cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+
+            #### Examples
+
+            * pan:5117510000000007;exp=2050-10;cvc=123
+
+            * pan:5117510000000007;cvc=123
+
+            ### raw
+
+            A deposit account or generic account number that is not a PAN. The
+            URI string format is `raw:{account-number}`, where {account-number}
+            is the alphanumeric account number (maximum length 50 characters).
+            When the payment type is P2M or MRF, the maximum length is 20
+            characters.
+
+            #### Example
+
+            raw:100029439012
+
+            ### mappingId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `mappingId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            mappingId:mpng_5-lTK5Ge-gDli54oFgz-AN9SUwv
+
+            ### mappingReference
+
+            Unique reference provided by the partner when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `mappingReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            mappingReference:REF_20180115183830495
+
+            ### accountId
+
+            Unique system-generated ID created when adding an account to
+            directory service. Provide this ID to retrieve account details to
+            process payment transaction. The URI string format is
+            `accountId:{account-number}`, where {account-number} is the account
+            alias (length 32).
+
+            #### Example
+
+            accountId:acct_45979cGe-gDli54oFgz-AN9SUwv
+
+            ### accountReference
+
+            Reference provided by the partner when adding an account to
+            directory service. Provide this reference to retrieve account
+            details to process payment transaction. The URI string format is
+            `accountReference:{account-number}`, where {account-number} is the
+            account alias (length 6-40).
+
+            #### Example
+
+            accountReference:AB123456
+
+            ### email
+
+            An email address provided by the partner when adding an account to
+            directory service. Provide this email to retrieve account details to
+            process payment transaction. The URI string format is
+            email:{email-address}, where {email-address} is the account alias
+            (maximum length 254).
+
+            #### Example
+
+            email:test123@abcmail.com
+
+            ### phone
+
+            A phone number provided by the partner when adding an account to
+            directory service. Provide this phone number to retrieve account
+            details to process payment transaction. The URI string format is
+            phone:{phone-number}, where {phone-number} is the account alias (max
+            length 15).
+
+            #### Example
+
+            phone:1234567890
+
+            ### Government ID
+
+            A data string that represents a supported Government ID number
+            provided when adding an account to directory service. Provide this
+            reference to retrieve account details to process payment
+            transaction. The Account URI field supports a single Government ID
+            string value formatted as defined for use in Government ID URI
+            field,
+            [here](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+
+            #### Example
+
+            dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+            Hampshire
+          example: 'pan:5117510000000007;exp=2050-02;cvc=123'
+        address:
+          $ref: '#/components/schemas/senderAddress'
+        countryOfBirth:
+          type: string
+          description: >-
+            The 3-character ISO 3166-1 uppercase alpha-3 code for the country in
+            which the Sender was born; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        dateOfBirth:
+          type: string
+          description: >-
+            The Sender's date of birth in ISO 8601 full date format
+            (YYYY-MM-DD). For example, if the date is 27 March 1981, the value
+            is 1981-03-27.
+          minLength: 10
+          maxLength: 10
+          example: '1981-03-27'
+        digitalAccountReferenceNumber:
+          type: string
+          description: >-
+            URI to identify the digital account reference number. URI scheme
+            must be PAN. The expiration date is optional. The value will be
+            partially masked in the Payments Searches POST response.
+
+            #### Examples
+
+            * pan:5102589999999905;exp=2050-02;cvc=123
+
+            * pan:5102589999999905
+          example: 'pan:5102589999999905;exp=2050-02;cvc=123'
+        email:
+          type: string
+          description: >-
+            The Sender's email address. Alphanumeric Special [a-zA-Z0-9-@+.*$_],
+            length 5-254.
+          minLength: 5
+          maxLength: 254
+          example: test123@abcmail.com
+        accountNumberType:
+          type: string
+          description: |-
+            The Sender's account number type. Valid numeric values:
+            * 00 = Other
+            * 01 = RTN + Bank Account
+            * 02 = IBAN
+            * 03 = Card Account
+            * 04 = Email
+            * 05 = Phone Number
+            * 06 = Bank account number (BAN) + Bank Identification Сode (BIC)
+            * 07 = Wallet ID
+            * 08 = Social Network
+          minLength: 2
+          maxLength: 2
+          example: '02'
+        governmentIdUris:
+          type: array
+          description: >-
+            This array contains data strings that each identify a Government ID
+            number for the Sender; see [Government ID
+            URIs](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/gov-id-uris/).
+            The values will be partially masked in the Payments Searches POST
+            response.
+          required:
+            - schema
+            - id-number
+          items:
+            type: string
+            description: >-
+              The `governmentIdUris` field can contain an array of data strings,
+              which each identify a Government ID number for the Sender.
+              Construct each data string using the following properties and
+              values. Start with `schema:id-number` and append subsequent
+              `property=value` couplets using a semi-colon (;) separator.
+
+              * schema = A 3-character alpha code identifying the type of
+              Government ID. Valid values:
+
+              <br>– ppn = Passport Number
+
+              <br>– ssn = Social Security Number
+
+              <br>– ein = Employer Identification Number
+
+              <br>– tin = Tax Identification Number
+
+              <br>– aln = Alien Registration Number
+
+              <br>– cus = Customer Number
+
+              <br>– idc = Identity Card Number
+
+              <br>– dln = Drivers License Number
+
+              <br>– nat = National ID
+
+              * id-number = The Government ID number/value. Can be 2–80
+              alpha-numeric characters, including special characters hyphen (-)
+              and forward slash (/), for example F/4611211-234.
+
+              <br>For a Social Security Number, the value should be 9 digits
+              only.
+
+              * expiration-date = The expiration date for the Government ID, in
+              ISO 8601 full date format (YYYY-MM-DD). For example, if the date
+              is 30 March 2050, the value is 2050-03-30.
+
+              <br>If the Government ID type expires in a particular month
+              (rather than on a specific day), populate the date as the first or
+              last day of that month (whichever is appropriate).
+
+              * issue-date = The issuing date for the Government ID, in ISO 8601
+              full date format (YYYY-MM-DD).For example, if the date is 31
+              January 2008, the value is 2008-01-31.
+
+              <br>The issuing date cannot be a future date. If the Government ID
+              type was issued in a particular month (rather than on a specific
+              day), populate the date as the first or last day of that month
+              (whichever is appropriate).
+
+              * issuing-country = The 3-character ISO 3166-1 alpha-3 country
+              code representing the country that issued the Government ID; see
+              [Country and Currency
+              Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+
+              * issuing-place = The name of the place (city, state or province)
+              that issued the Government ID, for example Montreal.
+            example: >-
+              dln:NHL12506717;expiration-date=2022-01-02;issue-date=2017-01-11;issuing-country=USA;issuing-place=New
+              Hampshire
+        name:
+          type: string
+          description: >-
+            The Sender's full name, where the middle name is optional.
+            Recommended format: Last Name/Family Name + double space + First
+            Name + double space + Middle Name + double space. For example, for
+            John Michael Smith (where John is the first name, Michael is the
+            middle name, and Smith is the last name), the field value must be
+            represented as 'Smith  John  Michael  ' or 'Smith  John  '. When
+            sent to the Mastercard Network, the first name and last name will
+            each be trimmed to 35 characters and the middle name will be trimmed
+            to 1 character. Alphanumeric Special [a-zA-Z0-9
+            !"#$%&'()*+,-./&#92;:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ],
+            length: 1-120.
+          minLength: 1
+          maxLength: 120
+          example: 'Smith  John  Michael  '
+        nationality:
+          type: string
+          description: >-
+            The Sender's nationality (the country in which they are a citizen)
+            as a 3-character ISO 3166-1 uppercase alpha-3 country code; see
+            [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, the United States of America is USA.
+          minLength: 3
+          maxLength: 3
+          example: USA
+        phone:
+          type: string
+          description: >-
+            The Sender's phone number including country code. Numeric, length
+            1-20.
+          minLength: 1
+          maxLength: 20
+          example: '1234567890'
+      title: searchItemSender
+    singleMessage:
+      type: object
+      description: >-
+        This object contains details for Single Message acquiring. At least one
+        of the `dualMessage` or `singleMessage` objects must be provided.
+      required:
+        - processorId
+        - acquiringIdentificationCode
+      properties:
+        acquiringIdentificationCode:
+          type: string
+          description: >-
+            The 9-digit Federal Reserve Routing and Transit Number (RTN) of the
+            acquiring member, or the 9-digit pseudo-number assigned to the
+            acquiring member by Mastercard.
+          minLength: 1
+          maxLength: 9
+          example: '123456780'
+        processorId:
+          type: string
+          description: >-
+            A 10-digit number of the format 9000xxxxxx, where xxxxxx is the
+            Single Message System-assigned processor ID. For example, if the
+            processor ID is 001957, this value is 9000001957.
+          minLength: 10
+          maxLength: 10
+          example: '9000001957'
+      title: singleMessage
+    transferAcceptor:
+      type: object
+      description: >-
+        This object contains details of the Transfer Acceptor, who is the
+        merchant or originator providing the funds transfer service to the
+        Sender.
+      required:
+        - address
+        - id
+        - name
+        - terminalId
+      properties:
+        address:
+          $ref: '#/components/schemas/transferAcceptorAddress'
+        convenienceAmount:
+          type: string
+          description: >-
+            Tip or convenience amount, in the transaction currency identified by
+            the `currency` field. Numeric integer, 1-999999999999. The decimal
+            point is implied based on the relevant currency exponent; see
+            [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, a $1 tip will be a value of 100. This field is relevant
+            to P2M payments and if it is provided, the `convenienceIndicator`
+            field is also required.
+          minLength: 1
+          maxLength: 12
+          example: '333'
+        convenienceIndicator:
+          type: string
+          description: >-
+            Convenience fee type code, which is required if the
+            `convenienceAmount` field is provided. Valid values:
+
+            * 01 = Tip
+
+            * 02 = A flat convenience fee
+
+            * 03 = A percentage convenience fee
+          minLength: 2
+          maxLength: 2
+          example: '01'
+        id:
+          type: string
+          description: >-
+            An identifier for the card acceptor. This value should be unique for
+            each originator.
+          minLength: 1
+          maxLength: 15
+          example: '456487898368'
+        mastercardAssignedMerchantId:
+          type: string
+          description: The Merchant ID assigned by Mastercard.
+          maxLength: 6
+          example: 12A346
+        name:
+          type: string
+          description: >-
+            The business name of the merchant/originator, which will be shown on
+            the Recipient's statement.
+          minLength: 1
+          maxLength: 22
+          example: transferacceptor
+        paymentFacilitatorId:
+          type: string
+          description: >-
+            The Company ID for the Payment Facilitator, if one is involved in
+            the transaction. This ID is assigned by Mastercard when the service
+            provider registers with Mastercard as a Payment Facilitator.
+          maxLength: 11
+          example: '123'
+        subMerchantId:
+          type: string
+          description: >-
+            Must be the Merchant ID of the sub-merchant when a Payment
+            Facilitator is involved in the transaction. This value is assigned
+            by the Payment Facilitator or their acquirer.
+          maxLength: 15
+          example: '223'
+        terminalId:
+          type: string
+          description: >-
+            The identifier for the terminal at a card acceptor location. When
+            sending transactions from a card not present environment, use the
+            same value for all transactions.
+          minLength: 1
+          maxLength: 8
+          example: 1367-hgf
+      title: transferAcceptor

@@ -1,0 +1,15 @@
+[
+    {
+        "name": "CREDIT",
+        "value": "CREDIT"
+    },
+    {
+        "name": "DEBIT",
+        "value": "DEBIT"
+    },
+    {
+
+        "name": "MAESTRO",
+        "value": "MAESTRO"
+    }
+]

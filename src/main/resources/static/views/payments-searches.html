@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Payments API</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+            charset="utf-8"
+        />
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome/css/all.min.css" />
+        <script src="/assets/js/environment.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap/popper.min.js"></script>
+        <script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.validate.min.js"></script>
+        <script src="/assets/js/additional-methods.min.js"></script>
+        <script src="/assets/js/moment.js"></script>
+        <script src="/assets/js/payments-search.js"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <!-- Main Header Start Here -->
+            <div
+                class="row mt-4 d-flex justify-content-center align-items-center header-border-bottom pb-3"
+            >
+                <div
+                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        class="mastercard-logo"
+                        src="/assets/images/mc_symbol_opt_73_3x.png"
+                        alt="Mastercard Logo"
+                    />
+                    <label class="mastercard-label mb-0"> Mastercard® </label>
+                </div>
+            </div>
+            <!-- Main Header End Here -->
+            <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4 mb-5 api-form-box"
+            >
+                <!-- API Name Header Start Here -->
+                <div class="row mb-3 api-name-border pb-3">
+                    <div
+                            class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-3 d-flex align-items-center"
+                    >
+                        <a href="/views/payments-overview.html" class="text-decoration-none">
+                            <img
+                                    class="back-logo"
+                                    src="/assets/images/back_icon@2x.png"
+                                    alt="Back Logo"
+                            />
+                        </a>
+                    </div>
+                    <div
+                            class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-9 d-flex align-items-center"
+                    >
+                        <label class="api-name-label"> SEND 2.0 API'S </label>
+                    </div>
+                </div>
+                <!-- API Name Header End Here -->
+
+                <!-- API Selection Box Start Here -->
+
+                <ul class="nav nav-tabs">
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/transfer-eligibility.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >TRANSFER ELIGIBILITY</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label api-menu-main-label-active"
+                    >
+                        <a
+                            class="nav-link active text-center cursor-pointer"
+                            data-toggle="tab"
+                            href="#payments"
+                            >PAYMENTS</a
+                        >
+                    </li>
+                </ul>
+
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div
+                            role="tabpanel"
+                            class="tab-pane active"
+                            id="payments"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        class=""
+                                        onclick="location.href='/views/payments.html';"
+                                    >
+                                        <label class="api-label">
+                                            PAYMENTS
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        class="api-names-box"
+                                        onclick="location.href='/views/payments-searches.html';"
+                                    >
+                                        <label class="api-label">
+                                            PAYMENTS SEARCHES
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Selection Box End Here -->
+
+                <!-- Form Start here -->
+                <form name="payment-search-form" id="payment-search-form">
+                    <div class="row api-name-border pb-4 mb-5 mt-5">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                        >
+                            <h5>Payments</h5>
+                        </div>
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentId"
+                                            >Payment ID
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The system-generated unique ID assigned to the transaction by Mastercard.
+                                            <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="paymentId"
+                                            id="paymentId"
+                                            placeholder="Payment ID"
+                                            value="pid_1248596"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentReference"
+                                            >Payment Reference
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The partner-assigned unique reference ID for the transaction. Alphanumeric and * , - . _ ~. Length 6-40.
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 40 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="paymentReference"
+                                            id="paymentReference"
+                                            placeholder="Payment Reference"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end mt-4 mb-4"
+                        >
+                            <button
+                                data-add-daily-limit-request=""
+                                data-add-daily-limit-response=""
+                                type="button"
+                                class="btn submit-btn"
+                                id="submitBtn"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+
+                <!-- Form End Here -->
+
+                <!-- Request / Response Object Div Start Here -->
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Payments Request Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="request-object"></label><textarea id="request-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Payments Response Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="response-object"></label><textarea id="response-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request / Response Object Div End Here -->
+
+                <!-- Spinner Box Start Here -->
+                <div id="spinner" class=""></div>
+                <!-- Spinner Box End Here -->
+            </div>
+        </div>
+    </body>
+</html>
