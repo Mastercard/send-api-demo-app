@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Payments API</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+            charset="utf-8"
+        />
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome/css/all.min.css" />
+        <script src="/assets/js/environment.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap/popper.min.js"></script>
+        <script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.validate.min.js"></script>
+        <script src="/assets/js/additional-methods.min.js"></script>
+        <script src="/assets/js/moment.js"></script>
+        <script src="/assets/js/payments.js"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <!-- Main Header Start Here -->
+            <div
+                class="row mt-4 d-flex justify-content-center align-items-center header-border-bottom pb-3"
+            >
+                <div
+                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        class="mastercard-logo"
+                        src="/assets/images/mc_symbol_opt_73_3x.png"
+                        alt="Mastercard Logo"
+                    />
+                    <label class="mastercard-label mb-0"> Mastercard® </label>
+                </div>
+            </div>
+            <!-- Main Header End Here -->
+            <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4 mb-5 api-form-box"
+            >
+                <!-- API Name Header Start Here -->
+                <div class="row mb-3 api-name-border pb-3">
+                    <div
+                        class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-3 d-flex align-items-center"
+                    >
+                        <a href="/views/payments-overview.html" class="text-decoration-none">
+                            <img
+                                class="back-logo"
+                                src="/assets/images/back_icon@2x.png"
+                                alt="Back Logo"
+                            />
+                        </a>
+                    </div>
+                    <div
+                        class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-9 d-flex align-items-center"
+                    >
+                        <label class="api-name-label"> SEND 2.0 API'S </label>
+                    </div>
+                </div>
+                <!-- API Name Header End Here -->
+
+                <!-- API Selection Box Start Here -->
+
+                <ul class="nav nav-tabs">
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/transfer-eligibility.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >TRANSFER ELIGIBILITY</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label api-menu-main-label-active"
+                    >
+                        <a
+                            class="nav-link active text-center cursor-pointer"
+                            data-toggle="tab"
+                            href="#payments"
+                            >PAYMENTS</a
+                        >
+                    </li>
+                </ul>
+
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div
+                            role="tabpanel"
+                            class="tab-pane active"
+                            id="payments"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        class="api-names-box"
+                                        onclick="location.href='/views/payments.html';"
+                                    >
+                                        <label class="api-label">
+                                            PAYMENTS
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        class=""
+                                        onclick="location.href='/views/payments-searches.html';"
+                                    >
+                                        <label class="api-label">
+                                            PAYMENTS SEARCHES
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Selection Box End Here -->
+
+                <!-- Form Start here -->
+                <form name="payment-form" id="payment-form">
+                    <div class="row api-name-border pb-4 mb-5 mt-5">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                        >
+                            <h5>Payments</h5>
+                        </div>
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentReference"
+                                            >Payment Reference
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The partner-assigned unique reference ID for the transaction.
+                                            This value must be unique for each API request to create a transaction.
+                                            This value is not passed to the Mastercard Core network. Alphanumeric and * , - . _ ~.
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 40 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="paymentReference"
+                                            id="paymentReference"
+                                            placeholder="Payment Reference"
+                                            value="pay_000001328"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="amount"
+                                            >Amount
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transaction amount, in the currency identified by the currency field.
+                                            Numeric integer, 1-999999999999.
+                                            The decimal point is implied based on the relevant currency exponent; see Country and Currency Codes.
+                                            For example, a US Dollar $60 transaction will be a value of 6000.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 12 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="amount"
+                                            id="amount"
+                                            placeholder="Amount"
+                                            value="6000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="interchangeRateDesignator"
+                                            >Interchange Rate Designator
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Interchange Rate Designator (IRD) indicating the interchange rate and editing rules
+                                            to apply to the transaction for Dual Message processing. Optional, alphanumeric, 2 characters.
+                                            If it is required but not provided, the IRD will be determined.
+                                            If it is provided, the merchant category code (merchantCategoryCode) is also required.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="interchangeRateDesignator"
+                                            id="interchangeRateDesignator"
+                                            placeholder="Interchange Rate Designator"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="currency"
+                                            >Currency
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="format: ISO Alpha CURRENCY
+                                            The 3-character ISO 4217 alpha-3 code identifying the currency for the transaction amount in the amount field.
+                                            See Country and Currency Codes. For example, for U.S. Dollars, the value is USD.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="currency"
+                                            id="currency"
+                                            placeholder="Currency"
+                                            value="USD"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="additionalMessage"
+                                            >Additional Message
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Message a financial institution will associate to the transfer and may display.
+                                            <br /> <br /> minLength: 0 <br /> maxLength: 65 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="additionalMessage"
+                                            id="additionalMessage"
+                                            placeholder="Additional Message"
+                                            value="Adding additional message"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="deviceType"
+                                            >Device Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This field will be deprecated; use pointOfServiceInteraction instead.
+                                            The initiation channel of the funds transfer request.
+                                            This value can be defined in the onboarding process instead of passing it in every Payments API request.
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="deviceType"
+                                            name="deviceType"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="fundingSource"
+                                            >Funding Source
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The funding source for the transaction.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="fundingSource"
+                                            name="fundingSource"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="merchantCategoryCode"
+                                            >Merchant Category Code
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The merchant category code (MCC) classification for the merchant's type of business or service.
+                                            Numeric, 4 digits. If provided, this MCC should match one of the valid codes set by the Mastercard or Visa rules.
+                                            Use 6536 for P2P transactions. An MCC value is required when the payment type is P2M or MRF and/or
+                                            when an Interchange Rate Designator (interchangeRateDesignator) value is provided.
+                                            The MCC that is used to process the transaction depends on the MCC supported by the receiving financial institution.
+                                            <br /> <br /> minLength: 4 <br /> maxLength: 4 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="merchantCategoryCode"
+                                            id="merchantCategoryCode"
+                                            placeholder="Merchant Category Code"
+                                            value="6536"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="participationId"
+                                            >Participation ID
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The participation ID of the Sender. The Receiving Institution will associate the value to the transfer.
+                                            <br /> <br /> minLength: 0 <br /> maxLength: 30 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="participationId"
+                                            id="participationId"
+                                            placeholder="Participation ID"
+                                            value="1234567890"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentType"
+                                            >Payment Type
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The appropriate payment type for the funds transfer taking place.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="paymentType"
+                                            name="paymentType"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="qrData"
+                                            >QR Data
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Mastercard QR data for P2M payments.
+                                            <br /> <br /> minLength: 0 <br /> maxLength: 237 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="qrData"
+                                            id="qrData"
+                                            placeholder="QR Data"
+                                            value=""
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transactionLocalDateTime"
+                                            >Transaction Local Date Time
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="format: ISO 8601 DATE
+                                            The local date and time of the transaction, in ISO 8601 format YYYY-MM-DDThh:mm:ss. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control transaction-local-date-time"
+                                            type="datetime-local"
+                                            name="transactionLocalDateTime"
+                                            id="transactionLocalDateTime"
+                                            placeholder="Transaction Local Date Time"
+                                            value="2021-07-17T18:05:00"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="pointOfServiceInteraction"
+                                            >Point Of Service Interaction
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Point of Service interaction with the Sender's account when the funds transfer was initiated.
+                                            <br /> <br /> minLength: 9 <br /> maxLength: 21 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="pointOfServiceInteraction"
+                                            name="pointOfServiceInteraction"
+                                        ></select>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transactionPurpose"
+                                            >Transaction Purpose
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The purpose of the transaction.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="transactionPurpose"
+                                            name="transactionPurpose"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="uniqueTransactionReference"
+                                            >Unique Transaction Reference
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A 19-digit Unique Transaction Reference number that helps link the funding,
+                                            payment and refund transactions relating to a particular funds transfer request.
+                                            The reference number can be provided by the partner or generated by Mastercard Send.
+                                            <br /> <br /> maxLength: 19 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="uniqueTransactionReference"
+                                            id="uniqueTransactionReference"
+                                            placeholder="Unique Transaction Reference"
+                                            value="0555555128315305401"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Acquiring Credentials</h5>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringCountry"
+                                            >Acquiring Country
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 3-character ISO 3166-1 uppercase alpha-3 country code of the Bank Identification Number (BIN)
+                                            under which the acquiring member is registered with Mastercard; see Country and Currency Codes.
+                                            For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringCountry"
+                                            id="acquiringCountry"
+                                            placeholder="Acquiring Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringIca"
+                                            >Acquiring ICA
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Mastercard-assigned Interbank Card Association (ICA) ID for the acquiring member registered with Mastercard.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 11 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringIca"
+                                            id="acquiringIca"
+                                            placeholder="PAN"
+                                            value="12345678911"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="messageType"
+                                            >Message Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This object contains details for Single Message acquiring.
+                                            At least one of the dualMessage or singleMessage objects must be provided. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="messageType"
+                                            name="messageType"
+                                        >
+                                            <option value="singleMessage">
+                                                Single Message
+                                            </option>
+                                            <option value="dualMessage">
+                                                Dual Message
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="acquiringBin_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringBin"
+                                            >Acquiring Bin
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Bank Identification Number (BIN) under which the Acquiring member is registered with Mastercard.
+                                            This field is required if acquiringReferenceId is not provided.
+                                            <br /> <br /> example: 512340
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 6 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringBin"
+                                            id="acquiringBin"
+                                            placeholder="Acquiring Bin"
+                                            value="512340"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="acquirerReferenceId_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquirerReferenceId"
+                                            >Acquirer Reference ID
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Acquirer Reference ID under which the Acquiring member is registered with Mastercard. This field is required if acquiringBin is not provided.
+                                            <br /> <br /> example: 512340
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 6 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquirerReferenceId"
+                                            id="acquirerReferenceId"
+                                            placeholder="Acquirer Reference ID"
+                                            value="512340"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="acquiringIdentificationCode_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringIdentificationCode"
+                                            >Acquiring Identification Code
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 9-digit Federal Reserve Routing and Transit Number (RTN) of the acquiring member,
+                                            or the 9-digit pseudo-number assigned to the acquiring member by Mastercard.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 9 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringIdentificationCode"
+                                            id="acquiringIdentificationCode"
+                                            placeholder="Acquiring Identification Code"
+                                            value="123456780"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="processorId_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="processorId"
+                                            >Processor ID
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A 10-digit number of the format 9000xxxxxx, where xxxxxx is the Single Message System-assigned processor ID.
+                                            For example, if the processor ID is 001957, this value is 9000001957
+                                            <br /> <br /> minLength: 10 <br /> maxLength: 10
+                                            <br /> <br /> example: '9000001957'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="processorId"
+                                            id="processorId"
+                                            placeholder="Processor ID"
+                                            value="9000001957"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Transfer Acceptor</h5>
+                                </div>
+                                <!-- Recipient Account Uri Box Start here -->
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="convenienceAmount"
+                                            >Convenience Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Tip or convenience amount, in the transaction currency identified by the currency field. 
+                                            Numeric integer, 1-999999999999. The decimal point is implied based on the relevant currency exponent; 
+                                            see Country and Currency Codes. For example, a $1 tip will be a value of 100. This field is relevant to 
+                                            P2M payments and if it is provided, the convenienceIndicator field is also required.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 12
+                                            <br /> <br /> example: '333'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="convenienceAmount"
+                                            id="convenienceAmount"
+                                            placeholder="Convenience Amount"
+                                            value="333"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="convenienceIndicator"
+                                            >Convenience Indicator
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Convenience fee type code, which is required if the convenienceAmount field is provided.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2
+                                            <br /> <br /> example: '01'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="convenienceIndicator"
+                                            name="convenienceIndicator"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorId"
+                                            >Transfer Acceptor ID
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="An identifier for the card acceptor. This value should be unique for each originator.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 15
+                                            <br /> <br /> example: '456487898368'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorId"
+                                            id="transferAcceptorId"
+                                            placeholder="ID"
+                                            value="456487898368"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label
+                                            for="mastercardAssignedMerchantId"
+                                            >Mastercard Assigned Merchant Id
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Merchant ID assigned by Mastercard.
+                                            <br /> <br /> maxLength: 6
+                                            <br /> <br /> example: '12A346'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="mastercardAssignedMerchantId"
+                                            id="mastercardAssignedMerchantId"
+                                            placeholder="Mastercard Assigned Merchant Id"
+                                            value="12A346"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorName"
+                                            >Transfer Acceptor Name
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The business name of the merchant/originator, which will be shown on the Recipient's statement.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 22
+                                            <br /> <br /> example: 'transferacceptor'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorName"
+                                            id="transferAcceptorName"
+                                            placeholder="Transfer Acceptor Name"
+                                            value="transferacceptor"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentFacilitatorId"
+                                            >Payment Facilitator Id
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Company ID for the Payment Facilitator, if one is involved in the transaction. 
+                                            This ID is assigned by Mastercard when the service provider registers with Mastercard as a Payment Facilitator.
+                                            <br /> <br /> maxLength: 11
+                                            <br /> <br /> example: 'transferacceptor'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="paymentFacilitatorId"
+                                            id="paymentFacilitatorId"
+                                            placeholder="Payment Facilitator Id"
+                                            value="123"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="subMerchantId"
+                                            >Sub Merchant Id
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Must be the Merchant ID of the sub-merchant when a Payment Facilitator is involved in the transaction. 
+                                            This value is assigned by the Payment Facilitator or their acquirer.
+                                            <br /> <br /> maxLength: 15
+                                            <br /> <br /> example: '223'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="subMerchantId"
+                                            id="subMerchantId"
+                                            placeholder="Sub Merchant Id"
+                                            value="223"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="terminalId"
+                                            >Terminal Id
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The identifier for the terminal at a card acceptor location. 
+                                            When sending transactions from a card not present environment, use the same value for all transactions.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 8
+                                            <br /> <br /> example: '1367-hgf'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="terminalId"
+                                            id="terminalId"
+                                            placeholder="Terminal Id"
+                                            value="1367-hgf"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Transfer Acceptor Address</h5>
+                                </div>
+                                <!-- Recipient Account Uri Box Start here -->
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorCity"
+                                            >Transfer Acceptor City
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transfer acceptor's city. Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-25.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 25
+                                            <br /> <br /> example: 'O'Fallon'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorCity"
+                                            id="transferAcceptorCity"
+                                            placeholder="Transfer Acceptor City"
+                                            value="O'Fallon"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorCountry"
+                                            >Transfer Acceptor Country
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transfer acceptor's country as a 3-character ISO 3166-1 uppercase alpha-3 country code; 
+                                            see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorCountry"
+                                            id="transferAcceptorCountry"
+                                            placeholder="Transfer Acceptor Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorPostalCode"
+                                            >Transfer Acceptor Postal Code
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transfer acceptor's ZIP Code or postal code.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 10
+                                            <br /> <br /> example: '23233'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorPostalCode"
+                                            id="transferAcceptorPostalCode"
+                                            placeholder="Transfer Acceptor Postal Code"
+                                            value="23233"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorState"
+                                            >Transfer Acceptor State
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transfer acceptor's state or province, 
+                                            specified as an ISO 3166-2 uppercase alpha 2 or 3 character country subdivision code; 
+                                            see Country and Currency Codes. For example, Missouri is MO. Conditional, 
+                                            required if transfer acceptor's country is USA or CAN.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 3
+                                            <br /> <br /> example: 'MO'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorState"
+                                            id="transferAcceptorState"
+                                            placeholder="Transfer Acceptor State"
+                                            value="MO"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorStreet"
+                                            >Transfer Acceptor Street
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transfer acceptor's street address (first line of address). 
+                                            Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-50.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 50
+                                            <br /> <br /> example: '2200 Mastercard Blvd'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorStreet"
+                                            id="transferAcceptorStreet"
+                                            placeholder="Transfer Acceptor Street"
+                                            value="2200 Mastercard Blvd"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Recipient Details</h5>
+                                </div>
+                                <!-- Recipient Account Uri Box Start here -->
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientAccountUriType"
+                                            >Recipient Account Uri
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="At least one of the recipientAccountUri or senderAccountUri fields is required.
+                                            This field contains a URI identifying the receiving account.
+                                            The URI scheme can be one of these schemes (see also Account URIs): <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="recipientAccountUriType"
+                                            name="recipientAccountUriType"
+                                        >
+                                            <option value="recipient_pan">
+                                                PAN
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipient_pan"
+                                            >Recipient PAN
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A card PAN or token.
+                                            The URI string starts with pan:{account-number};exp={expiry}, where {account-number} is the PAN
+                                            or token (16-digits, e.g. 5117510000000007) and {expiry} is the expiration date,
+                                            in format YYYY-MM (e.g. 2050-10). The expiration date is optional.
+                                            The URI string can continue with any relevant {property}={value} couplets,
+                                            separated using a semi-colon (;). Properties can include:
+                                            cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+                                            <br /> <br /> Examples pan:5117510000000007;exp=2050-10;cvc=123
+                                            <br /> pan:5117510000000007;cvc=123"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipient_pan"
+                                            id="recipient_pan"
+                                            placeholder="Recipient PAN"
+                                            value="pan:5102589999999913"
+                                        />
+                                    </div>
+                                </div>
+                                <!-- Recipient Account Uri Box End here -->
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientCountryOfBirth"
+                                            >Recipient Country Of Birth
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 3-character ISO 3166-1 uppercase alpha-3 code for the country in which the Recipient was born; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientCountryOfBirth"
+                                            id="recipientCountryOfBirth"
+                                            placeholder="Recipient Country Of Birth"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientDateOfBirth"
+                                            >Recipient Date Of Birth
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's date of birth in ISO 8601 full date format (YYYY-MM-DD). For example, if the date is 27 March 1981, the value is 1981-03-27.
+                                            <br /> <br /> minLength: 10 <br /> maxLength: 10
+                                            <br /> <br /> example: '1981-03-27'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="date"
+                                            name="recipientDateOfBirth"
+                                            id="recipientDateOfBirth"
+                                            placeholder="Recipient Date Of Birth"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientDsTransactionId"
+                                            >Recipient Directory Server
+                                            Transaction ID
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Directory Server Transaction ID is a Universally Unique Transaction ID which can be provided as part of the authentication transaction.
+                                            <br /> <br /> example: 'f38e6948-5388-41a6-bca4-b49723c19437'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientDsTransactionId"
+                                            id="recipientDsTransactionId"
+                                            placeholder="Recipient Directory Server Transaction ID"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientEmail"
+                                            >Recipient Email
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's email address. Alphanumeric Special [a-zA-Z0-9-@+.*$_], length 5-254.
+                                            <br /> <br /> minLength: 5 <br /> maxLength: 254
+                                            <br /> <br /> example: 'test123@abcmail.com'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="email"
+                                            name="recipientEmail"
+                                            id="recipientEmail"
+                                            placeholder="Recipient Email"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientAccountNumberType"
+                                            >Recipient Account Number Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's account number type.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2
+                                            <br /> <br /> example: '02'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="recipientAccountNumberType"
+                                            name="recipientAccountNumberType"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientName"
+                                            >Recipient Name
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's full name, where the middle name is optional.
+                                            Recommended format: Last Name/Family Name + double space + First Name + double space + Middle Name + double space.
+                                            For example, for John Michael Smith (where John is the first name, Michael is the middle name,
+                                            and Smith is the last name), the field value must be represented as 'Smith John Michael '
+                                            or 'Smith John '. When sent to the Mastercard Network, the first name and last name will each be
+                                            trimmed to 35 characters and the middle name will be trimmed to 1 character.
+                                            Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-120.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 120
+                                            <br /> <br /> example: 'Smith John Michael '
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientName"
+                                            id="recipientName"
+                                            placeholder="Recipient Name"
+                                            value="Mastercard - Test"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientNationality"
+                                            >Recipient Nationality
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's nationality (the country in which they are a citizen) as a 3-character ISO 3166-1 uppercase alpha-3 country code; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientNationality"
+                                            id="recipientNationality"
+                                            placeholder="Recipient Nationality"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientPhone"
+                                            >Recipient Phone
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's phone number including country code. Numeric, length 1-20.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 20
+                                            <br /> <br /> example: '1234567890'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            name="recipientPhone"
+                                            id="recipientPhone"
+                                            placeholder="Recipient Phone"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label
+                                            for="recipientAuthenticationValue"
+                                            >Recipient Authentication Value
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Universal Cardholder Authentication Field (UCAF) is a cryptographic value. Mastercard® SecureCode™ issuer or cardholder-generated authentication data resulting from all SecureCode fully authenticated or attempts transaction for Mastercard account. This field is populated when a UCAF-enabled merchant has collected authentication data and must pass it in the transaction to the issuer.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 32
+                                            <br /> <br /> example: 'kBAYYgZVLBwEl08klDyU79WE6XqM'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientAuthenticationValue"
+                                            id="recipientAuthenticationValue"
+                                            placeholder="Recipient Authentication Value"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                >
+                                    <input
+                                        class="btn multiple-government-id-btn"
+                                        id="recipientBtnAdd"
+                                        type="button"
+                                        value="ADD MULTIPLE GOVERNMENT ID"
+                                    />
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                    id="recipient-governmentid-div"
+                                >
+                                    <!--Textboxes will be added here -->
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Recipient Address</h5>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientCity"
+                                            >Recipient City
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's city. Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-25.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 25
+                                            <br /> <br /> example: 'O'Fallon'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientCity"
+                                            id="recipientCity"
+                                            placeholder="Recipient City"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientCountry"
+                                            >Recipient Country
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's country as a 3-character ISO 3166-1 uppercase alpha-3 country code; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientCountry"
+                                            id="recipientCountry"
+                                            placeholder="Recipient Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientPostalCode"
+                                            >Recipient Postal Code
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's ZIP Code or postal code.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 10
+                                            <br /> <br /> example: '23233'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientPostalCode"
+                                            id="recipientPostalCode"
+                                            placeholder="Recipient Postal Code"
+                                            value="23233"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientState"
+                                            >Recipient State
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's state or province, specified as an ISO 3166-2 uppercase alpha 2 or 3 character country subdivision code; see Country and Currency Codes. For example, Missouri is MO. Conditional, required if Recipient's country is USA or CAN.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 3
+                                            <br /> <br /> example: 'MO'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientState"
+                                            id="recipientState"
+                                            placeholder="Recipient State"
+                                            value="MO"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipientStreet"
+                                            >Recipient Street
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Recipient's street address (first line of address). Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-50.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 50
+                                            <br /> <br /> example: '2200 Mastercard Blvd'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipientStreet"
+                                            id="recipientStreet"
+                                            placeholder="Recipient Street"
+                                            value="Street"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Sender Details</h5>
+                                </div>
+                                <!-- Sender Account Uri Box Start here -->
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderAccountUriType"
+                                            >Sender Account Uri
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="At least one of the recipientAccountUri or senderAccountUri fields is required.
+                                            This field contains a URI identifying the sending account.
+                                            The URI scheme can be one of these schemes (see also Account URIs): <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="senderAccountUriType"
+                                            name="senderAccountUriType"
+                                        >
+                                            <option value="sender_pan">
+                                                PAN
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="sender_pan"
+                                            >Sender PAN
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A card PAN or token.
+                                            The URI string starts with pan:{account-number};exp={expiry},
+                                            where {account-number} is the PAN or token (16-digits, e.g. 5117510000000007)
+                                            and {expiry} is the expiration date, in format YYYY-MM (e.g. 2050-10).
+                                            The expiration date is optional.
+                                            The URI string can continue with any relevant {property}={value} couplets,
+                                            separated using a semi-colon (;). Properties can include:
+                                            cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+                                            <br /> <br /> Examples pan:5117510000000007;exp=2050-10;cvc=123
+                                            <br /> pan:5117510000000007;cvc=123"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="sender_pan"
+                                            id="sender_pan"
+                                            placeholder="Sender PAN"
+                                            value="pan:5102589999999921"
+                                        />
+                                    </div>
+                                </div>
+                                <!-- Sender Account Uri Box End here -->
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderCountryOfBirth"
+                                            >Sender Country Of Birth
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 3-character ISO 3166-1 uppercase alpha-3 code for the country in which the Sender was born; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderCountryOfBirth"
+                                            id="senderCountryOfBirth"
+                                            placeholder="Sender Country Of Birth"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderDateOfBirth"
+                                            >Sender Date Of Birth
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's date of birth in ISO 8601 full date format (YYYY-MM-DD). For example, if the date is 27 March 1981, the value is 1981-03-27.
+                                            <br /> <br /> minLength: 10 <br /> maxLength: 10
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="date"
+                                            name="senderDateOfBirth"
+                                            id="senderDateOfBirth"
+                                            placeholder="Sender Date Of Birth"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label
+                                            for="digitalAccountReferenceNumber"
+                                            >Digital Account Reference Number
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="URI to identify the digital account reference number. URI scheme must be PAN. The expiration date is optional.
+                                            <br /> <br /> example: 'pan:5102589999999905;exp=2050-02;cvc=123'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="digitalAccountReferenceNumber"
+                                            id="digitalAccountReferenceNumber"
+                                            placeholder="Digital Account Reference Number"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderEmail"
+                                            >Sender Email
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's email address. Alphanumeric Special [a-zA-Z0-9-@+.*$_], length 5-254.
+                                            <br /> <br /> minLength: 5 <br /> maxLength: 254
+                                            <br /> <br /> example: 'test123@abcmail.com'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="email"
+                                            name="senderEmail"
+                                            id="senderEmail"
+                                            placeholder="Sender Email"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderAccountNumberType"
+                                            >Sender Account Number Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's account number type.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 2
+                                            <br /> <br /> example: '02'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="senderAccountNumberType"
+                                            name="senderAccountNumberType"
+                                        ></select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderName"
+                                            >Sender Name
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's full name, where the middle name is optional.
+                                            Recommended format: Last Name/Family Name + double space + First Name + double space +
+                                            Middle Name + double space. For example, for John Michael Smith
+                                            (where John is the first name, Michael is the middle name, and Smith is the last name),
+                                            the field value must be represented as 'Smith John Michael ' or 'Smith John '.
+                                            When sent to the Mastercard Network, the first name and last name will each be trimmed to
+                                            35 characters and the middle name will be trimmed to 1 character.
+                                            Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-120.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 120
+                                            <br /> <br /> example: 'Smith John Michael'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderName"
+                                            id="senderName"
+                                            placeholder="Sender Name"
+                                            value="Mastercard - Test"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderNationality"
+                                            >Sender Nationality
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's nationality (the country in which they are a citizen) as a 3-character ISO 3166-1 uppercase alpha-3 country code; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderNationality"
+                                            id="senderNationality"
+                                            placeholder="Sender Nationality"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderPhone"
+                                            >Sender Phone
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's phone number including country code. Numeric, length 1-20.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 20
+                                            <br /> <br /> example: '1234567890'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="number"
+                                            name="senderPhone"
+                                            id="senderPhone"
+                                            placeholder="Sender Phone"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                >
+                                    <input
+                                        class="btn multiple-government-id-btn"
+                                        id="senderBtnAdd"
+                                        type="button"
+                                        value="ADD MULTIPLE GOVERNMENT ID"
+                                    />
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                                    id="sender-governmentid-div"
+                                >
+                                    <!--Textboxes will be added here -->
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>
+                                        Sender Address<span class="required"
+                                            >*</span
+                                        >
+                                    </h5>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderCity"
+                                            >Sender City
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's city. Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-25.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 25
+                                            <br /> <br /> example: 'O'Fallon'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderCity"
+                                            id="senderCity"
+                                            placeholder="Sender City"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderCountry"
+                                            >Sender Country
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's country as a 3-character ISO 3166-1 uppercase alpha-3 country code; see Country and Currency Codes. For example, the United States of America is USA.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3
+                                            <br /> <br /> example: 'USA'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderCountry"
+                                            id="senderCountry"
+                                            placeholder="Sender Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderPostalCode"
+                                            >Sender Postal Code
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's ZIP Code or postal code.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 10
+                                            <br /> <br /> example: '23233'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderPostalCode"
+                                            id="senderPostalCode"
+                                            placeholder="Sender Postal Code"
+                                            value="23233"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderState"
+                                            >Sender State
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's state or province, specified as an ISO 3166-2 uppercase alpha 2 or 3 character country subdivision code; see Country and Currency Codes. For example, Missouri is MO. Conditional, required if Sender's country is USA or CAN.
+                                            <br /> <br /> minLength: 2 <br /> maxLength: 3
+                                            <br /> <br /> example: 'MO'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderState"
+                                            id="senderState"
+                                            placeholder="Sender State"
+                                            value="MO"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="senderStreet"
+                                            >Sender Street
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Sender's street address (first line of address). Alphanumeric Special [a-zA-Z0-9 !#$%&'()*+,-./\:;<=>?@[]_`{|}~ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöùúûüýÿ], length: 1-50.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 50
+                                            <br /> <br /> example: '2200 Mastercard Blvd'
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="senderStreet"
+                                            id="senderStreet"
+                                            placeholder="Sender Street"
+                                            value="Street"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row">
+                            <div
+                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                            >
+                                <h5>Additional ProgramData(Cross Network)</h5>
+                            </div>
+                            <div
+                                class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                            >
+                                <div class="form-group">
+                                    <label for="walletProviderSignature"
+                                        >Wallet Provider Signature
+                                        <em
+                                            class="fas fa-info-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="right"
+                                            data-html="true"
+                                            title="The partner's wallet provider signature if there is cross-network activity.
+                                        <br /> <br /> example: 'eyJraWQiOiIyM2JjYmU2NGM0YWZiZWIwNDc3MTg3YmQxNTA4MTcwODNlMjY4MGRiYzhiOTVlZmRkZTlhN2M1MTU0YjE3NjRmIiwiYWxnIjoiUlMyNTYifQ.eyJwYXJ0bmVySWQiOiJwdG5yXzFsenMwekQ2NXJvN2stT2RVWGpMV19wRmdYNCIsInBheW1lbnRSZWZlcmVuY2UiOiJyZWZfMTIzNDU2ZGQ3OTEwIiwiYW1vdW50IjoiMTAwMCIsInJlY2lwaWVudEFjY291bnRVcmkiOiJwYW46NTQzMjEyMzQ1Njc4OTAxMjtleHA9MjA5OS0xOSJ9.XO0WEr_Cwb4lYSWui6zYXms6djaQ5fSDMa1D92tHMpM5SytexZzCO9zNVxRYBKDrHsmZoMx9sAShucSaRupT4Ns7KxCykoH-bhwQW7HeoMQbF4kDbRbgAgrajYD3m7_uMWoI4EG51ugcq7UfhQCObig6GEiSGQ6eiavyzdzKQWN-gt4_iPWur9TITX2NJpDQwde2HOB3pgpuC55coWZnmQNePceLDVfj85_ukkrGA4pbXze0pnOgshshQS9Xe6_dk4BmTDH2MNcRf67odqXmnRGIplumA81oBiCWyaDIc6cqUlIOoMVZKWvZCvynTtAloNb18vV2OetBE2a5Mfhkbg'
+                                        <br /> <br /> minLength: 1 <br /> maxLength: 2058 <br /> <br /> Type: String<br />(body)"
+                                        ></em>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        name="walletProviderSignature"
+                                        id="walletProviderSignature"
+                                        placeholder="Wallet Provider Signature"
+                                    />
+                                </div>
+                            </div>
+
+                            <div
+                                class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                            >
+                                <div class="form-group">
+                                    <label for="recipientPreferredLanguage"
+                                        >Recipient Preferred Language
+                                        <em
+                                            class="fas fa-info-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="right"
+                                            data-html="true"
+                                            title="The language preferred by the Recipient. If no value is provided, 'en' will be used by default in processing. All values will be accepted if two characters in length.
+                                        <br /> <br /> minLength: 2 <br /> maxLength: 2 <br /> <br /> Type: String<br />(body)"
+                                        ></em>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        name="recipientPreferredLanguage"
+                                        id="recipientPreferredLanguage"
+                                        placeholder="Recipient Preferred Language"
+                                    />
+                                </div>
+                            </div>
+
+                            <div
+                                class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                            >
+                                <div class="form-group">
+                                    <label for="securityQuestion"
+                                        >Security Question
+                                        <em
+                                            class="fas fa-info-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="right"
+                                            data-html="true"
+                                            title="An optional question that can be used to ensure the identity of the Recipient.
+                                        <br /> <br /> minLength: 1 <br /> maxLength: 40 <br /> <br /> Type: String<br />(body)"
+                                        ></em>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        name="securityQuestion"
+                                        id="securityQuestion"
+                                        placeholder="Security Question"
+                                    />
+                                </div>
+                            </div>
+
+                            <div
+                                class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                            >
+                                <div class="form-group">
+                                    <label for="securityAnswer"
+                                        >Security Answer
+                                        <em
+                                            class="fas fa-info-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="right"
+                                            data-html="true"
+                                            title="The expected answer to the question provided in the securityQuestion field. Provide the value in plain text; it will be hashed before transmission to the network.
+                                        <br /> <br /> minLength: 1 <br /> maxLength: 64 <br /> <br /> Type: String<br />(body)"
+                                        ></em>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        name="securityAnswer"
+                                        id="securityAnswer"
+                                        placeholder="Security Answer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end mt-4 mb-4"
+                        >
+                            <button
+                                data-add-daily-limit-request=""
+                                data-add-daily-limit-response=""
+                                type="button"
+                                class="btn submit-btn"
+                                id="submitBtn"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+
+                <!-- Form End Here -->
+
+                <!-- Request / Response Object Div Start Here -->
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Payments Request Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="request-object"></label><textarea id="request-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Payments Response Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="response-object"></label><textarea id="response-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request / Response Object Div End Here -->
+
+                <!-- Spinner Box Start Here -->
+                <div id="spinner" class=""></div>
+                <!-- Spinner Box End Here -->
+            </div>
+        </div>
+    </body>
+</html>

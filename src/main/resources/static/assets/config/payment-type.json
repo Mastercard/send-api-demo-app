@@ -1,0 +1,50 @@
+[
+    {
+        "name": "General Transfer to Own Account",
+        "value": "A2A"
+    },
+    {
+        "name": "Agent Cash Out",
+        "value": "ACO"
+    },
+    {
+        "name": "Rapid Merchant Settlement",
+        "value": "AMS"
+    },
+    {
+        "name": "General Business-to-Business Transfer",
+        "value": "B2B"
+    },
+    {
+        "name": "Business Disbursement",
+        "value": "BDB"
+    },
+    {
+        "name": "Cash to Card",
+        "value": "C2C"
+    },
+    {
+        "name": "Payment of Own Credit Card Bill",
+        "value": "CBP"
+    },
+    {
+        "name": "Government/Non-Profit Disbursement",
+        "value": "GDB"
+    },
+    {
+        "name": "Gaming Repayt",
+        "value": "GMR"
+    },
+    {
+        "name": "Merchant Refund",
+        "value": "MRF"
+    },
+    {
+        "name": "Merchant Payment",
+        "value": "P2M"
+    },
+    {
+        "name": "General Person-to-Person Transfer",
+        "value": "P2P"
+    }
+]

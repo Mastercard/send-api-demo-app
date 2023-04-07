@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Family Support",
+        "value": "00"
+    },
+    {
+        "name": "Regular Labor Transfers (expatriates)",
+        "value": "01"
+    },
+    {
+        "name": "Travel & Tourism",
+        "value": "02"
+    },
+    {
+        "name": "Education",
+        "value": "03"
+    },
+    {
+        "name": "Hospitalization and Medical Treatment",
+        "value": "04"
+    },
+    {
+        "name": "Emergency Need",
+        "value": "05"
+    },
+    {
+        "name": "Savings",
+        "value": "06"
+    },
+    {
+        "name": "Gifts",
+        "value": "07"
+    },
+    {
+        "name": "Other",
+        "value": "08"
+    },
+    {
+        "name": "Salary",
+        "value": "09"
+    },
+    {
+        "name": "Crowd lending",
+        "value": "10"
+    },
+    {
+        "name": "Crypto currency",
+        "value": "11"
+    },
+    {
+        "name": "Refund to original card",
+        "value": "12"
+    },
+    {
+        "name": "Refund to new card",
+        "value": "13"
+    }
+]

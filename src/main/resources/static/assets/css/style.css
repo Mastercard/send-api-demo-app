@@ -1,0 +1,686 @@
+* {
+    letter-spacing: 4px;
+}
+
+.required {
+    color: red;
+}
+
+input[type="checkbox"] {
+    width: 14px; /*Desired width*/
+    height: 14px; /*Desired height*/
+}
+
+.innner-box {
+    border-bottom: 1px solid #b9b9b9;
+    padding-bottom: 5px;
+}
+
+.back-logo {
+    width: 2.5rem;
+}
+
+.error {
+    color: red;
+}
+
+.mastercard-logo {
+    width: 5rem;
+}
+
+.mastercard-label {
+    font-size: 1.3rem;
+}
+
+.cpm-main-label {
+    font-size: 1rem;
+    letter-spacing: 3px;
+}
+
+.mc-lable-letter-spacing {
+    letter-spacing: 2px;
+}
+
+.content-letter-spacing {
+    letter-spacing: 4px;
+}
+
+.display-inline {
+    display: inline-block;
+}
+
+.header-border-bottom {
+    border-bottom: 3px solid #f79e1b;
+}
+
+.api-border-bottom {
+    border-bottom: 2px solid #f79e1b;
+}
+
+.mastercard-main-label {
+    font-size: 2.2rem;
+    font-weight: 500;
+}
+
+.mastercard-sub-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.component-div {
+    overflow-x: hidden;
+}
+
+.dashboard-btn {
+    border: 1px solid #979797 !important;
+    border-radius: 10px !important;
+    width: 85%;
+    height: 4rem;
+    background-color: #ffffff;
+}
+
+.dashboard-api-box {
+    padding-left: 10rem !important;
+    padding-right: 10rem !important;
+}
+
+.dashboard-api-sub-box {
+    border: 1px solid #979797;
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.dashboard-menu-label {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.api-name-label {
+    font-size: 1.7rem;
+}
+
+.api-form-box {
+    padding-left: 11rem !important;
+    padding-right: 11rem !important;
+}
+
+.back-icon {
+    font-size: 2rem;
+}
+
+.api-name-border {
+    border-bottom: 0.13rem solid #979797;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.text-decoration-none {
+    text-decoration: none;
+    color: black !important;
+}
+
+.api-sub-label-border {
+    border-bottom: 2px solid #f79e1b;
+}
+
+.submit-btn {
+    background-color: #f79e1b !important;
+    border-radius: 21.5px !important;
+    color: #ffffff;
+    width: 13rem;
+    height: 3rem;
+}
+
+.other-btn {
+    background-color: #f79e1b;
+    border-radius: 21.5px !important;
+    color: #ffffff;
+    height: 3rem;
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 20.5rem;
+    cursor: not-allowed;
+    font-size: 13px !important;
+}
+
+#request-object {
+    width: 100%;
+    height: 15rem;
+}
+
+.request-url {
+    width: 100%;
+    height: 10rem !important;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+#response-object {
+    width: 100%;
+    height: 20rem;
+}
+
+.add-multiple-btn {
+    background-color: #000000;
+    border-radius: 21.5px !important;
+    height: 43px;
+    color: #ffffff;
+}
+
+.dynamic-data-type-remove {
+    border-radius: 21.5px !important;
+}
+
+.dpa-accepted-shipping-countries-remove {
+    border-radius: 21.5px !important;
+}
+
+.dpa-accepted-billing-countries-remove {
+    border-radius: 21.5px !important;
+}
+
+.verification-data-remove {
+    border-radius: 21.5px !important;
+}
+
+.identity-remove {
+    border-radius: 21.5px !important;
+}
+
+.id-token-remove {
+    border-radius: 21.5px !important;
+}
+
+.sender-remove {
+    border-radius: 21.5px !important;
+}
+
+.search-api-input {
+    padding-right: 0px !important;
+}
+
+.api-name-shaded {
+    color: #5e5e5e;
+    font-size: 14px;
+    letter-spacing: 2.5px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.padding-main-box {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-bottom: 0.5rem !important;
+    padding-top: 0.5rem !important;
+}
+
+.api-menu-main-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+
+.api-menu-main-label-active {
+    border-bottom: 2px solid #f69e1c;
+}
+
+.api-menu-sub-label {
+    font-size: 14px;
+    letter-spacing: 3px;
+}
+
+.api-names-box {
+    background-color: #f7f7f7;
+    width: 100%;
+}
+
+.padding-top-none {
+    padding-top: 0rem !important;
+}
+
+.api-label {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    color: #000000 !important;
+    cursor: pointer;
+}
+
+.api-header-label-box {
+    background-color: #5e5e5e;
+    color: #ffffff;
+    font-weight: 400;
+    padding-top: 8px;
+    font-size: 15px;
+}
+
+.api-header-sub-label-box {
+    color: #5e5e5e;
+    font-size: 14px;
+}
+
+@media (max-width: 320px) {
+    .mastercard-logo {
+        width: 3rem;
+    }
+
+     .mastercard-label {
+        font-size: 1rem;
+    }
+
+    .cpm-main-label {
+        font-size: 0.7rem;
+    }
+
+    .mastercard-main-label {
+        font-size: 1.5rem;
+    }
+
+    .mastercard-sub-label {
+        font-size: 1rem;
+    }
+
+    .dashboard-menu-label {
+        font-size: 1rem;
+    }
+
+    .dashboard-btn {
+        width: 100%;
+        height: 4rem;
+        font-size: 0.7rem !important;
+    }
+
+    .dashboard-api-box {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .api-form-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-name-label {
+        font-size: 1rem;
+    }
+
+    .add-multiple-btn {
+        width: 12rem;
+        font-size: 5px !important;
+    }
+
+    .local-date-time {
+        font-size: 5px !important;
+        height: 2rem !important;
+    }
+
+    .search-api-input {
+        padding-left: 0px !important;
+        padding-right: 15px !important;
+    }
+
+    .other-btn {
+        width: 15rem;
+        font-size: 7px !important;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+    .mastercard-logo {
+        width: 3rem;
+    }
+
+    .mastercard-label {
+        font-size: 1rem;
+    }
+
+    .cpm-main-label {
+        font-size: 0.8rem;
+    }
+
+    .mastercard-main-label {
+        font-size: 1.6rem;
+    }
+
+    .mastercard-sub-label {
+        font-size: 1.1rem;
+    }
+
+    .dashboard-menu-label {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-btn {
+        width: 100%;
+        height: 4rem;
+        font-size: 0.8rem !important;
+    }
+
+    .dashboard-api-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-form-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-name-label {
+        font-size: 1rem;
+    }
+
+    .add-multiple-btn {
+        width: 16rem;
+        font-size: 9px !important;
+    }
+
+    .local-date-time {
+        font-size: 6px !important;
+        height: 2rem !important;
+    }
+
+    .search-api-input {
+        padding-left: 0px !important;
+        padding-right: 15px !important;
+    }
+
+    .other-btn {
+        width: 18rem;
+        font-size: 10px !important;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 830px) {
+    .mastercard-logo {
+        width: 5rem;
+    }
+
+    .mastercard-label {
+        font-size: 1.2rem;
+    }
+
+    .cpm-main-label {
+        font-size: 0.9rem;
+    }
+
+    .mastercard-main-label {
+        font-size: 2rem;
+    }
+
+    .mastercard-sub-label {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-menu-label {
+        font-size: 1.3rem;
+    }
+
+    .dashboard-btn {
+        width: 100%;
+        height: 4rem;
+        font-size: 0.9rem !important;
+    }
+
+    .dashboard-api-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-form-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-name-label {
+        font-size: 1.2rem;
+    }
+
+    .add-multiple-btn {
+        width: 17rem;
+        font-size: 10px !important;
+    }
+
+    .search-api-input {
+        padding-left: 0px !important;
+        padding-right: 15px !important;
+    }
+
+    .other-btn {
+        width: 20rem;
+        font-size: 12px !important;
+    }
+}
+
+@media (min-width: 831px) and (max-width: 1024px) {
+    .mastercard-logo {
+        width: 5rem;
+    }
+
+    .mastercard-label {
+        font-size: 1.2rem;
+    }
+
+    .cpm-main-label {
+        font-size: 1rem;
+    }
+
+    .mastercard-main-label {
+        font-size: 2rem;
+    }
+
+    .mastercard-sub-label {
+        font-size: 1.2rem;
+    }
+
+    .dashboard-menu-label {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-btn {
+        width: 100%;
+        height: 4rem;
+        font-size: 0.9rem !important;
+    }
+
+    .dashboard-api-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-form-box {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .api-name-label {
+        font-size: 1.3rem;
+    }
+
+    .add-multiple-btn {
+        width: 17rem;
+        font-size: 10px !important;
+    }
+
+    .other-btn {
+        width: 22rem;
+        font-size: 12px !important;
+    }
+}
+
+/* Absolute Center Spinner */
+.loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(rgba(20, 20, 20, 0.8), rgba(0, 0, 0, 0.8));
+
+    background: -webkit-radial-gradient(
+        rgba(20, 20, 20, 0.8),
+        rgba(0, 0, 0, 0.8)
+    );
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+    /* hide "loading..." text */
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.loading:not(:required):after {
+    content: "";
+    display: block;
+    font-size: 10px;
+    width: 1em;
+    height: 1em;
+    margin-top: -0.5em;
+    -webkit-animation: spinner 150ms infinite linear;
+    -moz-animation: spinner 150ms infinite linear;
+    -ms-animation: spinner 150ms infinite linear;
+    -o-animation: spinner 150ms infinite linear;
+    animation: spinner 150ms infinite linear;
+    border-radius: 0.5em;
+    -webkit-box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0,
+        rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0,
+        rgba(255, 255, 255, 0.75) 0 1.5em 0 0,
+        rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0,
+        rgba(255, 255, 255, 0.75) -1.5em 0 0 0,
+        rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0,
+        rgba(255, 255, 255, 0.75) 0 -1.5em 0 0,
+        rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+    box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0,
+        rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0,
+        rgba(255, 255, 255, 0.75) 0 1.5em 0 0,
+        rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0,
+        rgba(255, 255, 255, 0.75) -1.5em 0 0 0,
+        rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0,
+        rgba(255, 255, 255, 0.75) 0 -1.5em 0 0,
+        rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+/* Customize classes */
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    margin-bottom: 0px !important;
+    color: #000000 !important;
+    font-weight: 500 !important;
+    border-color: #fff #fff #fff !important;
+}
+
+.nav-tabs .nav-link.active:hover,
+.nav-tabs .nav-link.active:focus {
+    border-color: #fff #fff #fff !important;
+}
+
+.nav-tabs {
+    border-bottom: none !important;
+}
+
+.nav-tabs .nav-link {
+    color: #5e5e5e !important;
+    background-color: #ffffff;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: 1px !important;
+}

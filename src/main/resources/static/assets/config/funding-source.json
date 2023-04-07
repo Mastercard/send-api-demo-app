@@ -1,0 +1,30 @@
+[
+    {
+        "name": "CREDIT",
+        "value": "01"
+    },
+    {
+        "name": "DEBIT",
+        "value": "02"
+    },
+    {
+        "name": "PREPAID",
+        "value": "03"
+    },
+    {
+        "name": "DEPOSIT ACCOUNT",
+        "value": "04"
+    },
+    {
+        "name": "MOBILE MONEY ACCOUNT",
+        "value": "05"
+    },
+    {
+        "name": "CASH",
+        "value": "06"
+    },
+    {
+        "name": "OTHER",
+        "value": "07"
+    }
+]

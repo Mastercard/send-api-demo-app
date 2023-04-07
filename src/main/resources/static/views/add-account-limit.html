@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Account Limit API</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+            charset="utf-8"
+        />
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome/css/all.min.css" />
+        <script src="/assets/js/environment.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap/popper.min.js"></script>
+        <script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.validate.min.js"></script>
+        <script src="/assets/js/additional-methods.min.js"></script>
+        <script src="/assets/js/add-account-limit.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- Main Header Start Here -->
+            <div
+                class="row mt-4 d-flex justify-content-center align-items-center header-border-bottom pb-3"
+            >
+                <div
+                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        class="mastercard-logo"
+                        src="/assets/images/mc_symbol_opt_73_3x.png"
+                        alt="Mastercard Logo"
+                    />
+                    <label class="mastercard-label mb-0"> Mastercard® </label>
+                </div>
+            </div>
+            <!-- Main Header End Here -->
+            <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4 mb-5 api-form-box"
+            >
+                <!-- API Name Header Start Here -->
+                <div class="row mb-3 api-name-border pb-3">
+                    <div
+                        class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-3 d-flex align-items-center"
+                    >
+                        <a href="/views/CPM-overview.html" class="text-decoration-none">
+                            <img
+                                class="back-logo"
+                                src="/assets/images/back_icon@2x.png"
+                                alt="Back Logo"
+                            />
+                        </a>
+                    </div>
+                    <div
+                        class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-9 d-flex align-items-center"
+                    >
+                        <label class="api-name-label">
+                            CPM (Customer Parameter Management) APIs
+                        </label>
+                    </div>
+                </div>
+                <!-- API Name Header End Here -->
+
+                <!-- API Selection Box Start Here -->
+
+                <ul class="nav nav-tabs">
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/retrieve-partner-limit.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >PARTNER LIMITS</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/add-daily-limit.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >TRANSFER ACCEPTOR LIMITS</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label api-menu-main-label-active"
+                    >
+                        <a
+                            href="#accountLimit"
+                            class="nav-link active text-center cursor-pointer"
+                            data-toggle="tab"
+                            >ACCOUNT LIMITS</a
+                        >
+                    </li>
+                </ul>
+
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div
+                            role="tabpanel"
+                            class="tab-pane fade"
+                            id="partnerLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/retrieve-partner-limit.html';"
+                                        class=""
+                                    >
+                                        <label> RETRIEVE PARTNER LIMIT </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/update-partner-limit.html';"
+                                        class=""
+                                    >
+                                        <label> UPDATE PARTNER LIMIT </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            role="tabpanel"
+                            class="tab-pane fade"
+                            id="transferAcceptorLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/add-daily-limit.html';"
+                                    >
+                                        <label class="">
+                                            ADD DAILY LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-4 offset-col-lg-4 offset-md-4 text-center padding-top-none"
+                                >
+                                    <a
+                                        class=""
+                                        onclick="location.href='/views/update-daily-limit.html';"
+                                    >
+                                        <label class="">
+                                            UPDATE DAILY LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            role="tabpanel"
+                            class="tab-pane active"
+                            id="accountLimit"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-8 offset-col-lg-8 offset-md-8 text-center padding-top-none"
+                                >
+                                    <a
+                                        class="api-names-box"
+                                        onclick="location.href='/views/add-account-limit.html';"
+                                    >
+                                        <label class="api-label">
+                                            ADD ACCOUNT LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label offset-col-xl-8 offset-col-lg-8 offset-md-8 text-center padding-top-none"
+                                >
+                                    <a
+                                        onclick="location.href='/views/update-account-limit.html';"
+                                    >
+                                        <label class="api-label">
+                                            UPDATE ACCOUNT LIMIT
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Selection Box End Here -->
+
+                <!-- Form Start here -->
+                <form name="add-account-limit-form" id="add-account-limit-form">
+                    <div class="row api-name-border pb-4 mb-5 mt-5">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                        >
+                            <h5>ADD ACCOUNT LIMIT</h5>
+                        </div>
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="partnerId"
+                                            >Partner Id
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Mastercard-assigned unique Partner Reference ID for the partner
+                                                    (Transaction Initiator) whose configuration you are viewing or setting.
+                                                    It is not your Partner Reference ID. String, maximum length 40. <br /> <br /> Type: String<br />(path)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="partnerId"
+                                            id="partnerId"
+                                            placeholder="Partner Id"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorId"
+                                            >Transfer Acceptor ID
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="An identifier for the Transfer Acceptor. This value should be unique
+                                                    for each originator. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorId"
+                                            id="transferAcceptorId"
+                                            placeholder="Transfer Acceptor ID"
+                                            value="456487898368123"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="accept"
+                                            >Accept
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This request header indicates the type of response payload expected by
+                                                    the client. API can accept only application/json as valid values. <br /> <br /> Type: String<br />(header)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="accept"
+                                            name="accept"
+                                        >
+                                            <option value="application/json">
+                                                application/json
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="contentType"
+                                            >Content-Type
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This request header indicates the payload format of the request. The API
+                                                    can accept only application/json as the valid value. The same header
+                                                    will be used in response to indicate the response payload format. API
+                                                    will only generate response payload in application/json. <br /> <br /> Type: String<br />(header)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="contentType"
+                                            name="contentType"
+                                        >
+                                            <option value="application/json">
+                                                application/json
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="network"
+                                            >Network
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The network processing the transactions. If you provide this field, you
+                                                    must provide `messageSystem` and `transactionType`. Supported value:
+                                                    MASTERCARD. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="network"
+                                            id="network"
+                                            placeholder="Network"
+                                            value="MASTERCARD"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transactionType"
+                                            >Transaction Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The type of transactions. If you provide this field, `network` and
+                                            `messageSystem` are optional. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="transactionType"
+                                            name="transactionType"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentType"
+                                            >Payment Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The payment type for the associated transactions.
+                                            If you provide this field, `network` and `messageSystem` are optional.
+                                            If you provide `messageSystem`, `network` = MASTERCARD, and
+                                            `transactionType` = MER, and you want to provide `paymentType`, you can
+                                            only use P2M or MRF.
+                                             <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="paymentType"
+                                            name="paymentType"
+                                        ></select>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="cardProductType"
+                                            >Card Product Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The card product type.
+                                             <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="cardProductType"
+                                            name="cardProductType"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="cardType"
+                                            >Card Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The card type.
+                                             <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="cardType"
+                                            name="cardType"
+                                        ></select>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="messageSystem"
+                                            >Message Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Type of Message System. If you provide this field, you must provide
+                                                `network` and `transactionType`
+                                             <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="messageSystem"
+                                            name="messageSystem"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-label-box mb-4"
+                                >
+                                    <label>AMOUNT</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="minTransactionAmount"
+                                            >Minimum Transaction Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Minimum amount permitted per transaction per account. If this value is
+                                                not set, the default value of 0 is used, which implies no minimum
+                                                amount. This amount is implicitly considered in U.S. Dollars (USD). No
+                                                other currency is supported. Numeric, up to 2 decimal positions. For
+                                                example, 1 or 1.00 is 1 U.S. Dollar. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="minTransactionAmount"
+                                            id="minTransactionAmount"
+                                            placeholder="Minimum Transaction Amount"
+                                            value="1"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="maxTransactionAmount"
+                                            >Maximum Transaction Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Maximum amount permitted per transaction per account. This amount is
+                                                implicitly considered in U.S. Dollars (USD). No other currency is
+                                                supported. Numeric, up to 2 decimal positions. For example, 250 or
+                                                250.00 is 250 U.S. Dollars. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="maxTransactionAmount"
+                                            id="maxTransactionAmount"
+                                            placeholder="Maximum Transaction Amount"
+                                            value="250"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="dailyMaxAmount"
+                                            >Daily Maximum Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total daily amount permitted to be transacted per account. This amount
+                                                    is implicitly considered in U.S. Dollars (USD). No other currency is
+                                                    supported. Numeric, up to 2 decimal positions. For example, 6000 or
+                                                    6000.00 is 6000 U.S. Dollars. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="dailyMaxAmount"
+                                            id="dailyMaxAmount"
+                                            placeholder="Daily Maximum Amount"
+                                            value="6000"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="weeklyMaxAmount"
+                                            >Weekly Maximum Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total weekly amount permitted to be transacted per account. This amount
+                                                    is implicitly considered in U.S. Dollars (USD). No other currency is
+                                                    supported. Numeric, up to 2 decimal positions. For example, 10000 or
+                                                    10000.00 is 10000 U.S. Dollars. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="weeklyMaxAmount"
+                                            id="weeklyMaxAmount"
+                                            placeholder="Weekly Maximum Amount"
+                                            value="10000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="monthlyMaxAmount"
+                                            >Monthly Maximum Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total monthly amount permitted to be transacted per account. This amount
+                                                    is implicitly considered in U.S. Dollars (USD). No other currency is
+                                                    supported. Numeric, up to 2 decimal positions. For example, 25000 or
+                                                    25000.00 is 25000 U.S. Dollars. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="monthlyMaxAmount"
+                                            id="monthlyMaxAmount"
+                                            placeholder="Monthly Maximum Amount"
+                                            value="25000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-header-label-box mb-4"
+                                >
+                                    <label>VOLUME</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="dailyMaxVolume"
+                                            >Daily Maximum Volume
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total daily number of transactions permitted per account. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="dailyMaxVolume"
+                                            id="dailyMaxVolume"
+                                            placeholder="Daily Maximum Volume"
+                                            value="5000"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="weeklyMaxVolume"
+                                            >Weekly Maximum Volume
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total weekly number of transactions permitted per account. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="weeklyMaxVolume"
+                                            id="weeklyMaxVolume"
+                                            placeholder="Weekly Maximum Volume"
+                                            value="8000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="monthlyMaxVolume"
+                                            >Monthly Maximum Volume
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="Total monthly number of transactions permitted per account. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="monthlyMaxVolume"
+                                            id="monthlyMaxVolume"
+                                            placeholder="Monthly Maximum Volume"
+                                            value="20000"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="limitEnabled"
+                                            >Limit Enabled
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title=" Boolean flag indicating whether the configuration is enabled/active
+                                                    (true) or not (false). The configuration will only be checked if it
+                                                    is enabled. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="limitEnabled"
+                                            name="limitEnabled"
+                                        >
+                                            <option value="true">True</option>
+                                            <option value="false">False</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end mt-4 mb-4"
+                        >
+                            <button
+                                data-add-account-limit-request=""
+                                data-add-account-limit-response=""
+                                type="button"
+                                class="btn submit-btn"
+                                id="submitBtn"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+
+                <!-- Form End Here -->
+
+                <!-- Request / Response Object Div Start Here -->
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Add Account Limit Request Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="request-object"></label><textarea id="request-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Add Account Limit Response Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="response-object"></label><textarea id="response-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request / Response Object Div End Here -->
+
+                <!-- Spinner Box Start Here -->
+                <div id="spinner" class=""></div>
+                <!-- Spinner Box End Here -->
+            </div>
+        </div>
+    </body>
+</html>

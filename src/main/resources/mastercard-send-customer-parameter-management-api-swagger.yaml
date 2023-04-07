@@ -1,0 +1,1506 @@
+openapi: 3.0.3
+info:
+  title: Mastercard Send Customer Parameter Management API
+  description: >-
+    This API is for Sponsor Banks (Originating Institutions) who are working
+    with partners (Transaction Initiators) to provide funds transfer solutions
+    (programs) using Mastercard Send. You can use this API to set limits for
+    your partners and their Transfer Acceptors, configure alerts, and retrieve
+    the current daily usage figures.
+
+    Types of configurations:
+
+    * Partner limit configuration = Daily limits and alert settings for a
+      partner
+
+    * Transfer Acceptor limit configuration = Daily limits and alert settings
+      for a Transfer Acceptor
+
+    * Account limit configuration = Account-level settings and limits
+      for a partner, which can apply to either a specific Transfer Acceptor's
+      transactions or all that partner's transactions
+
+    NOTE: For the `partner_id` portion of the URL, use the Mastercard-assigned
+    unique Partner Reference ID for the partner (Transaction Initiator) whose
+    configuration you are viewing or setting. Do not use your Partner Reference
+    ID.
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: 'https://developer.mastercard.com/support'
+    email: apisupport@mastercard.com
+servers:
+  - url: 'https://sandbox.api.mastercard.com/send/partners'
+    description: Sandbox URL
+  - url: 'https://mtf.api.mastercard.com/send/partners'
+    description: MTF URL
+  - url: 'https://api.mastercard.com/send/partners'
+    description: Production URL
+tags:
+  - name: Partner Limits
+    description: >-
+      Retrieve the limits configurations and daily usage information for a
+      partner (Transaction Initiator), and update the daily limits and alerts
+      settings for a partner.
+  - name: Transfer Acceptor Limits
+    description: Add and update daily limits and alert settings for a Transfer Acceptor.
+  - name: Account Limits
+    description: Add and update account limits for a partner (Transaction Initiator).
+paths:
+  '/{partner_id}/limits':
+    get:
+      operationId: getPartnerLimit
+      summary: >-
+        Retrieve the limits configurations and daily usage information for a
+        partner.
+      description: >-
+        The success (200) response will include:
+
+        * Daily limits and alert settings for the partner, and whether those
+        limits are enabled
+
+        * Current daily usage by that partner (including their Transfer
+          Acceptors)
+
+        * An array of Transfer Acceptor limit configurations, which each include:
+
+          - Daily limits and alert settings for the Transfer Acceptor, and
+            whether those limits are enabled
+
+          - Current daily usage by the Transfer Acceptor
+
+        * An array of account limit configurations, which each include:
+
+          - Account-level settings and limits that, if enabled, apply to either
+            the specified Transfer Acceptor's transactions or all transactions
+            for the partner
+      tags:
+        - Partner Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/Accept'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPartnerLimitResponse'
+        '401':
+          $ref: '#/components/responses/Error401Response'
+  '/{partner_id}/limits/daily-limits/{partner_limit_reference}':
+    put:
+      operationId: putPartnerLimit
+      summary: Update the daily limits and alert settings for a partner.
+      description: >-
+        Updates the partner limit configuration identified in the path
+        (`partner_limit_reference`). Your request must include the `dailyLimit`
+        object, but the `alertSettings` object is optional. If you omit the
+        `alertSettings` object, that object's previous settings will be
+        retained.
+      tags:
+        - Partner Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/partner_limit_reference'
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/Content-Type'
+      requestBody:
+        $ref: '#/components/requestBodies/PutPartnerLimit'
+      responses:
+        '200':
+          $ref: '#/components/responses/PutPartnerLimitResponse'
+        '400':
+          $ref: '#/components/responses/Error400Response'
+        '401':
+          $ref: '#/components/responses/Error401Response'
+        '404':
+          $ref: '#/components/responses/Error404Response'
+  '/{partner_id}/limits/daily-limits/transfer-acceptor-limits':
+    post:
+      operationId: postTransferAcceptorLimit
+      summary: Add daily limits and alert settings for a Transfer Acceptor.
+      description: >-
+        Adds a Transfer Acceptor limit configuration for the partner identified
+        in the path (`partner_id`). The success (201) response will include the
+        reference ID for the Transfer Acceptor limit configuration
+        (`transferAcceptorLimitReference`), which you can use to update the
+        configuration.
+      tags:
+        - Transfer Acceptor Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/Content-Type'
+      requestBody:
+        $ref: '#/components/requestBodies/PostTransferAcceptorLimit'
+      responses:
+        '201':
+          $ref: '#/components/responses/PostTransferAcceptorLimitResponse'
+        '400':
+          $ref: '#/components/responses/Error400Response'
+        '401':
+          $ref: '#/components/responses/Error401Response'
+        '409':
+          $ref: '#/components/responses/TransferAcceptorError409Response'
+  '/{partner_id}/limits/transfer-acceptor-limits/{transfer_acceptor_limit_reference}':
+    put:
+      operationId: putTransferAcceptorLimit
+      summary: Update daily limits and alert settings for a Transfer Acceptor.
+      description: >-
+        Updates the Transfer Acceptor limit configuration identified in the path
+        (`transfer_acceptor_limit_reference`). Your request must include the
+        `dailyLimit` object, but the `alertSettings` object is optional. If you
+        omit the `alertSettings` object, that object's previous settings will be
+        retained.
+      tags:
+        - Transfer Acceptor Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/transfer_acceptor_limit_reference'
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/Content-Type'
+      requestBody:
+        $ref: '#/components/requestBodies/PutTransferAcceptorLimit'
+      responses:
+        '200':
+          $ref: '#/components/responses/PutTransferAcceptorLimitResponse'
+        '400':
+          $ref: '#/components/responses/Error400Response'
+        '401':
+          $ref: '#/components/responses/Error401Response2'
+        '404':
+          $ref: '#/components/responses/TransferAcceptorError404Response'
+  '/{partner_id}/limits/daily-limits/account-limits':
+    post:
+      operationId: postAccountLimit
+      summary: Add account limits for a partner.
+      description: >-
+        Adds an account limit configuration for the partner identified in the
+        path (`partner_id`). If the account limit configuration is disabled
+        (`limitEnabled` = false) it will not take effect. If an enabled
+        configuration specifies a Transfer Acceptor (in `transferAcceptorId`),
+        the configuration will be checked for that Transfer Acceptor's
+        transactions only. Otherwise, the enabled configuration will be checked
+        for all the partner's transactions. The success (201) response will
+        include the reference ID for the account limit configuration
+        (`accountLimitReference`), which you can use to update the
+        configuration.
+      tags:
+        - Account Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/Content-Type'
+      requestBody:
+        $ref: '#/components/requestBodies/PostAccountLimit'
+      responses:
+        '201':
+          $ref: '#/components/responses/PostAccountLimitResponse'
+        '400':
+          $ref: '#/components/responses/AccountError400Response'
+        '401':
+          $ref: '#/components/responses/Error401Response'
+        '409':
+          $ref: '#/components/responses/AccountError409Response'
+  '/{partner_id}/limits/account-limits/{account_limit_reference}':
+    put:
+      operationId: putAccountLimit
+      summary: Update account limits for a partner.
+      description: >-
+        Updates the account limit configuration identified in the path
+        (`account_limit_reference`). If the account limit configuration is
+        disabled (`limitEnabled` = false) it will not take effect. If an enabled
+        configuration specifies a Transfer Acceptor (in `transferAcceptorId`),
+        the configuration will be checked for that Transfer Acceptor's
+        transactions only. Otherwise, the enabled configuration will be checked
+        for all the partner's transactions.
+      tags:
+        - Account Limits
+      parameters:
+        - $ref: '#/components/parameters/partner_id'
+        - $ref: '#/components/parameters/account_limit_reference'
+        - $ref: '#/components/parameters/Accept'
+        - $ref: '#/components/parameters/Content-Type'
+      requestBody:
+        $ref: '#/components/requestBodies/PutAccountLimit'
+      responses:
+        '200':
+          $ref: '#/components/responses/PutAccountLimitResponse'
+        '400':
+          $ref: '#/components/responses/AccountError400Response'
+        '401':
+          $ref: '#/components/responses/Error401Response'
+        '404':
+          $ref: '#/components/responses/AccountError404Response'
+components:
+  responses:
+    GetPartnerLimitResponse:
+      description: >-
+        OK. Returns the limits configurations and daily usage information for
+        a partner.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerLimitDetailsWithSpendArray'
+    PutPartnerLimitResponse:
+      description: >-
+        OK. The partner limit configuration has been updated for the partner.
+        Returns the updated configuration.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionInititiatorLimitParent'
+    PostTransferAcceptorLimitResponse:
+      description: >-
+        CREATED. The Transfer Acceptor limit configuration has been added for
+        the Transfer Acceptor. Returns the new configuration details, including
+        its reference ID (`transferAcceptorLimitReference`).
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransferAcceptorLimitParent'
+    PutTransferAcceptorLimitResponse:
+      description: >-
+        OK. The Transfer Acceptor limit configuration has been updated for the
+        Transfer Acceptor. Returns the updated configuration details.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransferAcceptorLimitParent'
+    PostAccountLimitResponse:
+      description: >-
+        CREATED. The account limit configuration has been added for the
+        partner. Returns the configuration details, including its reference ID
+        (`accountLimitReference`).
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountLimitDetail'
+    PutAccountLimitResponse:
+      description: >-
+        OK. The account limit configuration has been updated for the partner.
+        Returns the updated configuration details.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountLimitDetail'
+    Error400Response:
+      description: BAD REQUEST. Returns an array of errors when request fields are invalid.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/ErrorResponse400'
+    AccountError400Response:
+      description: BAD REQUEST. Returns an array of errors when request fields are invalid.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/AccountErrorResponse400'
+    Error401Response:
+      description: >-
+        UNAUTHORIZED. Returns an array of errors in case of missing or invalid
+        authentication token.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse1:
+              $ref: '#/components/examples/ErrorResponse401Unauthorized'
+            ErrorResponse2:
+              $ref: '#/components/examples/ErrorResponse401'
+    Error401Response2:
+      description: >-
+        UNAUTHORIZED. Returns an array of errors in case of missing or invalid
+        authentication token.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse1:
+              $ref: '#/components/examples/ErrorResponse401Unauthorized'
+    Error404Response:
+      description: >-
+        NOT FOUND. Returns an array of errors when no partner limit
+        configuration can be found for the provided `partner_limit_reference`.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/ErrorResponse404'
+    TransferAcceptorError404Response:
+      description: >-
+        NOT FOUND. Returns an array of errors when no Transfer Acceptor limit
+        configuration can be found for the provided
+        `transfer_acceptor_limit_reference`.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/TransferAcceptorErrorResponse404'
+    AccountError404Response:
+      description: >-
+        NOT FOUND. Returns an array of errors when no account limit
+        configuration can be found for the provided `account_limit_reference`.
+      headers:
+        Correlation-Id:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/AccountErrorResponse404'
+    TransferAcceptorError409Response:
+      description: CONFLICT. The Transfer Acceptor limit configuration is already present.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/TransferAcceptorErrorResponse409'
+    AccountError409Response:
+      description: CONFLICT. A matching account limit configuration is already present.
+      headers:
+        Correlation-ID:
+          $ref: '#/components/headers/Correlation-ID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            ErrorResponse:
+              $ref: '#/components/examples/AccountErrorResponse409'
+  requestBodies:
+    PutPartnerLimit:
+      description: Data for updating the partner's daily limits and alert settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartnerLimitPutDetailParent'
+    PostTransferAcceptorLimit:
+      description: Data for adding a Transfer Acceptor limit configuration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransferAcceptorLimitPostDetailParent'
+    PutTransferAcceptorLimit:
+      description: Data for updating a Transfer Acceptor limit configuration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransferAcceptorLimitPutDetailParent'
+    PostAccountLimit:
+      description: Data for adding an account limit configuration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountLimitParent'
+    PutAccountLimit:
+      description: Data for updating an account limit configuration.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountLimitParent'
+  schemas:
+    DailyLimitParent:
+      type: object
+      description: Object specifying the daily limits for the partner.
+      properties:
+        transactionAmountLimit:
+          $ref: '#/components/schemas/TransactionAmountLimit'
+        transactionVolumeLimit:
+          $ref: '#/components/schemas/TransactionVolumeLimit'
+    DailyLimitSetParent:
+      type: object
+      description: Object specifying the daily limits for the partner.
+      required:
+        - transactionAmountLimit
+      properties:
+        transactionAmountLimit:
+          $ref: '#/components/schemas/TransactionAmountLimit'
+        transactionVolumeLimit:
+          $ref: '#/components/schemas/TransactionVolumeLimit'
+    TransferAcceptorDailyLimitParent:
+      type: object
+      description: Object specifying the daily limits for the Transfer Acceptor.
+      properties:
+        transactionAmountLimit:
+          $ref: '#/components/schemas/TransferAcceptorTransactionAmountLimit'
+        transactionVolumeLimit:
+          $ref: '#/components/schemas/TransferAcceptorTransactionVolumeLimit'
+    TransferAcceptorDailyLimitSetParent:
+      type: object
+      description: >-
+        Object specifying the daily limits for the Transfer Acceptor. You cannot
+        set the limits higher than the partner daily limits.
+      required:
+        - transactionAmountLimit
+      properties:
+        transactionAmountLimit:
+          $ref: '#/components/schemas/TransferAcceptorTransactionAmountLimit'
+        transactionVolumeLimit:
+          $ref: '#/components/schemas/TransferAcceptorTransactionVolumeLimit'
+    OriginatingInstitution:
+      type: object
+      description: >-
+        Object containing the Sponsor Bank (Originating Institution)
+        information.
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: >-
+            The Mastercard-assigned unique Partner Reference ID for the
+            Originating Institution. String, length 1-40.
+          nullable: false
+          example: ptnr_Qd45caxjk3tu7fadf234ax693Px
+        name:
+          type: string
+          description: The business name of the Originating Institution.
+          minLength: 1
+          maxLength: 100
+          nullable: false
+          example: World Bank
+    PartnerLimitPutDetailParent:
+      type: object
+      description: Request object for setting the partner limits.
+      required:
+        - dailyLimit
+      properties:
+        dailyLimit:
+          $ref: '#/components/schemas/DailyLimitSetParent'
+        alertSettings:
+          $ref: '#/components/schemas/AlertSettings'
+    TransferAcceptorLimitPutDetailParent:
+      type: object
+      description: Request object for setting the Transfer Acceptor limits.
+      required:
+        - dailyLimit
+      properties:
+        dailyLimit:
+          $ref: '#/components/schemas/TransferAcceptorDailyLimitSetParent'
+        alertSettings:
+          $ref: '#/components/schemas/TransferAcceptorAlertSettings'
+    TransferAcceptorLimitPostDetailParent:
+      type: object
+      description: Request object for setting the Transfer Acceptor limits.
+      required:
+        - transferAcceptorId
+        - dailyLimit
+      properties:
+        transferAcceptorId:
+          type: string
+          nullable: false
+          minLength: 15
+          maxLength: 15
+          description: >-
+            An identifier for the Transfer Acceptor. This value should be unique
+            for each originator.
+          example: '456487898368123'
+        dailyLimit:
+          $ref: '#/components/schemas/TransferAcceptorDailyLimitSetParent'
+        alertSettings:
+          $ref: '#/components/schemas/TransferAcceptorAlertSettings'
+    AccountLimitParent:
+      type: object
+      description: >-
+        Object specifying the account limit configuration being added or updated.
+      properties:
+        transferAcceptorId:
+          type: string
+          minLength: 15
+          maxLength: 15
+          description: >-
+            An identifier for the Transfer Acceptor. This value should be unique
+            for each originator. If this value is supplied, this configuration
+            will apply to that Transfer Acceptor's transactions only. Otherwise,
+            the enabled configuration will apply for all the partner's
+            transactions, regardless of the Transfer Acceptor. The configuration
+            will only be checked if it is enabled (`limitEnabled` = true).
+          example: '456487898368123'
+        network:
+          $ref: '#/components/schemas/network'
+        transactionType:
+          $ref: '#/components/schemas/transactionType'
+        paymentType:
+          $ref: '#/components/schemas/paymentType'
+        cardProductType:
+          $ref: '#/components/schemas/cardProductType'
+        cardType:
+          $ref: '#/components/schemas/cardType'
+        messageSystem:
+          $ref: '#/components/schemas/messageSystem'
+        minTransactionAmount:
+          $ref: '#/components/schemas/minTransactionAmount'
+        maxTransactionAmount:
+          $ref: '#/components/schemas/maxTransactionAmount'
+        dailyMaxAmount:
+          $ref: '#/components/schemas/dailyMaxAmount'
+        weeklyMaxAmount:
+          $ref: '#/components/schemas/weeklyMaxAmount'
+        monthlyMaxAmount:
+          $ref: '#/components/schemas/monthlyMaxAmount'
+        dailyMaxVolume:
+          $ref: '#/components/schemas/dailyMaxVolume'
+        weeklyMaxVolume:
+          $ref: '#/components/schemas/weeklyMaxVolume'
+        monthlyMaxVolume:
+          $ref: '#/components/schemas/monthlyMaxVolume'
+        limitEnabled:
+          type: string
+          format: boolean
+          minLength: 0
+          maxLength: 5
+          nullable: true
+          description: >-
+            Boolean flag indicating whether the configuration is enabled/active
+            (true) or not (false). The configuration will only be checked if it
+            is enabled. If the value is not passed, it defaults to true.
+          example: true
+    network:
+      type: string
+      minLength: 0
+      maxLength: 25
+      description: >-
+        The network processing the transactions. If you provide this field, you
+        must provide `messageSystem` and `transactionType`. Supported value:
+        MASTERCARD.
+      example: MASTERCARD
+    transactionType:
+      type: string
+      minLength: 3
+      maxLength: 3
+      description: >-
+        The type of transactions. If you provide this field, `network` and
+        `messageSystem` are optional. Supported values:
+
+        * PAY = Payment
+
+        * PUR = Purchase Return
+
+        * MER = Merchant Payment
+      example: PAY
+    paymentType:
+      type: string
+      minLength: 3
+      maxLength: 3
+      description: >-
+        The payment type for the associated transactions.
+
+        If you provide this field, `network` and `messageSystem` are optional.
+
+        If you provide `messageSystem`, `network` = MASTERCARD, and
+        `transactionType` = MER, and you want to provide `paymentType`, you can
+        only use P2M or MRF.
+
+        Supported values:
+
+        * A2A = General Transfer to Own Account
+
+        * ACO = Agent Cash Out
+
+        * AMS = Rapid Merchant Settlement
+
+        * B2B = General Business-to-Business Transfer
+
+        * BDB = Business Disbursement
+
+        * C2C = Cash to Card
+
+        * CBP = Payment of Own Credit Card Bill
+
+        * GDB = Government/Non-Profit Disbursement
+
+        * GMR = Gaming Repay
+
+        * MRF = Merchant Refund
+
+        * P2M = Merchant Payment
+
+        * P2P = General Person-to-Person Transfer
+      example: P2P
+    cardProductType:
+      type: string
+      minLength: 5
+      maxLength: 5
+      description: >-
+        The card product type. Supported values:
+
+        * CNSMR = Consumer
+
+        * CMRCL = Commercial
+      example: CNSMR
+    cardType:
+      type: string
+      minLength: 0
+      maxLength: 15
+      description: >-
+        The card type. Supported values:
+
+        * CREDIT
+
+        * DEBIT
+
+        * MAESTRO
+      example: DEBIT
+    messageSystem:
+      type: string
+      minLength: 1
+      maxLength: 1
+      description: >-
+        Type of Message System. If you provide this field, you must provide
+        `network` and `transactionType`. Supported values:
+
+        * S = Single
+
+        * D = Dual
+      example: S
+    minTransactionAmount:
+      type: string
+      format: double
+      multipleOf: 0.01
+      minLength: 1
+      maxLength: 16
+      description: >-
+        Minimum amount permitted per transaction per account. If this value is
+        not set, the default value of 0 is used, which implies no minimum
+        amount. This amount is implicitly considered in U.S. Dollars (USD). No
+        other currency is supported. Numeric, up to 2 decimal positions. For
+        example, 1 or 1.00 is 1 U.S. Dollar.
+      example: '1.00'
+    maxTransactionAmount:
+      type: string
+      format: double
+      multipleOf: 0.01
+      minLength: 1
+      maxLength: 16
+      description: >-
+        Maximum amount permitted per transaction per account. This amount is
+        implicitly considered in U.S. Dollars (USD). No other currency is
+        supported. Numeric, up to 2 decimal positions. For example, 250 or
+        250.00 is 250 U.S. Dollars.
+      example: '250.00'
+    dailyMaxAmount:
+      type: string
+      format: double
+      multipleOf: 0.01
+      minLength: 1
+      maxLength: 16
+      description: >-
+        Total daily amount permitted to be transacted per account. This amount
+        is implicitly considered in U.S. Dollars (USD). No other currency is
+        supported. Numeric, up to 2 decimal positions. For example, 6000 or
+        6000.00 is 6000 U.S. Dollars.
+      example: '6000'
+    weeklyMaxAmount:
+      type: string
+      format: double
+      multipleOf: 0.01
+      minLength: 1
+      maxLength: 16
+      description: >-
+        Total weekly amount permitted to be transacted per account. This amount
+        is implicitly considered in U.S. Dollars (USD). No other currency is
+        supported. Numeric, up to 2 decimal positions. For example, 10000 or
+        10000.00 is 10000 U.S. Dollars.
+      example: '10000'
+    monthlyMaxAmount:
+      type: string
+      format: double
+      multipleOf: 0.01
+      minLength: 1
+      maxLength: 16
+      description: >-
+        Total monthly amount permitted to be transacted per account. This amount
+        is implicitly considered in U.S. Dollars (USD). No other currency is
+        supported. Numeric, up to 2 decimal positions. For example, 25000 or
+        25000.00 is 25000 U.S. Dollars.
+      example: '25000'
+    dailyMaxVolume:
+      type: string
+      format: integer
+      minLength: 1
+      maxLength: 16
+      description: Total daily number of transactions permitted per account.
+      example: '5000'
+    weeklyMaxVolume:
+      type: string
+      format: integer
+      minLength: 1
+      maxLength: 16
+      description: Total weekly number of transactions permitted per account.
+      example: '8000'
+    monthlyMaxVolume:
+      type: string
+      format: integer
+      minLength: 1
+      maxLength: 16
+      description: Total monthly number of transactions permitted per account.
+      example: '20000'
+    TransactionInititiatorLimitParent:
+      type: object
+      description: Response object for setting the partner limits.
+      properties:
+        partnerLimitReference:
+          type: string
+          description: >-
+            The reference ID for the partner limit configuration, which is
+            assigned during the onboarding process. String, length 1-40.
+          minLength: 1
+          maxLength: 40
+          nullable: false
+          example: Ref_00001
+        dailyLimit:
+          $ref: '#/components/schemas/DailyLimitParent'
+        alertSettings:
+          $ref: '#/components/schemas/AlertSettings'
+    TransferAcceptorLimitParent:
+      type: object
+      description: Response object for setting the Transfer Acceptor limits.
+      properties:
+        transferAcceptorLimitReference:
+          type: string
+          description: >-
+            The reference ID for the Transfer Acceptor limit configuration,
+            which was either assigned during the onboarding process or returned
+            when the configuration was added. String, length 1-40.
+          minLength: 1
+          maxLength: 40
+          nullable: false
+          example: TA_Ref_23423
+        transferAcceptorId:
+          type: string
+          nullable: false
+          minLength: 15
+          maxLength: 15
+          description: >-
+            An identifier for the Transfer Acceptor. This value should be unique
+            for each originator.
+          example: '456487898368123'
+        dailyLimit:
+          $ref: '#/components/schemas/TransferAcceptorDailyLimitParent'
+        alertSettings:
+          $ref: '#/components/schemas/TransferAcceptorAlertSettings'
+    DailyUsage:
+      type: object
+      description: Object specifying the total amount spent along with currency.
+      properties:
+        amountUsed:
+          type: string
+          format: integer
+          minLength: 1
+          maxLength: 16
+          description: >-
+            Total amount spent for the day. The decimal position is implied
+            based on the `currencyExponent` value. For example, if the
+            `currencyExponent` is 2 and the `currency` is INR, a value of
+            18743334 means 187433.34 Indian Rupees.
+          nullable: false
+          example: '18743334'
+        currency:
+          type: string
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the amount in the `amountUsed` field. See [Country and
+            Currency Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for Indian Rupees, the value is INR.
+          minLength: 3
+          maxLength: 3
+          nullable: false
+          example: INR
+        currencyExponent:
+          type: string
+          format: integer
+          minLength: 1
+          maxLength: 1
+          description: The number of implied decimal positions for `amountUsed`.
+          example: '2'
+        amountUsedPercentage:
+          type: string
+          format: double
+          multipleOf: 0.01
+          minLength: 1
+          maxLength: 6
+          description: >-
+            Total amount spent for the day, expressed as a percentage of the
+            daily amount limit (`transactionAmountLimit.amount`). Numeric, up to
+            two decimal digit precision. For example, 18.74 is 18.74%.
+          nullable: false
+          example: 18.74
+        transactionVolumeUsed:
+          type: string
+          format: integer
+          minLength: 0
+          maxLength: 8
+          description: Total number of transactions processed for the day.
+          nullable: true
+          example: '25000'
+        transactionVolumeUsedPercentage:
+          type: string
+          format: double
+          multipleOf: 0.01
+          minLength: 0
+          maxLength: 6
+          description: >-
+            Total number of transactions processed for the day, expressed as a
+            percentage of the daily volume limit (`maxTransactionVolume`).
+            Numeric, up to two decimal digit precision. For example, 50.00 is
+            50.00%.
+          nullable: true
+          example: '50.00'
+    AlertSettings:
+      type: object
+      description: Object containing the alert settings for the partner.
+      required:
+        - alertsEnabled
+        - alertEmails
+        - amountAlertThreshold
+      properties:
+        alertsEnabled:
+          type: string
+          format: boolean
+          minLength: 0
+          maxLength: 5
+          description: >-
+            Boolean flag indicating whether alerts are enabled (true) or not
+            (false). This setting applies to both the partner alerts and the
+            Transfer Acceptor alerts. Alert notifications will not be sent if
+            alerts are disabled. If the value is not passed, it defaults to
+            false (disabled).
+          nullable: true
+          example: true
+        alertEmails:
+          type: array
+          description: >-
+            The email address(es) of the associated entities (business partners
+            or Sponsor Banks) who are entitled to receive alert notifications.
+            This is required if the business partner has opted for alert
+            notifications.
+          items:
+            type: string
+            format: email
+          nullable: true
+          maxLength: 1500
+          example:
+            - test123@abcmail.com
+            - test456@abcmail.com
+        amountAlertThreshold:
+          type: number
+          description: >-
+            The amount alert threshold, which is a percentage (e.g. 95). When
+            the partner exceeds this percentage of their daily amount limit
+            (`transactionAmountLimit.amount`), alert notifications will be sent
+            if alerts are enabled (`alertsEnabled` = true). Numeric integer, do
+            not include the % symbol.
+          minLength: 1
+          maxLength: 3
+          example: 95
+        volumeAlertThreshold:
+          type: number
+          description: >-
+            The volume alert threshold, which is a percentage (e.g. 80). When
+            the partner exceeds this percentage of their daily volume limit
+            (`maxTransactionVolume`), alert notifications will be sent if alerts
+            are enabled (`alertsEnabled` = true). Numeric integer, do not
+            include the % symbol.
+          minLength: 1
+          maxLength: 3
+          example: 80
+    TransferAcceptorAlertSettings:
+      type: object
+      description: Object containing the alert settings for the Transfer Acceptor.
+      required:
+        - alertEmails
+        - amountAlertThreshold
+      properties:
+        alertEmails:
+          type: array
+          description: >-
+            The email address(es) of the associated entities (business partners
+            or Sponsor Banks) who are entitled to receive alert notifications.
+            This is required if the business partner has opted for alert
+            notifications.
+          items:
+            type: string
+            format: email
+          nullable: true
+          maxLength: 1500
+          example:
+            - test123@abcmail.com
+            - test456@abcmail.com
+        amountAlertThreshold:
+          type: number
+          description: >-
+            The amount alert threshold, which is a percentage (e.g. 95). When
+            the Transfer Acceptor exceeds this percentage of their daily amount
+            limit (`transactionAmountLimit.amount`), alert notifications will be
+            sent if alerts are enabled (`alertsEnabled` = true, in the partner
+            limit configuration). Numeric integer, do not include the % symbol.
+          minLength: 1
+          maxLength: 3
+          example: 95
+        volumeAlertThreshold:
+          type: number
+          description: >-
+            The volume alert threshold, which is a percentage (e.g. 80). When
+            the Transfer Acceptor exceeds this percentage of their daily volume
+            limit (`maxTransactionVolume`), alert notifications will be sent if
+            alerts are enabled (`alertsEnabled` = true, in the partner limit
+            configuration). Numeric integer, do not include the % symbol.
+          minLength: 1
+          maxLength: 3
+          example: 80
+    AccountLimitDetail:
+      type: object
+      description: Account limit configuration detail.
+      properties:
+        accountLimitReference:
+          type: string
+          minLength: 1
+          maxLength: 40
+          description: >-
+            The reference ID for the account limit configuration, which was
+            either assigned during the onboarding process or returned when the
+            configuration was added. String, length 1-40.
+          example: AL_Ref_00001
+        transferAcceptorId:
+          type: string
+          minLength: 15
+          maxLength: 15
+          description: >-
+            An identifier for the Transfer Acceptor to which this configuration
+            applies. This value should be unique for each originator. If this
+            field is not present, this configuration will apply for all the
+            partner's transactions, regardless of the Transfer Acceptor. The
+            configuration will only be checked if it is enabled (`limitEnabled`
+            = true).
+          example: '456487898368123'
+        network:
+          $ref: '#/components/schemas/network'
+        transactionType:
+          $ref: '#/components/schemas/transactionType'
+        paymentType:
+          $ref: '#/components/schemas/paymentType'
+        cardProductType:
+          $ref: '#/components/schemas/cardProductType'
+        cardType:
+          $ref: '#/components/schemas/cardType'
+        messageSystem:
+          $ref: '#/components/schemas/messageSystem'
+        minTransactionAmount:
+          $ref: '#/components/schemas/minTransactionAmount'
+        maxTransactionAmount:
+          $ref: '#/components/schemas/maxTransactionAmount'
+        dailyMaxAmount:
+          $ref: '#/components/schemas/dailyMaxAmount'
+        weeklyMaxAmount:
+          $ref: '#/components/schemas/weeklyMaxAmount'
+        monthlyMaxAmount:
+          $ref: '#/components/schemas/monthlyMaxAmount'
+        dailyMaxVolume:
+          $ref: '#/components/schemas/dailyMaxVolume'
+        weeklyMaxVolume:
+          $ref: '#/components/schemas/weeklyMaxVolume'
+        monthlyMaxVolume:
+          $ref: '#/components/schemas/monthlyMaxVolume'
+        limitEnabled:
+          type: string
+          format: boolean
+          minLength: 4
+          maxLength: 5
+          description: >-
+            Boolean flag indicating whether the configuration is enabled/active
+            (true) or not (false). The configuration will only be checked if it
+            is enabled.
+          nullable: false
+          example: true
+    PartnerLimitDetailsWithSpendArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/PartnerLimitDetailsWithSpend'
+    PartnerLimitDetailsWithSpend:
+      title: PartnerLimitDetailsWithSpend
+      type: object
+      description: Partner limit details along with spend details.
+      properties:
+        partnerLimitReference:
+          type: string
+          description: >-
+            The reference ID for the partner limit configuration, which is
+            assigned during the onboarding process. String, length 1-40.
+          minLength: 1
+          maxLength: 40
+          nullable: false
+          example: Ref_00001
+        transactionInitiatorName:
+          type: string
+          description: The name of the partner (Transaction Initiator).
+          minLength: 1
+          maxLength: 40
+          nullable: false
+          example: Merchant ABC
+        originatingInstitution:
+          $ref: '#/components/schemas/OriginatingInstitution'
+        dailyLimit:
+          $ref: '#/components/schemas/DailyLimitParent'
+        dailyUsage:
+          $ref: '#/components/schemas/DailyUsage'
+        informationAsOf:
+          type: string
+          # format: date-time
+          minLength: 1
+          maxLength: 20
+          description: >-
+            The date and time the total amount spent was calculate, as an ISO
+            8601 timestamp in U.S. Central Timezone. Format: YYYY-MM-DDThh:mm:ss.
+          nullable: false
+          example: '2022-02-15T18:05:02'
+        alertSettings:
+          $ref: '#/components/schemas/AlertSettings'
+        limitEnabled:
+          type: string
+          format: boolean
+          minLength: 4
+          maxLength: 5
+          nullable: false
+          description: >-
+            Boolean flag indicating whether the limits are being enforced (true)
+            or not (false).
+          example: true
+        transferAcceptorLimits:
+          type: array
+          description: List of Transfer Acceptor limit configurations.
+          items:
+            $ref: '#/components/schemas/TransferAcceptorLimitWithSpend'
+        accountLimits:
+          type: array
+          description: List of account limit configurations.
+          items:
+            $ref: '#/components/schemas/AccountLimitDetail'
+    TransferAcceptorLimitWithSpend:
+      type: object
+      description: Partner limit details along with spend details.
+      properties:
+        transferAcceptorLimitReference:
+          type: string
+          description: >-
+            The reference ID for the Transfer Acceptor limit configuration,
+            which was either assigned during the onboarding process or returned
+            when the configuration was added. String, length 1-40.
+          minLength: 1
+          maxLength: 40
+          nullable: false
+          example: TA_Ref_23423
+        transferAcceptorId:
+          type: string
+          nullable: false
+          minLength: 15
+          maxLength: 15
+          description: >-
+            An identifier for the Transfer Acceptor. This value should be unique
+            for each originator.
+          example: '456487898368123'
+        dailyLimit:
+          $ref: '#/components/schemas/TransferAcceptorDailyLimitParent'
+        dailyUsage:
+          $ref: '#/components/schemas/DailyUsage'
+        alertSettings:
+          $ref: '#/components/schemas/TransferAcceptorAlertSettings'
+        limitEnabled:
+          type: string
+          format: boolean
+          nullable: false
+          minLength: 4
+          maxLength: 5
+          description: >-
+            Boolean flag indicating whether the Transfer Acceptor limits are
+            being enforced (true) or not (false).
+          example: true
+    TransactionAmountLimit:
+      type: object
+      description: Daily amount limit for the partner.
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          type: string
+          format: integer
+          minLength: 1
+          maxLength: 13
+          description: >-
+            Daily transaction limit for the partner (the maximum amount
+            permitted to be transacted per day), in the currency identified by
+            the `currency` field. It is a positive non-zero integer, length
+            1-13. The decimal position is implied based on the relevant currency
+            exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, 1000000 Indian Rupees (INR) will be a value of
+            100000000.
+          nullable: false
+          example: '100000000'
+        currency:
+          type: string
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the amount in the `amount` field. See [Country and
+            Currency Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for Indian Rupees, the value is INR.
+          minLength: 3
+          maxLength: 3
+          nullable: false
+          example: INR
+    TransactionVolumeLimit:
+      type: object
+      description: Daily volume limit for the partner.
+      properties:
+        maxTransactionVolume:
+          type: string
+          format: integer
+          minLength: 0
+          maxLength: 8
+          description: The maximum number of transactions permitted per day.
+          nullable: true
+          example: '50000'
+    TransferAcceptorTransactionAmountLimit:
+      type: object
+      description: Daily amount limit for the Transfer Acceptor.
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          type: string
+          format: integer
+          minLength: 1
+          maxLength: 13
+          description: >-
+            Daily transaction limit for the Transfer Acceptor (the maximum
+            amount permitted to be transacted per day), in the currency
+            identified by the `currency` field. It is a positive non-zero
+            integer, length 1-13. The decimal position is implied based on the
+            relevant currency exponent; see [Country and Currency
+            Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, 1000000 Indian Rupees (INR) will be a value of
+            100000000.
+          nullable: false
+          example: '100000000'
+        currency:
+          type: string
+          description: >-
+            The 3-character ISO 4217 alpha-3 code identifying the currency for
+            the amount in the `amount` field. See [Country and
+            Currency Codes](https://developer.mastercard.com/mastercard-send-2-0/documentation/field-uris-codes/country-currency-codes/).
+            For example, for Indian Rupees, the value is INR.
+          minLength: 3
+          maxLength: 3
+          nullable: false
+          example: INR
+    TransferAcceptorTransactionVolumeLimit:
+      type: object
+      description: Daily volume limit for the Transfer Acceptor.
+      properties:
+        maxTransactionVolume:
+          type: string
+          format: integer
+          minLength: 0
+          maxLength: 8
+          description: The maximum number of transactions permitted per day.
+          nullable: true
+          example: '50000'
+    ErrorResponse:
+      type: object
+      description: >-
+        Response object returned in case of any errors that occurred during
+        processing.
+      required:
+        - Errors
+      properties:
+        Errors:
+          type: object
+          description: Parent object containing the Error array.
+          required:
+            - Error
+          properties:
+            Error:
+              $ref: '#/components/schemas/Errors'
+    Errors:
+      type: array
+      description: Parent object containing the array.
+      minItems: 1
+      items:
+        $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      description: An array of errors.
+      properties:
+        Source:
+          type: string
+          description: >-
+            Where possible, identifies the field that is causing the error, for
+            example an incorrectly formatted field or a missing required field.
+            If the error is not associated with a specific field, system error
+            is returned.
+          minLength: 1
+          maxLength: 100
+          example: partner_id
+        ReasonCode:
+          type: string
+          description: The general cause of the error, see [Error Codes](#error-codes).
+          minLength: 1
+          maxLength: 100
+          example: INVALID_INPUT_VALUE
+        Description:
+          type: string
+          description: >-
+            Describes the error. Present if more information is available than
+            that provided by the `ReasonCode` field.
+          minLength: 1
+          maxLength: 500
+          example: Invalid value
+        Recoverable:
+          type: boolean
+          description: >-
+            Indicates whether the transaction can be recovered (might be
+            successful) if the failed request is resubmitted. Valid values:
+            true, false.
+          example: false
+        ErrorDetailCode:
+          type: string
+          description: The error code.
+          minLength: 0
+          maxLength: 100
+          example: '082000'
+        Details:
+          type: string
+          description: Always null, present for backwards compatibility.
+          minLength: 0
+          maxLength: 4
+          example: 'null'
+  examples:
+    ErrorResponse400:
+      value:
+        Errors:
+          Error:
+            - Source: dailyLimit.transactionAmountLimit.currency
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    AccountErrorResponse400:
+      value:
+        Errors:
+          Error:
+            - Source: paymentType
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    ErrorResponse401:
+      value:
+        Errors:
+          Error:
+            - Source: partner_id
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    ErrorResponse401Unauthorized:
+      value:
+        Errors:
+          Error:
+            - Source: partner_id
+              ReasonCode: UNAUTHORIZED_ACCESS
+              Description: Unauthorized Access
+              Recoverable: false
+              ErrorDetailCode: '050007'
+              Details: null
+    TransferAcceptorErrorResponse409:
+      value:
+        Errors:
+          Error:
+            - Source: transferAcceptorId
+              ReasonCode: RESOURCE_ERROR
+              Description: Duplicate value
+              Recoverable: false
+              ErrorDetailCode: '110501'
+              Details: null
+    AccountErrorResponse409:
+      value:
+        Errors:
+          Error:
+            - Source: partner_id
+              ReasonCode: RESOURCE_ERROR
+              Description: Duplicate value
+              Recoverable: false
+              ErrorDetailCode: '110501'
+              Details: null
+    ErrorResponse404:
+      value:
+        Errors:
+          Error:
+            - Source: partnerLimitReference
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    TransferAcceptorErrorResponse404:
+      value:
+        Errors:
+          Error:
+            - Source: transferAcceptorLimitReference
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+    AccountErrorResponse404:
+      value:
+        Errors:
+          Error:
+            - Source: accountLimitReference
+              ReasonCode: INVALID_INPUT_VALUE
+              Description: Invalid value
+              Recoverable: false
+              ErrorDetailCode: '082000'
+              Details: null
+  parameters:
+    partner_id:
+      in: path
+      name: partner_id
+      schema:
+        type: string
+        minLength: 32
+        maxLength: 40
+      required: true
+      description: >-
+        The Mastercard-assigned unique Partner Reference ID for the partner
+        (Transaction Initiator) whose configuration you are viewing or setting.
+        It is not your Partner Reference ID. String, maximum length 40.
+      example: ptnr_1lzs0zD6uWo7k-OdUXjLW_pFgX2
+    partner_limit_reference:
+      in: path
+      name: partner_limit_reference
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 40
+      required: true
+      description: >-
+        The reference ID for the partner limit configuration, which was assigned
+        during the onboarding process. String, length 1-40.
+      example: Ref_00001
+    transfer_acceptor_limit_reference:
+      in: path
+      name: transfer_acceptor_limit_reference
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 40
+      required: true
+      description: >-
+        The reference ID for the Transfer Acceptor limit configuration, which
+        was either assigned during the onboarding process or returned when the
+        configuration was added. String, length 1-40.
+      example: TA_Ref_23423
+    account_limit_reference:
+      in: path
+      name: account_limit_reference
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 40
+      required: true
+      description: >-
+        The reference ID for the account limit configuration, which was either
+        assigned during the onboarding process or returned when the
+        configuration was added. String, length 1-40.
+      example: AL_Ref_00001
+    Accept:
+      in: header
+      name: Accept
+      schema:
+        type: string
+      description: >-
+        This request header indicates the type of response payload expected by
+        the client. API can accept only application/json as valid values.
+      example: application/json
+    Content-Type:
+      in: header
+      name: Content-Type
+      schema:
+        type: string
+      description: >-
+        This request header indicates the payload format of the request. The API
+        can accept only application/json as the valid value. The same header
+        will be used in response to indicate the response payload format. API
+        will only generate response payload in application/json.
+      example: application/json
+  headers:
+    Correlation-ID:
+      schema:
+        type: string
+      description: >-
+        ID for research purposes to uniquely identify the request within
+        Mastercard.
+      example: cor_45345lkjflkdjsflkdf

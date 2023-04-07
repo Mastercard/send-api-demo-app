@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Transfer Eligibility API</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+            charset="utf-8"
+        />
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome/css/all.min.css" />
+        <script src="/assets/js/environment.js"></script>
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap/popper.min.js"></script>
+        <script src="/assets/js/bootstrap/bootstrap.min.js"></script>
+        <script src="/assets/js/jquery.validate.min.js"></script>
+        <script src="/assets/js/additional-methods.min.js"></script>
+        <script src="/assets/js/transfer-eligibility.js"></script>
+    </head>
+
+    <body>
+        <!-- Main Header Start Here -->
+        <div class="container-fluid">
+            <div
+                class="row mt-4 d-flex justify-content-center align-items-center header-border-bottom pb-3"
+            >
+                <div
+                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center align-items-center"
+                >
+                    <img
+                        class="mastercard-logo"
+                        src="/assets/images/mc_symbol_opt_73_3x.png"
+                        alt="Mastercard Logo"
+                    />
+                    <label class="mastercard-label mb-0"> Mastercard® </label>
+                </div>
+            </div>
+            <!-- Main Header End Here -->
+            <div
+                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4 mb-5 api-form-box"
+            >
+                <!-- API Name Header Start Here -->
+                <div class="row mb-3 api-name-border pb-3">
+                    <div
+                        class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-3 d-flex align-items-center"
+                    >
+                        <a href="/views/payments-overview.html" class="text-decoration-none">
+                            <img
+                                class="back-logo"
+                                src="/assets/images/back_icon@2x.png"
+                                alt="Back Logo"
+                            />
+                        </a>
+                    </div>
+                    <div
+                        class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-9 d-flex align-items-center"
+                    >
+                        <label class="api-name-label"> SEND 2.0 API'S </label>
+                    </div>
+                </div>
+                <!-- API Name Header End Here -->
+
+                <!-- API Selection Box Start Here -->
+
+                <ul class="nav nav-tabs">
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label api-menu-main-label-active"
+                    >
+                        <a
+                            class="nav-link active text-center cursor-pointer"
+                            data-toggle="tab"
+                            href="#transferEligibility"
+                            >TRANSFER ELIGIBILITY</a
+                        >
+                    </li>
+                    <li
+                        class="nav-item col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-main-label"
+                    >
+                        <a
+                            onclick="location.href='/views/payments.html';"
+                            class="nav-link text-center cursor-pointer"
+                            data-toggle="tab"
+                            >PAYMENTS</a
+                        >
+                    </li>
+                </ul>
+
+                <div class="container-fluid">
+                    <div class="tab-content">
+                        <div
+                            role="tabpanel"
+                            class="tab-pane active"
+                            id="transferEligibility"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 d-flex align-items-center justify-content-center api-menu-sub-label text-center padding-top-none"
+                                >
+                                    <a href="" class="api-names-box">
+                                        <label class="api-label">
+                                            TRANSFER ELIGIBILITY
+                                        </label>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- API Selection Box End Here -->
+
+                <!-- Form Start here -->
+                <form
+                    name="transfer-eligibility-form"
+                    id="transfer-eligibility-form"
+                >
+                    <div class="row api-name-border pb-4 mb-5 mt-5">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                        >
+                            <h5>TRANSFER ELIGIBILITY</h5>
+                        </div>
+
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquirerCountry"
+                                            >Acquirer Country
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 3-character ISO 3166-1 uppercase alpha-3 country code of
+                                            the Bank Identification Number (BIN) under which the acquiring member is registered with Mastercard;
+                                            see Country and Currency Codes. For example, the United States of America is USA.
+                                            The code is used to determine if the eligibility is for domestic or cross-border transactions.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquirerCountry"
+                                            id="acquirerCountry"
+                                            placeholder="Acquirer Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="amount"
+                                            >Amount
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The transaction amount, in the currency identified by the currency field.
+                                            Numeric integer, 1-999999999999. The decimal point is implied based on the relevant currency exponent;
+                                            see Country and Currency Codes.
+                                            For example, a US Dollar $60 transaction will be a value of 6000.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 12 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="amount"
+                                            id="amount"
+                                            placeholder="Amount"
+                                            value="6000"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="currency"
+                                            >Currency
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="format: ISO Alpha CURRENCY <br /> <br />
+                                            The 3-character ISO 4217 alpha-3 code identifying the currency for the transaction amount in the amount field.
+                                            This field is required when amount is provided. See Country and Currency Codes.
+                                            For example, for U.S. Dollars, the value is USD.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="currency"
+                                            id="currency"
+                                            placeholder="Currency"
+                                            value="USD"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="paymentType"
+                                            >Payment Type
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The appropriate payment type for the funds transfer taking place.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="paymentType"
+                                            name="paymentType"
+                                        ></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="recipient_pan"
+                                            >Recipient PAN
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A card PAN or token.
+                                            The URI string starts with pan:{account-number};exp={expiry}, where {account-number} is the PAN
+                                            or token (16-digits, e.g. 5117510000000007) and {expiry} is the expiration date,
+                                            in format YYYY-MM (e.g. 2050-10). The expiration date is optional.
+                                            The URI string can continue with any relevant {property}={value} couplets,
+                                            separated using a semi-colon (;). Properties can include:
+                                            cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+                                            <br /> <br /> Examples pan:5117510000000007;exp=2050-10;cvc=123
+                                            <br /> pan:5117510000000007;cvc=123"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="recipient_pan"
+                                            id="recipient_pan"
+                                            placeholder="Recipient PAN"
+                                            value="pan:5102589999999913"
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="sender_pan"
+                                            >Sender PAN
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A card PAN or token.
+                                            The URI string starts with pan:{account-number};exp={expiry},
+                                            where {account-number} is the PAN or token (16-digits, e.g. 5117510000000007)
+                                            and {expiry} is the expiration date, in format YYYY-MM (e.g. 2050-10).
+                                            The expiration date is optional.
+                                            The URI string can continue with any relevant {property}={value} couplets,
+                                            separated using a semi-colon (;). Properties can include:
+                                            cvc = The Card Verification Code (CVC), e.g. 'cvc=123'
+                                            <br /> <br /> Examples pan:5117510000000007;exp=2050-10;cvc=123
+                                            <br /> pan:5117510000000007;cvc=123"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="sender_pan"
+                                            id="sender_pan"
+                                            placeholder="Sender PAN"
+                                            value="pan:5102589999999921"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorCountry"
+                                            >Transfer Acceptor Country
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 3-character ISO 3166-1 uppercase alpha-3 code for the country of the merchant/originator
+                                            who is providing the funds transfer service to the Sender;
+                                            see Country and Currency Codes. For example, the United States of America is USA.
+                                            Mastercard uses this field to determine if the transaction is domestic or cross-border.
+                                            <br /> <br /> minLength: 3 <br /> maxLength: 3 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorCountry"
+                                            id="transferAcceptorCountry"
+                                            placeholder="Transfer Acceptor Country"
+                                            value="USA"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transferAcceptorId"
+                                            >Transfer Acceptor Id
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="An identifier for the card acceptor. This value should be unique for each originator. Alphanumeric.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 15 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transferAcceptorId"
+                                            id="transferAcceptorId"
+                                            placeholder="Transfer Acceptor Id"
+                                            value="123"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="transactionLocalDateTime"
+                                            >Transaction Local Date Time
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="format: ISO 8601 DATE <br />
+                                            The local date and time of the transaction (the funds transfer taking place),
+                                            in ISO 8601 format YYYY-MM-DDThh:mm:ss.
+                                            This value is required for a limit check to be performed.
+                                            <br /> <br /> example: '2021-06-17T18:05:02' <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="transactionLocalDateTime"
+                                            id="transactionLocalDateTime"
+                                            placeholder="Transaction Local Date Time"
+                                            value="2021-06-17T18:05:02"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>Acquiring Credentials</h5>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringIca"
+                                            >Acquiring Ica
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Mastercard-assigned Interbank Card Association (ICA) ID for the acquiring member registered with Mastercard.
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 11 
+                                            <br /> <br /> example: '123456' <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringIca"
+                                            id="acquiringIca"
+                                            placeholder="Acquiring Ica"
+                                            value="12345678911"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="messageType"
+                                            >Message Type
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="This object contains details for Single Message acquiring.
+                                            At least one of the dualMessage or singleMessage objects must be provided. <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <select
+                                            class="form-control"
+                                            id="messageType"
+                                            name="messageType"
+                                        >
+                                            <option value="singleMessage">
+                                                Single Message
+                                            </option>
+                                            <option value="dualMessage">
+                                                Dual Message
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="acquirerReferenceId_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquirerReferenceId"
+                                            >Acquirer Reference ID
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The Acquirer Reference ID under which the Acquiring member is registered with Mastercard. Numeric.
+                                            <br /> <br /> example: 512340
+                                            <br /> <br /> minLength: 6 <br /> maxLength: 6 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquirerReferenceId"
+                                            id="acquirerReferenceId"
+                                            placeholder="Acquirer Reference ID"
+                                            value="512340"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="acquiringIdentificationCode_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="acquiringIdentificationCode"
+                                            >Acquiring Identification Code
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The 9-digit Federal Reserve Routing and Transit Number (RTN) of the acquiring member,
+                                            or the 9-digit pseudo-number assigned to the acquiring member by Mastercard.
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 9 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="acquiringIdentificationCode"
+                                            id="acquiringIdentificationCode"
+                                            placeholder="Acquiring Identification Code"
+                                            value="840195719"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-none"
+                                    id="processorId_div"
+                                >
+                                    <div class="form-group">
+                                        <label for="processorId"
+                                            >Processor Id
+                                            <span class="required">*</span>
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="A 10-digit number of the format 9000xxxxxx, where xxxxxx is the Single Message System-assigned processor ID.
+                                            For example, if the processor ID is 001957, this value is 9000001957
+                                            <br /> <br /> minLength: 10 <br /> maxLength: 10
+                                            <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="processorId"
+                                            id="processorId"
+                                            placeholder="Processor Id"
+                                            value="9000001957"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row">
+                                <div
+                                    class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border mb-4"
+                                >
+                                    <h5>
+                                        Additional ProgramData(Cross Network)
+                                    </h5>
+                                </div>
+                                <div
+                                    class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                                >
+                                    <div class="form-group">
+                                        <label for="walletProviderSignature"
+                                            >Wallet Provider Signature
+                                            <em
+                                                class="fas fa-info-circle"
+                                                data-toggle="tooltip"
+                                                data-placement="right"
+                                                data-html="true"
+                                                title="The partner's wallet provider signature if there is cross-network activity.
+                                            <br /> <br /> example: 'eyJraWQiOiIyM2JjYmU2NGM0YWZiZWIwNDc3MTg3YmQxNTA4MTcwODNlMjY4MGRiYzhiOTVlZmRkZTlhN2M1MTU0YjE3NjRmIiwiYWxnIjoiUlMyNTYifQ.eyJwYXJ0bmVySWQiOiJwdG5yXzFsenMwekQ2NXJvN2stT2RVWGpMV19wRmdYNCIsInBheW1lbnRSZWZlcmVuY2UiOiJyZWZfMTIzNDU2ZGQ3OTEwIiwiYW1vdW50IjoiMTAwMCIsInJlY2lwaWVudEFjY291bnRVcmkiOiJwYW46NTQzMjEyMzQ1Njc4OTAxMjtleHA9MjA5OS0xOSJ9.XO0WEr_Cwb4lYSWui6zYXms6djaQ5fSDMa1D92tHMpM5SytexZzCO9zNVxRYBKDrHsmZoMx9sAShucSaRupT4Ns7KxCykoH-bhwQW7HeoMQbF4kDbRbgAgrajYD3m7_uMWoI4EG51ugcq7UfhQCObig6GEiSGQ6eiavyzdzKQWN-gt4_iPWur9TITX2NJpDQwde2HOB3pgpuC55coWZnmQNePceLDVfj85_ukkrGA4pbXze0pnOgshshQS9Xe6_dk4BmTDH2MNcRf67odqXmnRGIplumA81oBiCWyaDIc6cqUlIOoMVZKWvZCvynTtAloNb18vV2OetBE2a5Mfhkbg'
+                                            <br /> <br /> minLength: 1 <br /> maxLength: 2058 <br /> <br /> Type: String<br />(body)"
+                                            ></em>
+                                        </label>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            name="walletProviderSignature"
+                                            id="walletProviderSignature"
+                                            placeholder="Wallet Provider Signature"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-end mt-4 mb-4"
+                        >
+                            <button
+                                data-add-daily-limit-request=""
+                                data-add-daily-limit-response=""
+                                type="button"
+                                class="btn submit-btn"
+                                id="submitBtn"
+                            >
+                                SUBMIT
+                            </button>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+
+                <!-- Form End Here -->
+
+                <!-- Request / Response Object Div Start Here -->
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Transfer Eligibility Request Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="request-object"></label><textarea id="request-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-3"
+                    >
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 api-sub-label-border p-0 mb-4"
+                        >
+                            <h5>Transfer Eligibility Response Object</h5>
+                        </div>
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 p-0 mb-4"
+                        >
+                            <label for="response-object"></label><textarea id="response-object"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Request / Response Object Div End Here -->
+
+                <!-- Spinner Box Start Here -->
+                <div id="spinner" class=""></div>
+                <!-- Spinner Box End Here -->
+            </div>
+        </div>
+    </body>
+</html>

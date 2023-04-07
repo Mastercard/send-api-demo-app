@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Tip",
+        "value": "01"
+    },
+    {
+        "name": "A flat convenience fee",
+        "value": "02"
+    },
+    {
+        "name": "A percentage convenience fee",
+        "value": "03"
+    }
+]
