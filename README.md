@@ -1,4 +1,9 @@
 Application for Mastercard Send APIs
+
+[![](https://sonarcloud.io/api/project_badges/measure?project=Mastercard_send-api-demo-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=Mastercard_send-api-demo-app)
+[![](https://sonarcloud.io/api/project_badges/measure?project=Mastercard_send-api-demo-app&metric=coverage)](https://sonarcloud.io/dashboard?id=Mastercard_send-api-demo-app)
+[![](https://sonarcloud.io/api/project_badges/measure?project=Mastercard_send-api-demo-app&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Mastercard_send-api-demo-app)
+
 ========
 
 + [Overview](#overview)
