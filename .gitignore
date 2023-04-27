@@ -49,3 +49,5 @@ Thumbs.db
 # Internal files #
 ######################
 pipelineconfig.yml
+**/*.p12
+**/*.properties
