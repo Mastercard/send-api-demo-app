@@ -18,7 +18,7 @@ $(document).ready(function () {
     function generateRecipientDiv(recipientAccount) {
         for (let singleRecDiv of recipientDiv) {
             $("#" + singleRecDiv + "").val('');
-            if (singleRecDiv == recipientAccount) {
+            if (singleRecDiv === recipientAccount) {
                 $("#" + singleRecDiv + "_div").addClass('d-block');
             } else {
                 $("#" + singleRecDiv + "_div").removeClass('d-block');
@@ -29,7 +29,7 @@ $(document).ready(function () {
     // code to show and hide recipient div
     $("#recipient_pan_div").addClass('d-block');
     $("#recipientAccountUriType").change(function () {
-        if ($("#recipientAccountUriType").val() == "recipient_pan") {
+        if ($("#recipientAccountUriType").val() === "recipient_pan") {
             generateRecipientDiv('recipient_pan');
         }
     });
@@ -41,7 +41,7 @@ $(document).ready(function () {
     function generateSenderDiv(senderAccount) {
         for (let singleSenderDiv of senderDiv) {
             $("#" + singleSenderDiv + "").val('');
-            if (singleSenderDiv == senderAccount) {
+            if (singleSenderDiv === senderAccount) {
                 $("#" + singleSenderDiv + "_div").addClass('d-block');
             } else {
                 $("#" + singleSenderDiv + "_div").removeClass('d-block');
@@ -52,7 +52,7 @@ $(document).ready(function () {
     // code to show and hide sender div
     $("#sender_pan_div").addClass('d-block');
     $("#senderAccountUriType").change(function () {
-        if ($("#senderAccountUriType").val() == "sender_pan") {
+        if ($("#senderAccountUriType").val() === "sender_pan") {
             generateSenderDiv('sender_pan');
         }
     });
@@ -92,7 +92,7 @@ $(document).ready(function () {
                 minlength: 3,
                 maxlength: 3,
                 required: function (_element) {
-                    return $("#amount").val() != '';
+                    return $("#amount").val() !== '';
                 }
             },
             paymentType: {
@@ -118,21 +118,21 @@ $(document).ready(function () {
             },
             acquirerReferenceId: {
                 required: function (_element) {
-                    return $("#messageType").val() == 'dualMessage';
+                    return $("#messageType").val() === 'dualMessage';
                 },
                 minlength: 6,
                 maxlength: 6,
             },
             acquiringIdentificationCode: {
                 required: function (_element) {
-                    return $("#messageType").val() == 'singleMessage';
+                    return $("#messageType").val() === 'singleMessage';
                 },
                 minlength: 1,
                 maxlength: 9,
             },
             processorId: {
                 required: function (_element) {
-                    return $("#messageType").val() == 'singleMessage';
+                    return $("#messageType").val() === 'singleMessage';
                 },
                 maxlength: 10,
             },
@@ -165,12 +165,12 @@ $(document).ready(function () {
                 },
                 success: function (response, _statusCode, _xhr) {
                     $("#spinner").removeClass('loading');
-                    // Below code is use to format response json object
+                    // Below code is used to format response json object
                     $('#response-object').text(JSON.stringify(response, undefined, 4));
                 },
                 error: function (jqXHR, _textStatus, _errorThrown) {
                     $("#spinner").removeClass('loading');
-                    // Below code is use to format errorThrown json object
+                    // Below code is used to format errorThrown json object
                     $('#response-object').text(JSON.stringify(JSON.parse(jqXHR.responseText), undefined, 4));
                 }
             });
@@ -179,7 +179,7 @@ $(document).ready(function () {
     });
 
     function createRequestObject() {
-        // Below code is use to format request json object
+        // Below code is used to format request json object
         const serialized = $('#transfer-eligibility-form').serializeArray();
         const data = {};
         for (let s in serialized) {
@@ -233,10 +233,10 @@ $(document).ready(function () {
                 break;
         }
 
-        if (data.messageType == 'dualMessage') {
+        if (data.messageType === 'dualMessage') {
             delete acquiringCredentials.singleMessage;
         }
-        if (data.messageType == 'singleMessage') {
+        if (data.messageType === 'singleMessage') {
             delete acquiringCredentials.dualMessage;
         }
         delete data.messageType;
