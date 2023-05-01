@@ -14,15 +14,15 @@ $(function () {
         let dropdown = $("#" + dynamicDropdown + "");
         dropdown.empty();
         let url = "";
-        if (dynamicDropdown == "transactionType") {
+        if (dynamicDropdown === "transactionType") {
             url = "/assets/config/transaction-type.json";
-        } else if (dynamicDropdown == "paymentType") {
+        } else if (dynamicDropdown === "paymentType") {
             url = "/assets/config/payment-type.json";
-        } else if (dynamicDropdown == "cardProductType") {
+        } else if (dynamicDropdown === "cardProductType") {
             url = "/assets/config/card-product-type.json";
-        } else if (dynamicDropdown == "cardType") {
+        } else if (dynamicDropdown === "cardType") {
             url = "/assets/config/card-type.json";
-        } else if (dynamicDropdown == "messageSystem") {
+        } else if (dynamicDropdown === "messageSystem") {
             url = "/assets/config/message-type.json";
         }
 

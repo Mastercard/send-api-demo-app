@@ -2,7 +2,7 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $('#partnerId').val(PARTNER_ID);
 
-    // code to add & remove Aler Emails Dynamically
+    // code to add & remove Alert Emails Dynamically
     $("#alertEmailsBtnAdd").on("click", function () {
         const div = $("<div class='row pl-0 alert-emails-div-sub-div'/>");
         div.html(GeAlertEmailsDynamicTextBox(""));
@@ -96,14 +96,14 @@ $(function () {
                         "data-update-partner-limit-response",
                         JSON.stringify(response)
                     );
-                    // Below code is use to format response json object
+                    // Below code is used to format response json object
                     $("#response-object").text(
                         JSON.stringify(response, undefined, 4)
                     );
                 },
                 error: function (jqXHR, _textStatus, _errorThrown) {
                     $("#spinner").removeClass("loading");
-                    // Below code is use to format errorThrown json object
+                    // Below code is used to format errorThrown json object
                     $("#response-object").text(
                         JSON.stringify(
                             JSON.parse(jqXHR.responseText),
@@ -117,7 +117,7 @@ $(function () {
     });
 
     function createRequestObject() {
-        // Below code is use to format request json object
+        // Below code is used to format request json object
         let serialized = $("#update-partner-limit-form").serializeArray();
         let data = {};
         for (let s in serialized) {

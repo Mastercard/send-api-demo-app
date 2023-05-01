@@ -39,12 +39,12 @@ $(document).ready(function () {
     $("#acquiringIdentificationCode_div").addClass('d-block');
     $("#processorId_div").addClass('d-block');
     $("#messageType").change(function () {
-        if ($("#messageType").val() == "dualMessage") {
+        if ($("#messageType").val() === "dualMessage") {
             $("#acquiringBin_div").addClass('d-block');
             $("#acquirerReferenceId_div").addClass('d-block');
             $("#acquiringIdentificationCode_div").removeClass('d-block');
             $("#processorId_div").removeClass('d-block');
-        } else if ($("#messageType").val() == "singleMessage") {
+        } else if ($("#messageType").val() === "singleMessage") {
             $("#acquiringBin_div").removeClass('d-block');
             $("#acquirerReferenceId_div").removeClass('d-block');
             $("#acquiringIdentificationCode_div").addClass('d-block');
@@ -58,7 +58,7 @@ $(document).ready(function () {
     function generateRecipientDiv(recipientAccount) {
         for (let singleRecDiv of recipientDiv) {
             $("#" + singleRecDiv + "").val('');
-            if (singleRecDiv == recipientAccount) {
+            if (singleRecDiv === recipientAccount) {
                 $("#" + singleRecDiv + "_div").addClass('d-block');
             } else {
                 $("#" + singleRecDiv + "_div").removeClass('d-block');
@@ -69,7 +69,7 @@ $(document).ready(function () {
     // code to show and hide recipient div
     $("#recipient_pan_div").addClass('d-block');
     $("#recipientAccountUriType").change(function () {
-        if ($("#recipientAccountUriType").val() == "recipient_pan") {
+        if ($("#recipientAccountUriType").val() === "recipient_pan") {
             generateRecipientDiv('recipient_pan');
         }
     });
@@ -81,7 +81,7 @@ $(document).ready(function () {
     function generateSenderDiv(senderAccount) {
         for (let singleSenderDiv of senderDiv) {
             $("#" + singleSenderDiv + "").val('');
-            if (singleSenderDiv == senderAccount) {
+            if (singleSenderDiv === senderAccount) {
                 $("#" + singleSenderDiv + "_div").addClass('d-block');
             } else {
                 $("#" + singleSenderDiv + "_div").removeClass('d-block');
@@ -92,7 +92,7 @@ $(document).ready(function () {
     // code to show and hide sender div
     $("#sender_pan_div").addClass('d-block');
     $("#senderAccountUriType").change(function () {
-        if ($("#senderAccountUriType").val() == "sender_pan") {
+        if ($("#senderAccountUriType").val() === "sender_pan") {
             generateSenderDiv('sender_pan');
         }
     });
@@ -270,7 +270,7 @@ $(document).ready(function () {
             },
             recipient_pan: {
                 required: function (_element) {
-                    return $("#recipientAccountUriType").val() == 'recipient_pan';
+                    return $("#recipientAccountUriType").val() === 'recipient_pan';
                 }
             },
             recipientCountryOfBirth: {
@@ -337,7 +337,7 @@ $(document).ready(function () {
             },
             sender_pan: {
                 required: function (_element) {
-                    return $("#senderAccountUriType").val() == 'sender_pan';
+                    return $("#senderAccountUriType").val() === 'sender_pan';
                 }
             },
             senderCountryOfBirth: {
@@ -494,7 +494,7 @@ function createRequestObject() {
     }
     data['additionalProgramData'] = additionalProgramData;
 
-    if (data.walletProviderSignature == '' && data.recipientPreferredLanguage == '' && data.securityQuestion == '' && data.securityAnswer == '') {
+    if (data.walletProviderSignature === '' && data.recipientPreferredLanguage === '' && data.securityQuestion === '' && data.securityAnswer === '') {
         delete data['additionalProgramData'];
     }
 
@@ -643,10 +643,10 @@ function generateAcquiringCredentialsRequest(data) {
             break;
     }
 
-    if (data.messageType == 'dualMessage') {
+    if (data.messageType === 'dualMessage') {
         delete acquiringCredentials.singleMessage;
     }
-    if (data.messageType == 'singleMessage') {
+    if (data.messageType === 'singleMessage') {
         delete acquiringCredentials.dualMessage;
     }
     delete data.messageType;

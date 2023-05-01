@@ -67,7 +67,7 @@ $(function () {
                 "/" +
                 $("#partnerId").val() +
                 "/limits/transfer-acceptor-limits/" +
-                $("#transferAcceptorLimitReference").val();;
+                $("#transferAcceptorLimitReference").val();
             const acceptHeaders = $("#accept").val();
             const contentTypeHeaders = $("#contentType").val();
             let headers = {

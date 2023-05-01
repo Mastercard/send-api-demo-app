@@ -30,7 +30,7 @@ $(document).ready(function () {
     // on create button click submit form
     $(document).on('click', '#submitBtn', function () {
         if ($('#payment-search-form').valid() &&
-            ($('#paymentReference').val() != '' || $('#paymentId').val() != '')) {
+            ($('#paymentReference').val() !== '' || $('#paymentId').val() !== '')) {
             $("#spinner").addClass('loading');
             const request_object = createRequestObject();
             // API CALL SEND 2.0
@@ -44,12 +44,12 @@ $(document).ready(function () {
                 },
                 success: function (response, _statusCode, _xhr) {
                     $("#spinner").removeClass('loading');
-                    // Below code is use to format response json object
+                    // Below code is used to format response json object
                     $('#response-object').text(JSON.stringify(response, undefined, 4));
                 },
                 error: function (jqXHR, _textStatus, _errorThrown) {
                     $("#spinner").removeClass('loading');
-                    // Below code is use to format errorThrown json object
+                    // Below code is used to format errorThrown json object
                     $('#response-object').text(JSON.stringify(JSON.parse(jqXHR.responseText), undefined, 4));
                 }
             });
